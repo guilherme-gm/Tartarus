@@ -15,6 +15,8 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Common.DataClasses;
+using Common.Utils;
+using System;
 using System.Collections.Generic;
 
 namespace Auth.DataClasses
@@ -27,7 +29,13 @@ namespace Auth.DataClasses
 
 		public void Start()
 		{
+            ConsoleUtils.ShowInfo("Server initialized.");
 
+            string line;
+            do
+            {
+                line = Console.ReadLine();
+            } while (line != "quit");
 		}
 
 	}

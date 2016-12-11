@@ -16,6 +16,7 @@
 */
 using System;
 using Common.Utils;
+using Auth.DataClasses;
 
 namespace Auth
 {
@@ -25,7 +26,8 @@ namespace Auth
         {
             ConsoleUtils.ShowHeader("Auth");
 
-            Console.ReadKey();
+            Server server = new Server();
+            server.Start();
         }
     }
 }
