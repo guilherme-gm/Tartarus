@@ -1,3 +1,6 @@
+
+using Common.RC4;
+using System.Net.Sockets;
 /**
 * This file is part of Tartarus Emulator.
 * 
@@ -18,7 +21,22 @@ namespace Common.DataClasses
 {
 	public class NetworkData
 	{
-	}
+        public const int MaxBuffer = 1024;
+
+        public Socket _Socket { get; set; }
+        public byte[] Buffer;
+        public byte[] Message;
+        public int Offset { get; set; }
+        public XRC4Cipher InCipher { get; set; }
+        public XRC4Cipher OutCipher { get; set; }
+
+        public NetworkData(Socket socket)
+        {
+            this._Socket = socket;
+            this.Buffer = new byte[MaxBuffer];
+            this.Message = new byte[MaxBuffer];
+        }
+    }
 
 }
 

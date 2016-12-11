@@ -17,13 +17,16 @@
 
 namespace Common.DataClasses
 {
-	public abstract class Session
+	public class Session
 	{
-		private int AccountId;
+		public NetworkData _NetworkData { get; set; }
+        
+        public Client _Client { get; set; }
 
-		private string UserId;
+        public Session()
+        {
 
-		private NetworkData networkData;
+        }
 
 	}
 

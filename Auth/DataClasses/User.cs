@@ -1,3 +1,5 @@
+
+using Common.DataClasses;
 /**
 * This file is part of Tartarus Emulator.
 * 
@@ -16,13 +18,13 @@
 */
 namespace Auth.DataClasses
 {
-	public class User
+	public class User : Client
 	{
         public int AccountId { get; set; }
 
         public string UserId { get; set; }
 
-        public short ServerId { get; set; }
+        public GameServer Server { get; set; }
 
 		public User()
 		{

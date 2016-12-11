@@ -1,3 +1,5 @@
+
+using Common;
 /**
 * This file is part of Tartarus Emulator.
 * 
@@ -15,6 +17,7 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Common.DataClasses;
+using Common.Service;
 using Common.Utils;
 using System;
 using System.Collections.Generic;
@@ -29,13 +32,17 @@ namespace Auth.DataClasses
 
 		public void Start()
 		{
-            ConsoleUtils.ShowInfo("Server initialized.");
+            SocketService clientService =
+                new SocketService("127.0.0.1", 8841, true, new UserFactory());
+            clientService.Start();
+            
+            ConsoleUtils.ShowInfo("Auth Server initialized.");
 
-            string line;
+            string input;
             do
             {
-                line = Console.ReadLine();
-            } while (line != "quit");
+                input = Console.ReadLine();
+            } while (input != "quit");
 		}
 
 	}

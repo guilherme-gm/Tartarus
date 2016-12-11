@@ -54,6 +54,8 @@
     <Compile Include="Business\SelectServer.cs" />
     <Compile Include="Business\ServerList.cs" />
     <Compile Include="Business\Version.cs" />
+    <Compile Include="DataClasses\GameServer.cs" />
+    <Compile Include="DataClasses\GameServerFactory.cs" />
     <Compile Include="DataClasses\Network\AuthClient\Result.cs" />
     <Compile Include="DataClasses\Network\AuthClient\SelectServer.cs" />
     <Compile Include="DataClasses\Network\AuthClient\ServerList.cs" />
@@ -64,6 +66,7 @@
     <Compile Include="DataClasses\Network\ClientAuth\Version.cs" />
     <Compile Include="DataClasses\Server.cs" />
     <Compile Include="DataClasses\User.cs" />
+    <Compile Include="DataClasses\UserFactory.cs" />
     <Compile Include="DataRepository\IUserDAO.cs" />
     <Compile Include="DataRepository\MySql\UserDAO.cs" />
     <Compile Include="DataRepository\SqlSrv\UserDAO.cs" />
