@@ -1,4 +1,4 @@
-﻿/**
+/**
 * This file is part of Tartarus Emulator.
 * 
 * Tartarus is free software: you can redistribute it and/or modify
@@ -14,18 +14,24 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
-using System;
-using Common.Utils;
+using Auth.DataRepository.MySql;
+using Auth.DataRepository;
+using Auth.DataClasses;
 
-namespace Auth
+namespace Auth.DataRepository
 {
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            ConsoleUtils.ShowHeader("Auth");
+	public class UserRepository
+	{
+		private UserDAO userDAO;
 
-            Console.ReadKey();
-        }
-    }
+		private IUserDAO iUserDAO;
+
+		public User getUser(string id, string password)
+		{
+			return null;
+		}
+
+	}
+
 }
+

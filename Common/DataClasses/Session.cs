@@ -1,4 +1,4 @@
-﻿/**
+/**
 * This file is part of Tartarus Emulator.
 * 
 * Tartarus is free software: you can redistribute it and/or modify
@@ -14,18 +14,18 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
-using System;
-using Common.Utils;
 
-namespace Auth
+namespace Common.DataClasses
 {
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            ConsoleUtils.ShowHeader("Auth");
+	public abstract class Session
+	{
+		private int AccountId;
 
-            Console.ReadKey();
-        }
-    }
+		private string UserId;
+
+		private NetworkData networkData;
+
+	}
+
 }
+

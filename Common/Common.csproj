@@ -40,9 +40,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsoleMessage.cs" />
-    <Compile Include="ConsoleUtils.cs" />
+    <Compile Include="Utils\ConsoleMessage.cs" />
+    <Compile Include="Utils\ConsoleUtils.cs" />
+    <Compile Include="DataClasses\NetworkData.cs" />
+    <Compile Include="DataClasses\Network\AuthGame\ClientLogin.cs" />
+    <Compile Include="DataClasses\Network\AuthGame\GameLoginResult.cs" />
+    <Compile Include="DataClasses\Network\AuthGame\KickClient.cs" />
+    <Compile Include="DataClasses\Network\AuthGame\SecurityCheck.cs" />
+    <Compile Include="DataClasses\Network\GameAuth\ClientKickResult.cs" />
+    <Compile Include="DataClasses\Network\GameAuth\ClientLogin.cs" />
+    <Compile Include="DataClasses\Network\GameAuth\ClientLogout.cs" />
+    <Compile Include="DataClasses\Network\GameAuth\Register.cs" />
+    <Compile Include="DataClasses\Network\GameAuth\SecurityCheck.cs" />
+    <Compile Include="DataClasses\Network\IPacket.cs" />
+    <Compile Include="DataClasses\Network\Packet.cs" />
+    <Compile Include="DataClasses\ServerInfo.cs" />
+    <Compile Include="DataClasses\Session.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\SocketService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

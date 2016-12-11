@@ -1,4 +1,4 @@
-﻿/**
+/**
 * This file is part of Tartarus Emulator.
 * 
 * Tartarus is free software: you can redistribute it and/or modify
@@ -15,17 +15,21 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using System;
-using Common.Utils;
 
-namespace Auth
+namespace Common.Service
 {
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            ConsoleUtils.ShowHeader("Auth");
+	public class SocketService
+	{
+		private bool Encrypted;
 
-            Console.ReadKey();
-        }
-    }
+		private String CipherKey;
+
+		public void PacketReceived()
+		{
+
+		}
+
+	}
+
 }
+

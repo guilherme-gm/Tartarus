@@ -43,8 +43,37 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business\ClientKickResult.cs" />
+    <Compile Include="Business\ClientLogin.cs" />
+    <Compile Include="Business\ClientLogout.cs" />
+    <Compile Include="Business\ICommand.cs" />
+    <Compile Include="Business\ImbcLogin.cs" />
+    <Compile Include="Business\Login.cs" />
+    <Compile Include="Business\RegisterServer.cs" />
+    <Compile Include="Business\SecurityCheck.cs" />
+    <Compile Include="Business\SelectServer.cs" />
+    <Compile Include="Business\ServerList.cs" />
+    <Compile Include="Business\Version.cs" />
+    <Compile Include="DataClasses\Network\AuthClient\Result.cs" />
+    <Compile Include="DataClasses\Network\AuthClient\SelectServer.cs" />
+    <Compile Include="DataClasses\Network\AuthClient\ServerList.cs" />
+    <Compile Include="DataClasses\Network\ClientAuth\Account.cs" />
+    <Compile Include="DataClasses\Network\ClientAuth\ImbcAccount.cs" />
+    <Compile Include="DataClasses\Network\ClientAuth\SelectServer.cs" />
+    <Compile Include="DataClasses\Network\ClientAuth\ServerList.cs" />
+    <Compile Include="DataClasses\Network\ClientAuth\Version.cs" />
+    <Compile Include="DataClasses\Server.cs" />
+    <Compile Include="DataClasses\User.cs" />
+    <Compile Include="DataRepository\IUserDAO.cs" />
+    <Compile Include="DataRepository\MySql\UserDAO.cs" />
+    <Compile Include="DataRepository\SqlSrv\UserDAO.cs" />
+    <Compile Include="DataRepository\UserRepository.cs" />
+    <Compile Include="Helpers\ClientCommandHelper.cs" />
+    <Compile Include="Helpers\ServerCommandHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ClientController.cs" />
+    <Compile Include="Services\ServerController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
