@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataClasses\Client.cs" />
+    <Compile Include="DataClasses\SessionFactory.cs" />
     <Compile Include="Utils\ConsoleMessage.cs" />
     <Compile Include="Utils\ConsoleUtils.cs" />
     <Compile Include="DataClasses\NetworkData.cs" />
@@ -58,6 +60,8 @@
     <Compile Include="DataClasses\Session.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\SocketService.cs" />
+    <Compile Include="Utils\RC4\RC4Cipher.cs" />
+    <Compile Include="Utils\RC4\XRC4Cipher.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
