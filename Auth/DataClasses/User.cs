@@ -1,5 +1,3 @@
-
-using Common.DataClasses;
 /**
 * This file is part of Tartarus Emulator.
 * 
@@ -16,6 +14,8 @@ using Common.DataClasses;
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
+using Common.DataClasses;
+
 namespace Auth.DataClasses
 {
 	public class User : Client

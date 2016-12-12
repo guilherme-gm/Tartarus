@@ -1,5 +1,3 @@
-
-using System;
 /**
 * This file is part of Tartarus Emulator.
 * 
@@ -17,6 +15,7 @@ using System;
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Common.DataClasses.Network;
+using System;
 
 namespace Common.DataClasses.Network.GameAuth
 {

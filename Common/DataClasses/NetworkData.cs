@@ -1,6 +1,3 @@
-
-using Common.RC4;
-using System.Net.Sockets;
 /**
 * This file is part of Tartarus Emulator.
 * 
@@ -17,6 +14,9 @@ using System.Net.Sockets;
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
+using Common.RC4;
+using System.Net.Sockets;
+
 namespace Common.DataClasses
 {
 	public class NetworkData

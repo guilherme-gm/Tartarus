@@ -1,6 +1,3 @@
-
-using Auth.Services;
-using Common;
 /**
 * This file is part of Tartarus Emulator.
 * 
@@ -17,6 +14,8 @@ using Common;
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
+using Auth.Services;
+using Common;
 using Common.DataClasses;
 using Common.Service;
 using Common.Utils;

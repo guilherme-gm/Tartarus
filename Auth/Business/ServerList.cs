@@ -1,6 +1,3 @@
-
-using Auth.DataClasses;
-using Common.DataClasses;
 /**
 * This file is part of Tartarus Emulator.
 * 
@@ -17,6 +14,8 @@ using Common.DataClasses;
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
+using Auth.DataClasses;
+using Common.DataClasses;
 using Common.DataClasses.Network;
 using AC = Auth.DataClasses.Network.AuthClient;
 

@@ -1,5 +1,3 @@
-
-using System;
 /**
 * This file is part of Tartarus Emulator.
 * 
@@ -16,6 +14,7 @@ using System;
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
+using System;
 using System.IO;
 using System.Text;
 
