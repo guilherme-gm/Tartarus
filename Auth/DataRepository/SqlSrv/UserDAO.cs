@@ -18,9 +18,9 @@ using Auth.DataClasses;
 
 namespace Auth.DataRepository.SqlSrv
 {
-	public class UserDAO
+	public class UserDAO : IUserDAO
 	{
-		public User select(string id, string password)
+		public User Select(string id, string password)
 		{
 			return null;
 		}

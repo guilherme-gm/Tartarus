@@ -25,8 +25,10 @@ namespace Auth.DataClasses
         public string UserId { get; set; }
 
         public GameServer Server { get; set; }
+        public int Permission { get; internal set; }
+        public int LastServerId { get; internal set; }
 
-		public User()
+        public User()
 		{
 
 		}

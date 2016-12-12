@@ -22,13 +22,16 @@ namespace Auth.DataRepository
 {
 	public class UserRepository
 	{
-		private UserDAO userDAO;
+        private IUserDAO _UserDao;
 
-		private IUserDAO iUserDAO;
+        public UserRepository()
+        {
+            this._UserDao = new MySql.UserDAO();
+        }
 
-		public User getUser(string id, string password)
+		public User GetUser(string id, string password)
 		{
-			return null;
+            return this._UserDao.Select(id, password);
 		}
 
 	}

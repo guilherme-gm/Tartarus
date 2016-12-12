@@ -1,3 +1,5 @@
+
+using Auth.DataClasses;
 /**
 * This file is part of Tartarus Emulator.
 * 
@@ -18,7 +20,8 @@ namespace Auth.DataRepository
 {
 	public interface IUserDAO
 	{
-	}
+        User Select(string id, string password);
+    }
 
 }
 

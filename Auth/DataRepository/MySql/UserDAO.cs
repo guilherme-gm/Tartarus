@@ -15,14 +15,47 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Auth.DataClasses;
+using Auth.Utils;
+using MySql.Data.MySqlClient;
+using System.Data.Common;
 
 namespace Auth.DataRepository.MySql
 {
-	public class UserDAO
+	public class UserDAO : IUserDAO
 	{
-		public User select(string id, string password)
+        private IConnectionFactory ConFactory;
+
+        public UserDAO()
+        {
+            ConFactory = ConnectionFactory.Instance;
+        }
+
+		public User Select(string id, string password)
 		{
-			return null;
+            User user = null;
+
+            MySqlConnection con = (MySqlConnection) ConFactory.GetConnection();
+
+            MySqlCommand command = con.CreateCommand();
+            command.CommandText = "SELECT `account_id`, `userid`, `permission`, `last_serverid` FROM Login WHERE `userid` = @id AND `password` = @password";
+            command.Parameters.AddWithValue("id", id);
+            command.Parameters.AddWithValue("password", password);
+
+            using (DbDataReader reader = command.ExecuteReader())
+            {
+                if (reader.Read())
+                {
+                    user = new User();
+                    user.AccountId = reader.GetInt32(0);
+                    user.UserId = reader.GetString(1);
+                    user.Permission = reader.GetInt32(2);
+                    user.LastServerId = reader.GetInt32(3);
+                }
+            }
+
+            ConFactory.Close(con);
+
+            return user;
 		}
 
 	}
