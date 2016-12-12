@@ -18,6 +18,7 @@ using System;
 */
 using Common.DataClasses.Network;
 using System.IO;
+using System.Text;
 
 namespace Auth.DataClasses.Network.ClientAuth
 {
@@ -25,15 +26,16 @@ namespace Auth.DataClasses.Network.ClientAuth
 	{
 		public string Username { get; set; }
 
-        public string Password { get; set; }
+        public byte[] Password { get; set; }
 
         public override void Read(byte[] data)
         {
             BinaryReader br = new BinaryReader(new MemoryStream(data));
             base.Read(br);
 
-            this.Username = BitConverter.ToString(br.ReadBytes(61));
-            this.Password = BitConverter.ToString(br.ReadBytes(61));
+            this.Username = Encoding.UTF8.GetString(br.ReadBytes(61)).TrimEnd('\0');
+            this.Password = br.ReadBytes(56);
+            // Unknown 5 bytes
         }
 
         public override void Write()

@@ -250,6 +250,7 @@ namespace Common.Service
         /// <param name="packet">Packet data</param>
         public void PacketReceived(Session session, byte[] packet)
         {
+            ConsoleUtils.HexDump(packet, "Packet Received");
             this.Controller.ProcessRequest(session, packet);
         }
 

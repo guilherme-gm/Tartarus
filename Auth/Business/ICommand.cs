@@ -15,12 +15,13 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Common.DataClasses.Network;
+using Common.DataClasses;
 
 namespace Auth.Business
 {
 	public interface ICommand
 	{
-		void Execute(Packet message);
+		void Execute(Session session, Packet message);
 
 	}
 

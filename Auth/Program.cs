@@ -14,7 +14,6 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
-using System;
 using Common.Utils;
 using Auth.DataClasses;
 
@@ -25,9 +24,7 @@ namespace Auth
         static void Main(string[] args)
         {
             ConsoleUtils.ShowHeader("Auth");
-
-            Server server = new Server();
-            server.Start();
+            Server.Instance.Start();
         }
     }
 }

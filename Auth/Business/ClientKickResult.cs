@@ -1,3 +1,5 @@
+
+using Common.DataClasses;
 /**
 * This file is part of Tartarus Emulator.
 * 
@@ -20,7 +22,7 @@ namespace Auth.Business
 {
 	public class ClientKickResult : ICommand
 	{
-		public void Execute(Packet message)
+		public void Execute(Session session, Packet message)
         {
 
 		}

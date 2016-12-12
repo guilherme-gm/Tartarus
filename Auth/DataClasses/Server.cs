@@ -27,12 +27,38 @@ namespace Auth.DataClasses
 {
 	public class Server
 	{
+        private static Server _Instance;
+
+        public static Server Instance
+        {
+            get
+            {
+                if (_Instance == null)
+                {
+                    _Instance = new Server();
+                }
+                return _Instance;
+            }
+            private set
+            {
+                _Instance = value;
+            }
+        }
+
 		private List<Session> ConnectedUsers;
 
 		private List<ServerInfo> ServerList;
 
+        private Server()
+        {
+            Instance = this;
+        }
+
 		public void Start()
 		{
+            this.ConnectedUsers = new List<Session>();
+            this.ServerList = new List<ServerInfo>();
+
             SocketService clientService =
                 new SocketService("127.0.0.1", 8841, true, new UserFactory(), new ClientController());
             clientService.Start();
@@ -45,6 +71,11 @@ namespace Auth.DataClasses
                 input = Console.ReadLine();
             } while (input != "quit");
 		}
+
+        public void AddUser(Session session)
+        {
+            this.ConnectedUsers.Add(session);
+        }
 
 	}
 

@@ -38,7 +38,7 @@ namespace Auth.Services
             }
 
             message.Read(data);
-            command.Execute(message);
+            command.Execute(session, message);
         }
     }
 
