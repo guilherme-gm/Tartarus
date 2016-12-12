@@ -17,6 +17,7 @@
 using Common.DataClasses.Network;
 using Common.DataClasses;
 using System;
+using System.IO;
 
 namespace Auth.DataClasses.Network.AuthClient
 {
@@ -24,9 +25,28 @@ namespace Auth.DataClasses.Network.AuthClient
 	{
 		public ushort LastLoginServerId { get; set; }
 
-        public ushort Count { get; set; }
+        public ushort Count { get; private set; }
 
-        public ServerInfo[] serverInfo { get; set; }
+        private ServerInfo[] _ServerInfo;
+
+        public ServerInfo[] ServerInfo
+        {
+            get
+            {
+                return _ServerInfo;
+            }
+
+            set
+            {
+                _ServerInfo = value;
+                this.Count = (ushort)_ServerInfo.Length;
+            }
+        }
+
+        public ServerList()
+        {
+            this.Id = (ushort) AuthClientPackets.ServerList;
+        }
 
         public override void Read(byte[] data)
         {
@@ -35,7 +55,30 @@ namespace Auth.DataClasses.Network.AuthClient
 
         public override byte[] Write()
         {
-            throw new NotImplementedException();
+            MemoryStream stream = new MemoryStream();
+            BinaryWriter writer = new BinaryWriter(stream);
+
+            // Writes a fake header
+            writer.Write(new byte[HeaderSize]);
+
+            // Write packet body
+            writer.Write(this.LastLoginServerId);
+            writer.Write(this.Count);
+            foreach (ServerInfo info in this.ServerInfo)
+            {
+                writer.Write(info.Id);
+                WriteString(writer, info.Name, 21);
+                writer.Write(info.AdultServer);
+                WriteString(writer, info.ScreenshotUrl, 256);
+                WriteString(writer, info.Ip, 16);
+                writer.Write(info.Port);
+                writer.Write(info.UserRatio);
+            }
+
+            // finishes packet
+            base.Write(writer);
+
+            return stream.ToArray();
         }
     }
 

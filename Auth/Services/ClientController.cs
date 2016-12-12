@@ -19,7 +19,6 @@ using Auth.Helpers;
 using Common.DataClasses;
 using Common.DataClasses.Network;
 using Common.Service;
-using System;
 
 namespace Auth.Services
 {

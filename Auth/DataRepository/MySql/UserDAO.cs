@@ -49,7 +49,7 @@ namespace Auth.DataRepository.MySql
                     user.AccountId = reader.GetInt32(0);
                     user.UserId = reader.GetString(1);
                     user.Permission = reader.GetInt32(2);
-                    user.LastServerId = reader.GetInt32(3);
+                    user.LastServerId = (ushort) reader.GetInt32(3);
                 }
             }
 

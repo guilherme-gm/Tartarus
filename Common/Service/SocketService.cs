@@ -265,6 +265,8 @@ namespace Common.Service
         {
             byte[] data = packet.Write();
 
+            ConsoleUtils.HexDump(data, "Sending Packet");
+
             if (this.Encrypted)
             {
                 data = session._NetworkData.OutCipher.DoCipher(ref data);

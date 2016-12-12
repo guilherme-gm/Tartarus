@@ -18,19 +18,19 @@ namespace Common.DataClasses
 {
 	public class ServerInfo
 	{
-		private ushort Id;
+		public ushort Id { get; set; }
 
-		private string Name;
+		public string Name { get; set; }
 
-		private bool AdultServer;
+		public bool AdultServer { get; set; }
 
-		private string ScreenshotUrl;
+		public string ScreenshotUrl { get; set; }
 
-		private string Ip;
+		public string Ip { get; set; }
 
-		private int Port;
+		public int Port { get; set; }
 
-		private ushort UserRatio;
+		public ushort UserRatio { get; set; }
 
 	}
 

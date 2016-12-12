@@ -1,4 +1,5 @@
 
+using Auth.DataClasses;
 using Common.DataClasses;
 /**
 * This file is part of Tartarus Emulator.
@@ -17,6 +18,7 @@ using Common.DataClasses;
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Common.DataClasses.Network;
+using AC = Auth.DataClasses.Network.AuthClient;
 
 namespace Auth.Business
 {
@@ -24,8 +26,13 @@ namespace Auth.Business
     {
         public void Execute(Session session, Packet message)
         {
+            AC.ServerList serverList = new AC.ServerList();
 
-		}
+            serverList.LastLoginServerId = ((User)session._Client).LastServerId;
+            serverList.ServerInfo = Server.Instance.ServerList.ToArray();
+
+            Server.ClientSockets.SendPacket(session, serverList);
+        }
 
 	}
 

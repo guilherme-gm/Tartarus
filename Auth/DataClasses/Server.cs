@@ -49,18 +49,30 @@ namespace Auth.DataClasses
 
 		private List<Session> ConnectedUsers;
 
-		private List<ServerInfo> ServerList;
+        public List<ServerInfo> ServerList { get; set; }
 
         private Server()
         {
             Instance = this;
+
+            this.ConnectedUsers = new List<Session>();
+            this.ServerList = new List<ServerInfo>()
+            {
+                new ServerInfo()
+                {
+                    Id = 2, Name = "Test Server 2", UserRatio = 0, Ip = "127.0.0.1",  Port = 8850, AdultServer = false,
+                    ScreenshotUrl = "http://127.0.0.1/"
+                },
+                new ServerInfo()
+                {
+                    Id = 1, Name = "Test Server 1", UserRatio = 0, Ip = "127.0.0.1",  Port = 8851, AdultServer = false,
+                    ScreenshotUrl = "http://www.google.com.br/"
+                }
+            };
         }
 
 		public void Start()
 		{
-            this.ConnectedUsers = new List<Session>();
-            this.ServerList = new List<ServerInfo>();
-
             ClientSockets =
                 new SocketService("127.0.0.1", 8841, true, new UserFactory(), new ClientController());
             ClientSockets.Start();

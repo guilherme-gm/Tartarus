@@ -17,6 +17,7 @@ using System;
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using System.IO;
+using System.Text;
 
 namespace Common.DataClasses.Network
 {
@@ -62,6 +63,11 @@ namespace Common.DataClasses.Network
             this.Checksum = data.ReadByte();
 		}
 
+        protected void WriteString(BinaryWriter writer, string value, int length)
+        {
+            writer.Write(Encoding.UTF8.GetBytes(value));
+            writer.Write(new byte[length - value.Length]);
+        }
 	}
 
 }
