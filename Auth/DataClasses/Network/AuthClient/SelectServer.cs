@@ -17,6 +17,7 @@ using System;
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Common.DataClasses.Network;
+using System.IO;
 
 namespace Auth.DataClasses.Network.AuthClient
 {
@@ -35,7 +36,21 @@ namespace Auth.DataClasses.Network.AuthClient
 
         public override byte[] Write()
         {
-            throw new NotImplementedException();
+            MemoryStream stream = new MemoryStream();
+            BinaryWriter writer = new BinaryWriter(stream);
+
+            // Writes a fake header
+            writer.Write(new byte[HeaderSize]);
+
+            // Write packet body
+            writer.Write(this.Result);
+            writer.Write(this.OneTimeKey);
+            writer.Write(this.PendingTime);
+
+            // finishes packet
+            base.Write(writer);
+
+            return stream.ToArray();
         }
     }
 

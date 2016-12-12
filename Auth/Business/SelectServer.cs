@@ -24,7 +24,7 @@ namespace Auth.Business
     {
         public void Execute(Session session, Packet message)
         {
-
+            // TODO : Message Game Server
 		}
 
 	}

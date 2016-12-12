@@ -25,6 +25,11 @@ namespace Auth.DataClasses.Network.ClientAuth
 	{
         public ushort ServerId { get; set; }
 
+        public SelectServer()
+        {
+            this.Id = (ushort)ClientAuthPackets.SelectServer;
+        }
+
         public override void Read(byte[] data)
         {
             BinaryReader br = new BinaryReader(new MemoryStream(data));
