@@ -45,16 +45,22 @@ namespace Common.Service
         private SessionFactory _SessionFactory;
 
         /// <summary>
+        /// The controller that will handle the packets
+        /// </summary>
+        private IController Controller;
+
+        /// <summary>
         /// Creates a new SocketService
         /// </summary>
         /// <param name="ip">Listen IP</param>
         /// <param name="port">Listen Port</param>
         /// <param name="isEncrypted">Is data encrypted?</param>
         /// <param name="key">Encryption key</param>
-        public SocketService(string ip, ushort port, bool isEncrypted, SessionFactory sessionFactory)
+        public SocketService(string ip, ushort port, bool isEncrypted, SessionFactory sessionFactory, IController controller)
         {
             this.Encrypted = isEncrypted;
             this._SessionFactory = sessionFactory;
+            this.Controller = controller;
 
             try
             {
@@ -244,7 +250,7 @@ namespace Common.Service
         /// <param name="packet">Packet data</param>
         public void PacketReceived(Session session, byte[] packet)
         {
-            ConsoleUtils.HexDump(packet, "Packet Received");
+            this.Controller.ProcessRequest(session, packet);
         }
 
     }

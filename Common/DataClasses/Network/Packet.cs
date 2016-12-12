@@ -14,24 +14,32 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
+using System.IO;
+
 namespace Common.DataClasses.Network
 {
 	public abstract class Packet
 	{
-		private int Size;
+		public int Size { get; set; }
 
-		private short Id;
+		public short Id { get; set; }
 
-		private byte Checksum;
+		public byte Checksum { get; set; }
 
-		public void Write(int stream)
+        public abstract void Read(byte[] data);
+
+        public abstract void Write();
+
+		protected void Write(int stream)
 		{
 
 		}
 
-		public void Read()
+		protected void Read(BinaryReader data)
 		{
-
+            this.Size = data.ReadInt32();
+            this.Id = data.ReadInt16();
+            this.Checksum = data.ReadByte();
 		}
 
 	}

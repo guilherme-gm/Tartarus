@@ -1,3 +1,5 @@
+
+using System;
 /**
 * This file is part of Tartarus Emulator.
 * 
@@ -24,7 +26,16 @@ namespace Common.DataClasses.Network.AuthGame
 
         public int AccountId { get; set; }
 
-	}
+        public override void Read(byte[] data)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Write()
+        {
+            throw new NotImplementedException();
+        }
+    }
 
 }
 

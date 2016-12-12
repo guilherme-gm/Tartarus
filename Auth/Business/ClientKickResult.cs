@@ -14,12 +14,14 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
+using Common.DataClasses.Network;
+
 namespace Auth.Business
 {
-	public class ClientKickResult
+	public class ClientKickResult : ICommand
 	{
-		public void Execute()
-		{
+		public void Execute(Packet message)
+        {
 
 		}
 

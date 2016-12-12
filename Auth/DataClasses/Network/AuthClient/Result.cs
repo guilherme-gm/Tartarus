@@ -15,6 +15,7 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Common.DataClasses.Network;
+using System;
 
 namespace Auth.DataClasses.Network.AuthClient
 {
@@ -26,7 +27,16 @@ namespace Auth.DataClasses.Network.AuthClient
 
 		public int Value { get; set; }
 
-	}
+        public override void Read(byte[] data)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Write()
+        {
+            throw new NotImplementedException();
+        }
+    }
 
 }
 

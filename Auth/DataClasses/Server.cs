@@ -1,4 +1,5 @@
 
+using Auth.Services;
 using Common;
 /**
 * This file is part of Tartarus Emulator.
@@ -33,7 +34,7 @@ namespace Auth.DataClasses
 		public void Start()
 		{
             SocketService clientService =
-                new SocketService("127.0.0.1", 8841, true, new UserFactory());
+                new SocketService("127.0.0.1", 8841, true, new UserFactory(), new ClientController());
             clientService.Start();
             
             ConsoleUtils.ShowInfo("Auth Server initialized.");

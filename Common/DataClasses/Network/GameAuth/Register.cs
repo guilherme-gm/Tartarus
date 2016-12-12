@@ -16,6 +16,7 @@
 */
 using Common.DataClasses.Network;
 using Common.DataClasses;
+using System;
 
 namespace Common.DataClasses.Network.GameAuth
 {
@@ -23,7 +24,16 @@ namespace Common.DataClasses.Network.GameAuth
 	{
         public ServerInfo serverInfo { get; set; }
 
-	}
+        public override void Read(byte[] data)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Write()
+        {
+            throw new NotImplementedException();
+        }
+    }
 
 }
 

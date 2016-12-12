@@ -15,6 +15,7 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Common.DataClasses.Network;
+using System;
 
 namespace Common.DataClasses.Network.GameAuth
 {
@@ -24,7 +25,16 @@ namespace Common.DataClasses.Network.GameAuth
 
         public int Result { get; set; }
 
-	}
+        public override void Read(byte[] data)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Write()
+        {
+            throw new NotImplementedException();
+        }
+    }
 
 }
 

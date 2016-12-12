@@ -64,6 +64,7 @@
     <Compile Include="DataClasses\Network\ClientAuth\SelectServer.cs" />
     <Compile Include="DataClasses\Network\ClientAuth\ServerList.cs" />
     <Compile Include="DataClasses\Network\ClientAuth\Version.cs" />
+    <Compile Include="DataClasses\Network\ClientPackets.cs" />
     <Compile Include="DataClasses\Server.cs" />
     <Compile Include="DataClasses\User.cs" />
     <Compile Include="DataClasses\UserFactory.cs" />

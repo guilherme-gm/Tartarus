@@ -14,13 +14,15 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
+using Common.DataClasses.Network;
+using CA = Auth.DataClasses.Network.ClientAuth;
 namespace Auth.Business
 {
-	public class Login
-	{
-		public void Execute()
+	public class Login : ICommand
+    {
+		public void Execute(Packet message)
 		{
-
+            CA.Account packet = (CA.Account)message;
 		}
 
 	}

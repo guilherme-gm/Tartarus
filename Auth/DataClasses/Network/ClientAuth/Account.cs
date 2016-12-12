@@ -1,3 +1,5 @@
+
+using System;
 /**
 * This file is part of Tartarus Emulator.
 * 
@@ -15,6 +17,7 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Common.DataClasses.Network;
+using System.IO;
 
 namespace Auth.DataClasses.Network.ClientAuth
 {
@@ -24,7 +27,20 @@ namespace Auth.DataClasses.Network.ClientAuth
 
         public string Password { get; set; }
 
-	}
+        public override void Read(byte[] data)
+        {
+            BinaryReader br = new BinaryReader(new MemoryStream(data));
+            base.Read(br);
+
+            this.Username = BitConverter.ToString(br.ReadBytes(61));
+            this.Password = BitConverter.ToString(br.ReadBytes(61));
+        }
+
+        public override void Write()
+        {
+            throw new NotImplementedException();
+        }
+    }
 
 }
 
