@@ -38,7 +38,7 @@ namespace Auth.DataClasses.Network.ClientAuth
             // Unknown 5 bytes
         }
 
-        public override void Write()
+        public override byte[] Write()
         {
             throw new NotImplementedException();
         }

@@ -36,7 +36,7 @@ namespace Auth.DataClasses.Network.ClientAuth
             this.Password = BitConverter.ToString(br.ReadBytes(48));
         }
 
-        public override void Write()
+        public override byte[] Write()
         {
             throw new NotImplementedException();
         }

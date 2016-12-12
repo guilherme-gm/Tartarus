@@ -15,10 +15,12 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Common.DataClasses;
+using Common.DataClasses.Network;
 using Common.Utils;
 using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace Common.Service
 {
@@ -27,7 +29,7 @@ namespace Common.Service
         /// <summary>
         /// Size of a packet header
         /// </summary>
-        private const int HeaderSize = 7;
+        private const int HeaderSize = Packet.HeaderSize;
 
         /// <summary>
         /// Informs if data sent and received is encrypted
@@ -251,9 +253,52 @@ namespace Common.Service
         public void PacketReceived(Session session, byte[] packet)
         {
             ConsoleUtils.HexDump(packet, "Packet Received");
-            this.Controller.ProcessRequest(session, packet);
+            Task.Factory.StartNew(() => { this.Controller.ProcessRequest(session, packet); });
         }
 
+        /// <summary>
+        /// Sends a Packet to a client
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="packet"></param>
+        public void SendPacket(Session session, Packet packet)
+        {
+            byte[] data = packet.Write();
+
+            if (this.Encrypted)
+            {
+                data = session._NetworkData.OutCipher.DoCipher(ref data);
+            }
+
+            session._NetworkData._Socket.BeginSend(
+                data,
+                0,
+                data.Length,
+                SocketFlags.None,
+                new AsyncCallback(SendCallback),
+                session
+            );
+        }
+
+        /// <summary>
+        /// Called when packet send is complete
+        /// </summary>
+        /// <param name="ar"></param>
+        private void SendCallback(IAsyncResult ar)
+        {
+            try
+            {
+                // Retrieve the socket from the state object.
+                Session session = (Session)ar.AsyncState;
+
+                // Complete sending the data to the remote device.
+                int bytesSent = session._NetworkData._Socket.EndSend(ar);
+            }
+            catch (Exception)
+            {
+                ConsoleUtils.ShowNotice("Failed to send packet to client.");
+            }
+        }
     }
 
 }

@@ -33,7 +33,7 @@ namespace Auth.DataClasses.Network.ClientAuth
             this.ServerId = br.ReadUInt16();
         }
 
-        public override void Write()
+        public override byte[] Write()
         {
             throw new NotImplementedException();
         }

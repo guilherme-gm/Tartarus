@@ -1,3 +1,5 @@
+
+using System;
 /**
 * This file is part of Tartarus Emulator.
 * 
@@ -20,25 +22,43 @@ namespace Common.DataClasses.Network
 {
 	public abstract class Packet
 	{
+        public const int HeaderSize = 7;
+
 		public int Size { get; set; }
 
-		public short Id { get; set; }
+		public ushort Id { get; set; }
 
 		public byte Checksum { get; set; }
 
         public abstract void Read(byte[] data);
 
-        public abstract void Write();
+        public abstract byte[] Write();
 
-		protected void Write(int stream)
+		protected void Write(BinaryWriter writer)
 		{
+            this.Size = (int)writer.BaseStream.Position;
+            writer.Seek(0, SeekOrigin.Begin);
 
+            byte[] header = new byte[HeaderSize];
+
+            Buffer.BlockCopy(BitConverter.GetBytes(this.Size), 0, header, 0, 4);
+            Buffer.BlockCopy(BitConverter.GetBytes(this.Id), 0, header, 4, 2);
+
+            byte checksum = 0;
+            for (int i = 0; i < HeaderSize; i++)
+            {
+                unchecked { checksum += header[i]; }
+            }
+
+            header[HeaderSize - 1] = checksum;
+
+            writer.Write(header);
 		}
 
 		protected void Read(BinaryReader data)
 		{
             this.Size = data.ReadInt32();
-            this.Id = data.ReadInt16();
+            this.Id = data.ReadUInt16();
             this.Checksum = data.ReadByte();
 		}
 

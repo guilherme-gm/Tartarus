@@ -29,7 +29,7 @@ namespace Auth.DataClasses.Network.ClientAuth
             base.Read(br);
         }
 
-        public override void Write()
+        public override byte[] Write()
         {
             throw new NotImplementedException();
         }

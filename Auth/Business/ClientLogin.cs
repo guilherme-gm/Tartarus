@@ -20,6 +20,8 @@ using Common.DataClasses;
 using Common.DataClasses.Network;
 using Common.Utils;
 using CA = Auth.DataClasses.Network.ClientAuth;
+using AC = Auth.DataClasses.Network.AuthClient;
+using Auth.DataClasses.Network;
 
 namespace Auth.Business
 {
@@ -31,6 +33,8 @@ namespace Auth.Business
         public void Execute(Session session, Packet message)
         {
             CA.Account packet = (CA.Account)message;
+            AC.Result result = new AC.Result();
+            result.RequestMessageId = (ushort)ClientAuthPackets.Account;
 
             string password = DesCipher.Decrypt(packet.Password).TrimEnd('\0');
 
@@ -39,17 +43,21 @@ namespace Auth.Business
             UserRepository repo = new UserRepository();
             User user = repo.GetUser(packet.Username, password);
 
-            if (user == null)
+            if (user != null)
             {
-                // TODO : Send wrong account message
+                session._Client = user;
+                Server.Instance.AddUser(session);
+
+                result.ResultCode = 0;
+                ConsoleUtils.ShowInfo("User '{0}' is now connected (Permission: {1})", user.UserId, user.Permission);
+            }
+            else
+            {
+                result.ResultCode = 1;
                 ConsoleUtils.ShowInfo("User '{0}' login failed (Invalid credentials)", packet.Username);
-                return;
             }
 
-            session._Client = user;
-            Server.Instance.AddUser(session);
-            ConsoleUtils.ShowInfo("User '{0}' is now connected (Permission: {1})", user.UserId, user.Permission);
-            // TODO : Send ok message
+            Server.ClientSockets.SendPacket(session, result);
         }
 
 	}

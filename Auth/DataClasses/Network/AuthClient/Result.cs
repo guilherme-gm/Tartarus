@@ -1,3 +1,5 @@
+
+using Auth.DataClasses.Network;
 /**
 * This file is part of Tartarus Emulator.
 * 
@@ -16,6 +18,7 @@
 */
 using Common.DataClasses.Network;
 using System;
+using System.IO;
 
 namespace Auth.DataClasses.Network.AuthClient
 {
@@ -27,14 +30,33 @@ namespace Auth.DataClasses.Network.AuthClient
 
 		public int Value { get; set; }
 
+        public Result()
+        {
+            this.Id = (ushort) AuthClientPackets.Result;
+        }
+
         public override void Read(byte[] data)
         {
             throw new NotImplementedException();
         }
 
-        public override void Write()
+        public override byte[] Write()
         {
-            throw new NotImplementedException();
+            MemoryStream stream = new MemoryStream();
+            BinaryWriter writer = new BinaryWriter(stream);
+
+            // Writes a fake header
+            writer.Write(new byte[HeaderSize]);
+
+            // Write packet body
+            writer.Write(RequestMessageId);
+            writer.Write(ResultCode);
+            writer.Write(Value);
+
+            // finishes packet
+            base.Write(writer);
+
+            return stream.ToArray();
         }
     }
 

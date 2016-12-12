@@ -27,6 +27,8 @@ namespace Auth.DataClasses
 {
 	public class Server
 	{
+        public static SocketService ClientSockets { get; private set; }
+
         private static Server _Instance;
 
         public static Server Instance
@@ -59,9 +61,9 @@ namespace Auth.DataClasses
             this.ConnectedUsers = new List<Session>();
             this.ServerList = new List<ServerInfo>();
 
-            SocketService clientService =
+            ClientSockets =
                 new SocketService("127.0.0.1", 8841, true, new UserFactory(), new ClientController());
-            clientService.Start();
+            ClientSockets.Start();
             
             ConsoleUtils.ShowInfo("Auth Server initialized.");
 

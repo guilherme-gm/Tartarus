@@ -33,7 +33,7 @@ namespace Auth.DataClasses.Network.AuthClient
             throw new NotImplementedException();
         }
 
-        public override void Write()
+        public override byte[] Write()
         {
             throw new NotImplementedException();
         }

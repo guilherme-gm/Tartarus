@@ -33,7 +33,7 @@ namespace Common.DataClasses.Network.GameAuth
             throw new NotImplementedException();
         }
 
-        public override void Write()
+        public override byte[] Write()
         {
             throw new NotImplementedException();
         }

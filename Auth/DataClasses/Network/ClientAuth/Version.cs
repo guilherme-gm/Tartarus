@@ -33,7 +33,7 @@ namespace Auth.DataClasses.Network.ClientAuth
             this._Version = BitConverter.ToString(br.ReadBytes(20));
         }
 
-        public override void Write()
+        public override byte[] Write()
         {
             throw new NotImplementedException();
         }
