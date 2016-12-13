@@ -14,23 +14,14 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
-namespace Common.DataClasses
+namespace Game.DataClasses
 {
-	public class ServerInfo
+	public class Server
 	{
-		public ushort Id { get; set; }
+		public void Start()
+		{
 
-		public string Name { get; set; }
-
-		public bool AdultServer { get; set; }
-
-		public string ScreenshotUrl { get; set; }
-
-		public string Ip { get; set; }
-
-		public int Port { get; set; }
-
-		public ushort UserRatio { get; set; }
+		}
 
 	}
 

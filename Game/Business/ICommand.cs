@@ -1,4 +1,4 @@
-/**
+﻿/**
 * This file is part of Tartarus Emulator.
 * 
 * Tartarus is free software: you can redistribute it and/or modify
@@ -14,25 +14,16 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
-namespace Common.DataClasses
+using Common.DataClasses.Network;
+using Common.DataClasses;
+
+namespace Game.Business
 {
-	public class ServerInfo
-	{
-		public ushort Id { get; set; }
+    public interface ICommand
+    {
+        void Execute(Session session, Packet message);
 
-		public string Name { get; set; }
-
-		public bool AdultServer { get; set; }
-
-		public string ScreenshotUrl { get; set; }
-
-		public string Ip { get; set; }
-
-		public int Port { get; set; }
-
-		public ushort UserRatio { get; set; }
-
-	}
+    }
 
 }
 

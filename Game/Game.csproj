@@ -43,8 +43,40 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business\ICommand.cs" />
+    <Compile Include="DataClasses\Creature.cs" />
+    <Compile Include="DataClasses\FieldProp.cs" />
+    <Compile Include="DataClasses\GameObject.cs" />
+    <Compile Include="DataClasses\Inventory.cs" />
+    <Compile Include="DataClasses\Item.cs" />
+    <Compile Include="DataClasses\ItemBase.cs" />
+    <Compile Include="DataClasses\Job.cs" />
+    <Compile Include="DataClasses\JobBase.cs" />
+    <Compile Include="DataClasses\Monster.cs" />
+    <Compile Include="DataClasses\MonsterBase.cs" />
+    <Compile Include="DataClasses\NPC.cs" />
+    <Compile Include="DataClasses\Pet.cs" />
+    <Compile Include="DataClasses\PetBase.cs" />
+    <Compile Include="DataClasses\Player.cs" />
+    <Compile Include="DataClasses\Position.cs" />
+    <Compile Include="DataClasses\Region.cs" />
+    <Compile Include="DataClasses\Server.cs" />
+    <Compile Include="DataClasses\Skill.cs" />
+    <Compile Include="DataClasses\SkillBase.cs" />
+    <Compile Include="DataClasses\SkillProp.cs" />
+    <Compile Include="DataClasses\State.cs" />
+    <Compile Include="DataClasses\StateBase.cs" />
+    <Compile Include="DataClasses\Summon.cs" />
+    <Compile Include="DataClasses\SummonBase.cs" />
+    <Compile Include="DataClasses\User.cs" />
+    <Compile Include="Helpers\ClientCommandHelper.cs" />
+    <Compile Include="Helpers\ServerCommandHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ClientController.cs" />
+    <Compile Include="Services\ServerController.cs" />
+    <Compile Include="Utils\ConnectionFactory.cs" />
+    <Compile Include="Utils\IConnectionFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
