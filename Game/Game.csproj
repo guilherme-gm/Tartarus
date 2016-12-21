@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Business\ICommand.cs" />
+    <Compile Include="DataClasses\Auth.cs" />
     <Compile Include="DataClasses\Creature.cs" />
     <Compile Include="DataClasses\FieldProp.cs" />
     <Compile Include="DataClasses\GameObject.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="DataClasses\Summon.cs" />
     <Compile Include="DataClasses\SummonBase.cs" />
     <Compile Include="DataClasses\User.cs" />
+    <Compile Include="DataClasses\AuthFactory.cs" />
     <Compile Include="Helpers\ClientCommandHelper.cs" />
     <Compile Include="Helpers\ServerCommandHelper.cs" />
     <Compile Include="Program.cs" />
@@ -87,6 +89,7 @@
       <Name>Common</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

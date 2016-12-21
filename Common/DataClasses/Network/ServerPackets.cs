@@ -14,21 +14,21 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
-using System;
-using Common.Utils;
-using Game.DataClasses;
-
-namespace Game
+namespace Common.DataClasses.Network
 {
-    class Program
+    /// <summary>
+    /// Packets sent by Game server to Auth Server
+    /// </summary>
+    public enum GameAuthPackets : ushort
     {
-        static void Main(string[] args)
-        {
-            ConsoleUtils.ShowHeader("Game");
+        Login = 0x1000,  // 4096
+    }
 
-            Server.Instance.Start();
-
-            Console.ReadKey();
-        }
+    /// <summary>
+    /// Packets sent by Auth server to Game Server
+    /// </summary>
+    public enum AuthGamePackets : ushort
+    {
+        GameLoginResult = 0x1001, // 4097
     }
 }

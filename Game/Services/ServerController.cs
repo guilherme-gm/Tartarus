@@ -15,10 +15,11 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Common.DataClasses;
+using Common.Service;
 
 namespace Game.Services
 {
-	public class ServerController
+	public class ServerController : IController
 	{
 		public void ProcessRequest(Session session, byte[] data)
 		{

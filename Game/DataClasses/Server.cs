@@ -1,3 +1,5 @@
+
+using Common.DataClasses;
 /**
 * This file is part of Tartarus Emulator.
 * 
@@ -14,16 +16,76 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
+using Common.Service;
+using Common.Utils;
+using Game.Services;
+using System;
+
 namespace Game.DataClasses
 {
 	public class Server
 	{
-		public void Start()
-		{
+        public static SocketService ClientSockets { get; private set; }
+        public static SocketService AuthSocket { get; private set; }
 
-		}
+        public static ServerInfo ServerInfo { get; private set; }
 
-	}
+        private static Server _Instance;
+
+        public static Server Instance
+        {
+            get
+            {
+                if (_Instance == null)
+                {
+                    _Instance = new Server();
+                }
+                return _Instance;
+            }
+            private set
+            {
+                _Instance = value;
+            }
+        }
+
+        private Server()
+        {
+            Instance = this;
+
+            
+        }
+
+        public void Start()
+        {
+            ServerInfo = new ServerInfo()
+            {
+                AdultServer = false,
+                Id = 1,
+                Ip = "127.0.0.1",
+                Name = "Test",
+                Port = 8888,
+                ScreenshotUrl = "localhost",
+                UserRatio = 10
+            };
+
+            AuthSocket =
+                new SocketService("127.0.0.1", 8842, false, new AuthFactory(), new ServerController());
+            AuthSocket.StartConnection();
+
+            /*ClientSockets =
+                new SocketService("127.0.0.1", 8841, true, new UserFactory(), new ClientController());
+            ClientSockets.StartListening();*/
+
+            ConsoleUtils.ShowInfo("Game Server initialized.");
+
+            string input;
+            do
+            {
+                input = Console.ReadLine();
+            } while (input != "quit");
+        }
+
+    }
 
 }
 

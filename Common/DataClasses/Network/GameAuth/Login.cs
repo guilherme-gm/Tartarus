@@ -15,18 +15,20 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Common.DataClasses.Network;
+using Common.DataClasses;
 using System;
 using System.IO;
+using System.Text;
 
-namespace Common.DataClasses.Network.AuthGame
+namespace Common.DataClasses.Network.GameAuth
 {
-	public class GameLoginResult : Packet
+	public class Login : Packet
 	{
-        public ushort Result { get; set; }
+        public ServerInfo ServerInfo { get; set; }
 
-        public GameLoginResult()
+        public Login()
         {
-            this.Id = (ushort)AuthGamePackets.GameLoginResult;
+            this.Id = (ushort) GameAuthPackets.Login;
         }
 
         public override void Read(byte[] data)
@@ -34,7 +36,16 @@ namespace Common.DataClasses.Network.AuthGame
             BinaryReader br = new BinaryReader(new MemoryStream(data));
             base.Read(br);
 
-            this.Result = br.ReadUInt16();
+            this.ServerInfo = new ServerInfo()
+            {
+                Id = br.ReadUInt16(),
+                Name = Encoding.UTF8.GetString(br.ReadBytes(21)).TrimEnd('\0'),
+                AdultServer = br.ReadBoolean(),
+                ScreenshotUrl = Encoding.UTF8.GetString(br.ReadBytes(256)).TrimEnd('\0'),
+                Ip = Encoding.UTF8.GetString(br.ReadBytes(16)).TrimEnd('\0'),
+                Port = br.ReadInt32(),
+                UserRatio = br.ReadUInt16()
+            };
         }
 
         public override byte[] Write()
@@ -46,7 +57,13 @@ namespace Common.DataClasses.Network.AuthGame
             writer.Write(new byte[HeaderSize]);
 
             // Write packet body
-            writer.Write(this.Result);
+            writer.Write(this.ServerInfo.Id);
+            WriteString(writer, this.ServerInfo.Name, 21);
+            writer.Write(this.ServerInfo.AdultServer);
+            WriteString(writer, this.ServerInfo.ScreenshotUrl, 256);
+            WriteString(writer, this.ServerInfo.Ip, 16);
+            writer.Write(this.ServerInfo.Port);
+            writer.Write(this.ServerInfo.UserRatio);
 
             // finishes packet
             base.Write(writer);

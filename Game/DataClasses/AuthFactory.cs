@@ -14,21 +14,23 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
-using System;
-using Common.Utils;
-using Game.DataClasses;
+using Common.DataClasses;
+using System.Net.Sockets;
+using Common.DataClasses.Network.GameAuth;
 
-namespace Game
+namespace Game.DataClasses
 {
-    class Program
+    public class AuthFactory : SessionFactory
     {
-        static void Main(string[] args)
+        public override Session CreateSession(Socket socket)
         {
-            ConsoleUtils.ShowHeader("Game");
+            Session session = new Session();
+            session._Client = new Auth();
+            session._NetworkData = new NetworkData(socket);;
 
-            Server.Instance.Start();
+            Server.AuthSocket.SendPacket(session, new Login() { ServerInfo = Server.ServerInfo });
 
-            Console.ReadKey();
+            return session;
         }
     }
 }

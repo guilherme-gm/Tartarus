@@ -1,4 +1,4 @@
-/**
+﻿/**
 * This file is part of Tartarus Emulator.
 * 
 * Tartarus is free software: you can redistribute it and/or modify
@@ -14,26 +14,16 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
-using Common.DataClasses.Network;
 using Common.DataClasses;
-using System;
 
-namespace Common.DataClasses.Network.GameAuth
+namespace Game.DataClasses
 {
-	public class Register : Packet
-	{
-        public ServerInfo serverInfo { get; set; }
-
-        public override void Read(byte[] data)
+    public class Auth : Client
+    {
+        public Auth()
         {
-            throw new NotImplementedException();
+            
         }
 
-        public override byte[] Write()
-        {
-            throw new NotImplementedException();
-        }
     }
-
 }
-

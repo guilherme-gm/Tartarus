@@ -14,11 +14,18 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
+using Common.DataClasses;
+using Common.Service;
+
 namespace Auth.Services
 {
-	public class ServerController
-	{
-	}
+    public class ServerController : IController
+    {
+        public void ProcessRequest(Session session, byte[] data)
+        {
+
+        }
+    }
 
 }
 
