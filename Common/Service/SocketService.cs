@@ -247,6 +247,8 @@ namespace Common.Service
                 if (bytesToRead <= 0)
                 {
                     // TODO: Disconect
+                    ConsoleUtils.ShowInfo("Connection closed(1)");
+                    session._NetworkData._Socket.Close();
                     return;
                 }
 
@@ -284,6 +286,7 @@ namespace Common.Service
                             Buffer.BlockCopy(data, curOffset, session._NetworkData.Message, packetOffset, byteCount);
                             curOffset += byteCount;
                             packetOffset += byteCount;
+                            bytesToRead -= byteCount;
                         }
                         // Packet header complete
                         int length = BitConverter.ToInt32(session._NetworkData.Message, 0);
@@ -317,21 +320,32 @@ namespace Common.Service
                     }
                     session._NetworkData.Offset = packetOffset;
                 } while (bytesToRead > 0);
+
+                // Put socket to wait for another receive
+                session._NetworkData._Socket.BeginReceive(
+                    session._NetworkData.Buffer,
+                    0,
+                    NetworkData.MaxBuffer,
+                    SocketFlags.None,
+                    new AsyncCallback(ReadCallback),
+                    session
+                );
+            }
+            catch (SocketException e)
+            {
+                // 10054 : Socket closed, not an error
+				if (!(e.ErrorCode == 10054))
+					ConsoleUtils.ShowError(e.Message);
+
+				ConsoleUtils.ShowWarning("Connection lost.");
+                session._NetworkData._Socket.Close();
             }
             catch (Exception e)
             {
-
+                ConsoleUtils.ShowError(e.Message);
+                ConsoleUtils.ShowWarning("Connection lost");
+                session._NetworkData._Socket.Close();
             }
-
-            // Put socket to wait for another receive
-            session._NetworkData._Socket.BeginReceive(
-                session._NetworkData.Buffer,
-                0,
-                NetworkData.MaxBuffer,
-                SocketFlags.None,
-                new AsyncCallback(ReadCallback),
-                session
-            );
         }
 
         /// <summary>
