@@ -36,22 +36,27 @@
     <Reference Include="MySql.Data, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\3rdparty\mysql-connector-net-6.9.9\v4.5\MySql.Data.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="MySql.Data.Entity.EF5, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\3rdparty\mysql-connector-net-6.9.9\v4.5\MySql.Data.Entity.EF5.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="MySql.Data.Entity.EF6, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\3rdparty\mysql-connector-net-6.9.9\v4.5\MySql.Data.Entity.EF6.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="MySql.Fabric.Plugin, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\3rdparty\mysql-connector-net-6.9.9\v4.5\MySql.Fabric.Plugin.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="MySql.Web, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\3rdparty\mysql-connector-net-6.9.9\v4.5\MySql.Web.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
