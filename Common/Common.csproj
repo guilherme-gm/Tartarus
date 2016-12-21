@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataClasses\Client.cs" />
+    <Compile Include="DataClasses\Network\ServerPackets.cs" />
     <Compile Include="DataClasses\SessionFactory.cs" />
     <Compile Include="Service\IController.cs" />
     <Compile Include="Utils\ConsoleMessage.cs" />
@@ -53,7 +54,7 @@
     <Compile Include="DataClasses\Network\GameAuth\ClientKickResult.cs" />
     <Compile Include="DataClasses\Network\GameAuth\ClientLogin.cs" />
     <Compile Include="DataClasses\Network\GameAuth\ClientLogout.cs" />
-    <Compile Include="DataClasses\Network\GameAuth\Register.cs" />
+    <Compile Include="DataClasses\Network\GameAuth\Login.cs" />
     <Compile Include="DataClasses\Network\GameAuth\SecurityCheck.cs" />
     <Compile Include="DataClasses\Network\Packet.cs" />
     <Compile Include="DataClasses\ServerInfo.cs" />
