@@ -52,10 +52,15 @@ namespace Common.Service
         private IController Controller;
 
         /// <summary>
+        /// Is service started?
+        /// </summary>
+        private bool Started;
+
+        /// <summary>
         /// Creates a new SocketService
         /// </summary>
-        /// <param name="ip">Listen IP</param>
-        /// <param name="port">Listen Port</param>
+        /// <param name="ip">IP</param>
+        /// <param name="port">Port</param>
         /// <param name="isEncrypted">Is data encrypted?</param>
         /// <param name="key">Encryption key</param>
         public SocketService(string ip, ushort port, bool isEncrypted, SessionFactory sessionFactory, IController controller)
@@ -63,6 +68,7 @@ namespace Common.Service
             this.Encrypted = isEncrypted;
             this._SessionFactory = sessionFactory;
             this.Controller = controller;
+            this.Started = false;
 
             try
             {
@@ -88,8 +94,16 @@ namespace Common.Service
         /// Starts to listen for incoming connections.
         /// </summary>
         /// <returns>true in case of success, false otherwise</returns>
-        public bool Start()
+        public bool StartListening()
         {
+            if (this.Started)
+            {
+                ConsoleUtils.ShowFatalError(
+                    "Trying to start an already started SocketService.\nAt {0}",
+                    "SocketService.StartListening()"
+                );
+                return false;
+            }
             Socket listener = new Socket(SocketType.Stream, ProtocolType.Tcp);
 
             try
@@ -102,13 +116,14 @@ namespace Common.Service
             {
                 ConsoleUtils.ShowFatalError(
                     "Unexpected error: {0}\nAt {1}",
-                    e.Message, "SocketService.Start()"
+                    e.Message, "SocketService.StartListening()"
                 );
 
                 listener.Close();
                 return false;
             }
 
+            this.Started = true;
             ConsoleUtils.ShowInfo(
                 "Listening to connection on {0}:{1}",
                 this.IpEndPoint.Address.ToString(),
@@ -116,6 +131,80 @@ namespace Common.Service
             );
 
             return true;
+        }
+
+        /// <summary>
+        /// Starts to connect to an IP and Port
+        /// </summary>
+        /// <returns>If it has connected</returns>
+        public bool StartConnection()
+        {
+            if (this.Started)
+            {
+                ConsoleUtils.ShowFatalError(
+                    "Trying to start an already started SocketService.\nAt {0}",
+                    "SocketService.StartConnection()"
+                );
+                return false;
+            }
+            Socket socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
+
+            try
+            {
+                socket.BeginConnect(this.IpEndPoint, new AsyncCallback(ConnectCallback), socket);
+            }
+            catch (Exception e)
+            {
+                ConsoleUtils.ShowFatalError(
+                    "Unexpected error: {0}\nAt {1}",
+                    e.Message, "SocketService.StartConnection()"
+                );
+
+                socket.Close();
+                return false;
+            }
+
+            this.Started = true;
+            ConsoleUtils.ShowInfo(
+                "Connecting to {0}:{1}",
+                this.IpEndPoint.Address.ToString(),
+                this.IpEndPoint.Port
+            );
+
+            return true;
+        }
+
+        /// <summary>
+		/// Triggered when it connects to Auth
+		/// </summary>
+		/// <param name="ar"></param>
+		private void ConnectCallback(IAsyncResult ar)
+        {
+            Socket socket = (Socket)ar.AsyncState;
+            if (!socket.Connected)
+            {
+                ConsoleUtils.ShowWarning(
+                    "Could not connect to {0}:{1}. Check your settings and try again...\nAt {2}",
+                    this.IpEndPoint.Address.ToString(),
+                    this.IpEndPoint.Port,
+                    "SocketService.ConnectCallback"
+                );
+                return;
+            }
+            socket.EndConnect(ar);
+
+            // Initializes session
+            Session session = this._SessionFactory.CreateSession(socket);
+
+            // Starts to receive data
+            socket.BeginReceive(
+                session._NetworkData.Buffer,
+                0,
+                NetworkData.MaxBuffer,
+                SocketFlags.None,
+                new AsyncCallback(ReadCallback),
+                session
+            );
         }
 
         /// <summary>

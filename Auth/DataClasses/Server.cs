@@ -74,7 +74,7 @@ namespace Auth.DataClasses
 		{
             ClientSockets =
                 new SocketService("127.0.0.1", 8841, true, new UserFactory(), new ClientController());
-            ClientSockets.Start();
+            ClientSockets.StartListening();
             
             ConsoleUtils.ShowInfo("Auth Server initialized.");
 
