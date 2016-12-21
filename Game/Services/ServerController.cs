@@ -15,7 +15,10 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Common.DataClasses;
+using Common.DataClasses.Network;
 using Common.Service;
+using Game.Business;
+using Game.Helpers;
 
 namespace Game.Services
 {
@@ -23,8 +26,17 @@ namespace Game.Services
 	{
 		public void ProcessRequest(Session session, byte[] data)
 		{
+            Packet message;
 
-		}
+            ICommand command = ServerCommandHelper.GetCommand(data, out message);
+            if (command == null)
+            {
+                return;
+            }
+
+            message.Read(data);
+            command.Execute(session, message);
+        }
 
 	}
 

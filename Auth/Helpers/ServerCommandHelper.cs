@@ -15,17 +15,32 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Auth.Business;
+using Common.DataClasses.Network;
+using GA = Common.DataClasses.Network.GameAuth;
+using System;
+using Common.Utils;
 
 namespace Auth.Helpers
 {
 	public class ServerCommandHelper
 	{
-		public ICommand GetCommand()
-		{
-			return null;
-		}
+        public static ICommand GetCommand(byte[] packet, out Packet message)
+        {
+            GameAuthPackets packetId = (GameAuthPackets)BitConverter.ToUInt16(packet, 4);
 
-	}
+            switch (packetId)
+            {
+                case GameAuthPackets.Login:
+                    message = new GA.Login();
+                    return new Business.RegisterServer();
+                default:
+                    ConsoleUtils.ShowFatalError("Invalid PacketId {0}. At {1}", packetId, "ServerCommandHelper.GetCommand()");
+                    message = null;
+                    return null;
+            }
+        }
+
+    }
 
 }
 

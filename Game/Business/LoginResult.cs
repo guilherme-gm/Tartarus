@@ -1,4 +1,4 @@
-/**
+﻿/**
 * This file is part of Tartarus Emulator.
 * 
 * Tartarus is free software: you can redistribute it and/or modify
@@ -14,37 +14,35 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
-using Auth.DataClasses;
 using Common.DataClasses;
 using Common.DataClasses.Network;
-using GA = Common.DataClasses.Network.GameAuth;
+using Common.Utils;
 using AG = Common.DataClasses.Network.AuthGame;
 
-namespace Auth.Business
+namespace Game.Business
 {
-	public class RegisterServer : ICommand
+    class LoginResult : ICommand
     {
         public void Execute(Session session, Packet message)
         {
-            GA.Login packet = (GA.Login)message;
-            AG.GameLoginResult result = new AG.GameLoginResult();
+            AG.GameLoginResult packet = (AG.GameLoginResult)message;
 
-            GameServer server = (GameServer)session._Client;
-            server.ServerInfo = packet.ServerInfo;
-
-            if (Server.Instance.AddServer(server))
+            switch (packet.Result)
             {
-                result.Result = AG.GameLoginResult.ResultCodes.Success;
+                case AG.GameLoginResult.ResultCodes.Success:
+                    ConsoleUtils.ShowInfo("Successfully connected to Auth-Server.");
+                    break;
+                case AG.GameLoginResult.ResultCodes.DuplicatedId:
+                    ConsoleUtils.ShowError("Could not connect to Auth-Server, Server ID is duplicated.");
+                    break;
+                default: // Should never happen
+                    ConsoleUtils.ShowFatalError(
+                        "Unknown Result ID {0}. (At {1})",
+                        (ushort) packet.Result,
+                        "Game.Business.LoginResult()"
+                    );
+                    break;
             }
-            else
-            {
-                result.Result = AG.GameLoginResult.ResultCodes.DuplicatedId;
-            }
-
-            Server.ServerSockets.SendPacket(session, result);
         }
-
-	}
-
+    }
 }
-

@@ -20,7 +20,7 @@ namespace Auth.DataClasses
 {
 	public class GameServer : Client
 	{
-		private ServerInfo serverInfo;
+		public ServerInfo ServerInfo { get; set; }
 
 	}
 

@@ -22,7 +22,13 @@ namespace Common.DataClasses.Network.AuthGame
 {
 	public class GameLoginResult : Packet
 	{
-        public ushort Result { get; set; }
+        public enum ResultCodes : ushort
+        {
+            Success = 0,
+            DuplicatedId = 1
+        }
+
+        public ResultCodes Result { get; set; }
 
         public GameLoginResult()
         {
@@ -34,7 +40,7 @@ namespace Common.DataClasses.Network.AuthGame
             BinaryReader br = new BinaryReader(new MemoryStream(data));
             base.Read(br);
 
-            this.Result = br.ReadUInt16();
+            this.Result = (ResultCodes) br.ReadUInt16();
         }
 
         public override byte[] Write()
@@ -46,7 +52,7 @@ namespace Common.DataClasses.Network.AuthGame
             writer.Write(new byte[HeaderSize]);
 
             // Write packet body
-            writer.Write(this.Result);
+            writer.Write((ushort)this.Result);
 
             // finishes packet
             base.Write(writer);

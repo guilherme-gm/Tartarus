@@ -48,6 +48,7 @@ namespace Auth.DataClasses
         }
 
 		private List<Session> ConnectedUsers;
+        private List<Session> ConnectedServers;
 
         public List<ServerInfo> ServerList { get; set; }
 
@@ -56,19 +57,8 @@ namespace Auth.DataClasses
             Instance = this;
 
             this.ConnectedUsers = new List<Session>();
-            this.ServerList = new List<ServerInfo>()
-            {
-                new ServerInfo()
-                {
-                    Id = 2, Name = "Test Server 2", UserRatio = 0, Ip = "127.0.0.1",  Port = 8850, AdultServer = false,
-                    ScreenshotUrl = "http://127.0.0.1/"
-                },
-                new ServerInfo()
-                {
-                    Id = 1, Name = "Test Server 1", UserRatio = 0, Ip = "127.0.0.1",  Port = 8851, AdultServer = false,
-                    ScreenshotUrl = "http://www.google.com.br/"
-                }
-            };
+            this.ConnectedServers = new List<Session>();
+            this.ServerList = new List<ServerInfo>();
         }
 
 		public void Start()
@@ -95,7 +85,31 @@ namespace Auth.DataClasses
             this.ConnectedUsers.Add(session);
         }
 
-	}
+        internal bool AddServer(GameServer gameServer)
+        {
+            if (!this.ServerList.Exists(server => server.Id == gameServer.ServerInfo.Id))
+            {
+                this.ServerList.Add(gameServer.ServerInfo);
+                this.ConnectedServers.Add(gameServer._Session);
+                ConsoleUtils.ShowInfo(
+                    "Server {0} (Id: {1}) added to Server List.",
+                    gameServer.ServerInfo.Name, gameServer.ServerInfo.Id
+                );
+
+                return true;
+            }
+            else
+            {
+                ConsoleUtils.ShowInfo(
+                    "Server {0} (Id: {1}) connection refused, this ID is already in use.",
+                    gameServer.ServerInfo.Name, gameServer.ServerInfo.Id
+                );
+
+                return false;
+            }
+        }
+
+    }
 
 }
 

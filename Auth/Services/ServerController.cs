@@ -14,7 +14,10 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
+using Auth.Business;
+using Auth.Helpers;
 using Common.DataClasses;
+using Common.DataClasses.Network;
 using Common.Service;
 
 namespace Auth.Services
@@ -23,7 +26,16 @@ namespace Auth.Services
     {
         public void ProcessRequest(Session session, byte[] data)
         {
+            Packet message;
 
+            ICommand command = ServerCommandHelper.GetCommand(data, out message);
+            if (command == null)
+            {
+                return;
+            }
+
+            message.Read(data);
+            command.Execute(session, message);
         }
     }
 
