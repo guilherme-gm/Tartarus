@@ -14,7 +14,6 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
-using System;
 using Common.Utils;
 using Game.DataClasses;
 
@@ -24,11 +23,12 @@ namespace Game
     {
         static void Main(string[] args)
         {
-            ConsoleUtils.ShowHeader("Game");
+            Settings.Load();
+            ConsoleUtils.ShowStatus("Settings loaded, initializing server.");
+            ConsoleUtils.SetDisplaySettings((ConsoleUtils.MsgType)Settings.ConsoleSilent);
 
+            ConsoleUtils.ShowHeader(Settings.WindowName);
             Server.Instance.Start();
-
-            Console.ReadKey();
         }
     }
 }

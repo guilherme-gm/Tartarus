@@ -1,5 +1,3 @@
-
-using Common.DataClasses;
 /**
 * This file is part of Tartarus Emulator.
 * 
@@ -16,6 +14,7 @@ using Common.DataClasses;
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
+using Common.DataClasses;
 using Common.Service;
 using Common.Utils;
 using Game.Services;
@@ -51,8 +50,6 @@ namespace Game.DataClasses
         private Server()
         {
             Instance = this;
-
-            
         }
 
         public void Start()
@@ -60,23 +57,36 @@ namespace Game.DataClasses
             ServerInfo = new ServerInfo()
             {
                 AdultServer = false,
-                Id = 1,
-                Ip = "127.0.0.1",
-                Name = "Test",
-                Port = 8888,
-                ScreenshotUrl = "localhost",
-                UserRatio = 10
+                Id = Settings.ServerIndex,
+                Ip = Settings.ServerIp,
+                Name = Settings.ServerName,
+                Port = Settings.ServerPort,
+                ScreenshotUrl = Settings.NoticeUrl,
+                UserRatio = 0
             };
 
             AuthSocket =
-                new SocketService("127.0.0.1", 8842, false, new AuthFactory(), new ServerController());
+                new SocketService(
+                    Settings.ServerIp,
+                    Settings.AuthPort,
+                    false,
+                    new AuthFactory(),
+                    new ServerController()
+                );
             AuthSocket.StartConnection();
 
-            /*ClientSockets =
-                new SocketService("127.0.0.1", 8841, true, new UserFactory(), new ClientController());
-            ClientSockets.StartListening();*/
-
-            ConsoleUtils.ShowInfo("Game Server initialized.");
+            /*
+            ClientSockets =
+                new SocketService(
+                    Settings.ServerIp,
+                    Settings.ServerPort,
+                    true,
+                    new UserFactory(),
+                    new ClientController()
+                );
+            ClientSockets.StartListening();
+            */
+            ConsoleUtils.ShowStatus("Game Server initialized.");
 
             string input;
             do
