@@ -24,8 +24,15 @@ using System.Threading.Tasks;
 
 namespace Common.Service
 {
+    public delegate void Disconnect(Session session);
+
     public class SocketService
     {
+        /// <summary>
+        /// Event triggered when a session disconects
+        /// </summary>
+        public event Disconnect OnSocketDisconnect;
+
         /// <summary>
         /// Size of a packet header
         /// </summary>
@@ -246,8 +253,7 @@ namespace Common.Service
 
                 if (bytesToRead <= 0)
                 {
-                    // TODO: Disconect
-                    ConsoleUtils.ShowInfo("Connection closed(1)");
+                    this.SocketDisconnected(session);
                     session._NetworkData._Socket.Close();
                     return;
                 }
@@ -337,13 +343,13 @@ namespace Common.Service
 				if (!(e.ErrorCode == 10054))
 					ConsoleUtils.ShowError(e.Message);
 
-				ConsoleUtils.ShowWarning("Connection lost.");
+                this.SocketDisconnected(session);
                 session._NetworkData._Socket.Close();
             }
             catch (Exception e)
             {
                 ConsoleUtils.ShowError(e.Message);
-                ConsoleUtils.ShowWarning("Connection lost");
+                this.SocketDisconnected(session);
                 session._NetworkData._Socket.Close();
             }
         }
@@ -402,6 +408,14 @@ namespace Common.Service
             catch (Exception)
             {
                 ConsoleUtils.ShowNotice("Failed to send packet to client.");
+            }
+        }
+
+        private void SocketDisconnected(Session session)
+        {
+            if (this.OnSocketDisconnect != null)
+            {
+                this.OnSocketDisconnect(session);
             }
         }
     }

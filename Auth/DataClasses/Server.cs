@@ -71,6 +71,7 @@ namespace Auth.DataClasses
                     new UserFactory(),
                     new ClientController()
                 );
+            ClientSockets.OnSocketDisconnect += ClientSockets_OnSocketDisconnect;
             ClientSockets.StartListening();
 
             ServerSockets =
@@ -81,6 +82,7 @@ namespace Auth.DataClasses
                     new GameServerFactory(),
                     new ServerController()
                 );
+            ServerSockets.OnSocketDisconnect += ServerSockets_OnSocketDisconnect;
             ServerSockets.StartListening();
             
             ConsoleUtils.ShowStatus("Auth Server initialized.");
@@ -95,6 +97,12 @@ namespace Auth.DataClasses
         public void AddUser(Session session)
         {
             this.ConnectedUsers.Add(session);
+        }
+
+        private void ClientSockets_OnSocketDisconnect(Session session)
+        {
+            this.ConnectedUsers.Remove(session);
+            ConsoleUtils.ShowInfo("User {0} disconnected.", ((User)session._Client).UserId);
         }
 
         internal bool AddServer(GameServer gameServer)
@@ -119,6 +127,13 @@ namespace Auth.DataClasses
 
                 return false;
             }
+        }
+
+        private void ServerSockets_OnSocketDisconnect(Session session)
+        {
+            this.ServerList.Remove(((GameServer)session._Client).ServerInfo);
+            this.ConnectedServers.Remove(session);
+            ConsoleUtils.ShowInfo("GameServer {0} disconnected.", ((GameServer)session._Client).ServerInfo.Name);
         }
 
     }
