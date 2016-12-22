@@ -38,7 +38,8 @@ namespace Auth.Business
 
             string password = DesCipher.Decrypt(packet.Password).TrimEnd('\0');
 
-            ConsoleUtils.ShowInfo("User '{0}' is trying to connect.", packet.Username);
+            if (Settings.LoginDebug)
+                ConsoleUtils.ShowInfo("User '{0}' is trying to connect.", packet.Username);
 
             UserRepository repo = new UserRepository();
             User user = repo.GetUser(packet.Username, password);
@@ -49,12 +50,14 @@ namespace Auth.Business
                 Server.Instance.AddUser(session);
 
                 result.ResultCode = 0;
-                ConsoleUtils.ShowInfo("User '{0}' is now connected (Permission: {1})", user.UserId, user.Permission);
+                if (Settings.LoginDebug)
+                    ConsoleUtils.ShowInfo("User '{0}' is now connected (Permission: {1})", user.UserId, user.Permission);
             }
             else
             {
                 result.ResultCode = 1;
-                ConsoleUtils.ShowInfo("User '{0}' login failed (Invalid credentials)", packet.Username);
+                if (Settings.LoginDebug)
+                    ConsoleUtils.ShowInfo("User '{0}' login failed (Invalid credentials)", packet.Username);
             }
 
             Server.ClientSockets.SendPacket(session, result);

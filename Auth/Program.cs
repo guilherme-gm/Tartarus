@@ -23,7 +23,11 @@ namespace Auth
     {
         static void Main(string[] args)
         {
-            ConsoleUtils.ShowHeader("Auth");
+            Settings.Load();
+            ConsoleUtils.ShowStatus("Settings loaded, initializing server.");
+            ConsoleUtils.SetDisplaySettings((ConsoleUtils.MsgType)Settings.ConsoleSilent);
+
+            ConsoleUtils.ShowHeader(Settings.WindowName);
             Server.Instance.Start();
         }
     }

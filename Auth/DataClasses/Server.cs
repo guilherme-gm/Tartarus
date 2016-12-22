@@ -64,14 +64,26 @@ namespace Auth.DataClasses
 		public void Start()
 		{
             ClientSockets =
-                new SocketService("127.0.0.1", 8841, true, new UserFactory(), new ClientController());
+                new SocketService(
+                    Settings.ServerIp,
+                    Settings.ServerPort,
+                    true,
+                    new UserFactory(),
+                    new ClientController()
+                );
             ClientSockets.StartListening();
 
             ServerSockets =
-                new SocketService("127.0.0.1", 8842, false, new GameServerFactory(), new ServerController());
+                new SocketService(
+                    Settings.ServerIp,
+                    Settings.GameServerPort,
+                    false,
+                    new GameServerFactory(),
+                    new ServerController()
+                );
             ServerSockets.StartListening();
             
-            ConsoleUtils.ShowInfo("Auth Server initialized.");
+            ConsoleUtils.ShowStatus("Auth Server initialized.");
 
             string input;
             do
