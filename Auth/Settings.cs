@@ -38,7 +38,7 @@ namespace Auth
         public static void Load()
         {
             SettingsReader reader = new SettingsReader();
-            reader.LoadSettings("Settings/auth.conf");
+            reader.LoadSettings("Settings/auth-server.conf");
 
             WindowName = reader.ReadString("window_name", "Auth-Server", false);
             ServerPort = reader.ReadUInt16("server_port", 8841, ushort.MinValue, ushort.MaxValue);
