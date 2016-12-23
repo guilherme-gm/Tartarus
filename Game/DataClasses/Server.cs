@@ -19,11 +19,12 @@ using Common.Service;
 using Common.Utils;
 using Game.Services;
 using System;
+using System.Threading.Tasks;
 
 namespace Game.DataClasses
 {
-	public class Server
-	{
+    public class Server
+    {
         public static SocketService ClientSockets { get; private set; }
         public static SocketService AuthSocket { get; private set; }
 
@@ -47,6 +48,8 @@ namespace Game.DataClasses
             }
         }
 
+        private bool Reconnecting;
+
         private Server()
         {
             Instance = this;
@@ -54,6 +57,8 @@ namespace Game.DataClasses
 
         public void Start()
         {
+            this.Reconnecting = false;
+
             ServerInfo = new ServerInfo()
             {
                 AdultServer = false,
@@ -73,6 +78,8 @@ namespace Game.DataClasses
                     new AuthFactory(),
                     new ServerController()
                 );
+            AuthSocket.OnSocketDisconnect += AuthSocket_OnSocketDisconnect;
+            AuthSocket.OnConnectionFailed += AuthSocket_OnConnectionFailed;
             AuthSocket.StartConnection();
 
             /*
@@ -95,7 +102,42 @@ namespace Game.DataClasses
             } while (input != "quit");
         }
 
-    }
+        private async void AuthSocket_OnConnectionFailed()
+        {
+            ConsoleUtils.ShowError("Could not connect to Auth-Server, trying again in 2 seconds");
+            await Task.Delay(2000);
+            AuthSocket =
+                new SocketService(
+                    Settings.ServerIp,
+                    Settings.AuthPort,
+                    false,
+                    new AuthFactory(),
+                    new ServerController()
+                );
+            AuthSocket.OnSocketDisconnect += AuthSocket_OnSocketDisconnect;
+            AuthSocket.OnConnectionFailed += AuthSocket_OnConnectionFailed;
+            AuthSocket.StartConnection();
+        }
 
+        private async void AuthSocket_OnSocketDisconnect(Session session)
+        {
+            // TODO : Reconnection must send a list of connected users to Auth
+            this.Reconnecting = true;
+
+            ConsoleUtils.ShowError("Connection to Auth-Server lost, trying to reconnect in 2 seconds");
+            await Task.Delay(2000);
+            AuthSocket =
+                new SocketService(
+                    Settings.ServerIp,
+                    Settings.AuthPort,
+                    false,
+                    new AuthFactory(),
+                    new ServerController()
+                );
+            AuthSocket.OnSocketDisconnect += AuthSocket_OnSocketDisconnect;
+            AuthSocket.OnConnectionFailed += AuthSocket_OnConnectionFailed;
+            AuthSocket.StartConnection();
+        }
+    }
 }
 

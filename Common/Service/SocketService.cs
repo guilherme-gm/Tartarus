@@ -26,12 +26,19 @@ namespace Common.Service
 {
     public delegate void Disconnect(Session session);
 
+    public delegate void ConnectError();
+
     public class SocketService
     {
         /// <summary>
         /// Event triggered when a session disconects
         /// </summary>
         public event Disconnect OnSocketDisconnect;
+
+        /// <summary>
+        /// Event triggered when an attempt to connect to a server failed
+        /// </summary>
+        public event ConnectError OnConnectionFailed;
 
         /// <summary>
         /// Size of a packet header
@@ -190,12 +197,7 @@ namespace Common.Service
             Socket socket = (Socket)ar.AsyncState;
             if (!socket.Connected)
             {
-                ConsoleUtils.ShowWarning(
-                    "Could not connect to {0}:{1}. Check your settings and try again...\nAt {2}",
-                    this.IpEndPoint.Address.ToString(),
-                    this.IpEndPoint.Port,
-                    "SocketService.ConnectCallback"
-                );
+                this.OnConnectionFailed();
                 return;
             }
             socket.EndConnect(ar);
@@ -416,6 +418,14 @@ namespace Common.Service
             if (this.OnSocketDisconnect != null)
             {
                 this.OnSocketDisconnect(session);
+            }
+        }
+
+        private void FailedToConnect()
+        {
+            if (this.OnConnectionFailed != null)
+            {
+                this.OnConnectionFailed();
             }
         }
     }
