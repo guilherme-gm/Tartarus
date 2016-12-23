@@ -14,17 +14,35 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
+using Auth.DataClasses;
 using Common.DataClasses;
 using Common.DataClasses.Network;
+using GA = Common.DataClasses.Network.GameAuth;
+using AG = Common.DataClasses.Network.AuthGame;
 
-namespace Auth.Business
+namespace Auth.Business.Server
 {
-	public class SelectServer : ICommand
+	public class RegisterServer : ICommand
     {
         public void Execute(Session session, Packet message)
         {
-            // TODO : Message Game Server
-		}
+            GA.Login packet = (GA.Login)message;
+            AG.GameLoginResult result = new AG.GameLoginResult();
+
+            GameServer server = (GameServer)session._Client;
+            server.ServerInfo = packet.ServerInfo;
+
+            if (DataClasses.Server.Instance.AddServer(server))
+            {
+                result.Result = AG.GameLoginResult.ResultCodes.Success;
+            }
+            else
+            {
+                result.Result = AG.GameLoginResult.ResultCodes.DuplicatedId;
+            }
+
+            DataClasses.Server.ServerSockets.SendPacket(session, result);
+        }
 
 	}
 

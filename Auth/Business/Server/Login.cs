@@ -16,14 +16,17 @@
 */
 using Common.DataClasses;
 using Common.DataClasses.Network;
+using CA = Auth.DataClasses.Network.ClientAuth;
 
-namespace Auth.Business
+namespace Auth.Business.Server
 {
-	public class Version : ICommand
+	public class Login : ICommand
     {
         public void Execute(Session session, Packet message)
         {
+            CA.Account packet = (CA.Account)message;
 
+            
 		}
 
 	}

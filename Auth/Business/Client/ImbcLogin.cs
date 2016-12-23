@@ -17,9 +17,9 @@
 using Common.DataClasses;
 using Common.DataClasses.Network;
 
-namespace Auth.Business
+namespace Auth.Business.Client
 {
-	public class SecurityCheck : ICommand
+	public class ImbcLogin : ICommand
     {
         public void Execute(Session session, Packet message)
         {

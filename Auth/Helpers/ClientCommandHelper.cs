@@ -37,19 +37,19 @@ namespace Auth.Helpers
                     return null;
                 case ClientAuthPackets.Version:
                     message = new CA.Version();
-                    return new Business.Version();
+                    return new Business.Client.Version();
                 case ClientAuthPackets.Account:
                     message = new CA.Account();
-                    return new Business.ClientLogin();
+                    return new Business.Client.Login();
                 case ClientAuthPackets.ImbcAccount:
                     message = new CA.ImbcAccount();
-                    return new Business.ImbcLogin();
+                    return new Business.Client.ImbcLogin();
                 case ClientAuthPackets.ServerList:
                     message = new CA.ServerList();
-                    return new Business.ServerList();
+                    return new Business.Client.ServerList();
                 case ClientAuthPackets.SelectServer:
                     message = new CA.SelectServer();
-                    return new Business.SelectServer();
+                    return new Business.Client.SelectServer();
                 default:
                     ConsoleUtils.ShowFatalError("Invalid PacketId {0}. At {1}", packetId, "ClientCommandHelper.GetCommand()");
                     message = null;

@@ -32,7 +32,7 @@ namespace Auth.Helpers
             {
                 case GameAuthPackets.Login:
                     message = new GA.Login();
-                    return new Business.RegisterServer();
+                    return new Business.Server.RegisterServer();
                 default:
                     ConsoleUtils.ShowFatalError("Invalid PacketId {0}. At {1}", packetId, "ServerCommandHelper.GetCommand()");
                     message = null;

@@ -68,17 +68,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Business\ClientKickResult.cs" />
-    <Compile Include="Business\ClientLogin.cs" />
-    <Compile Include="Business\ClientLogout.cs" />
+    <Compile Include="Business\Server\ClientKickResult.cs" />
+    <Compile Include="Business\Client\Login.cs" />
+    <Compile Include="Business\Server\ClientLogout.cs" />
     <Compile Include="Business\ICommand.cs" />
-    <Compile Include="Business\ImbcLogin.cs" />
-    <Compile Include="Business\Login.cs" />
-    <Compile Include="Business\RegisterServer.cs" />
-    <Compile Include="Business\SecurityCheck.cs" />
-    <Compile Include="Business\SelectServer.cs" />
-    <Compile Include="Business\ServerList.cs" />
-    <Compile Include="Business\Version.cs" />
+    <Compile Include="Business\Client\ImbcLogin.cs" />
+    <Compile Include="Business\Server\Login.cs" />
+    <Compile Include="Business\Server\RegisterServer.cs" />
+    <Compile Include="Business\Server\SecurityCheck.cs" />
+    <Compile Include="Business\Client\SelectServer.cs" />
+    <Compile Include="Business\Client\ServerList.cs" />
+    <Compile Include="Business\Client\Version.cs" />
     <Compile Include="DataClasses\GameServer.cs" />
     <Compile Include="DataClasses\GameServerFactory.cs" />
     <Compile Include="DataClasses\Network\AuthClient\Result.cs" />

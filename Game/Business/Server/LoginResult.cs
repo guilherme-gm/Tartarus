@@ -19,7 +19,7 @@ using Common.DataClasses.Network;
 using Common.Utils;
 using AG = Common.DataClasses.Network.AuthGame;
 
-namespace Game.Business
+namespace Game.Business.Server
 {
     class LoginResult : ICommand
     {

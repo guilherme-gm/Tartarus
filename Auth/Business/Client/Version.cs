@@ -17,11 +17,11 @@
 using Common.DataClasses;
 using Common.DataClasses.Network;
 
-namespace Auth.Business
+namespace Auth.Business.Client
 {
-	public class ClientKickResult : ICommand
-	{
-		public void Execute(Session session, Packet message)
+	public class Version : ICommand
+    {
+        public void Execute(Session session, Packet message)
         {
 
 		}

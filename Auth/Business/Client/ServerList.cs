@@ -14,19 +14,24 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
+using Auth.DataClasses;
 using Common.DataClasses;
 using Common.DataClasses.Network;
-using CA = Auth.DataClasses.Network.ClientAuth;
-namespace Auth.Business
+using AC = Auth.DataClasses.Network.AuthClient;
+
+namespace Auth.Business.Client
 {
-	public class Login : ICommand
+	public class ServerList : ICommand
     {
         public void Execute(Session session, Packet message)
         {
-            CA.Account packet = (CA.Account)message;
+            AC.ServerList serverList = new AC.ServerList();
 
-            
-		}
+            serverList.LastLoginServerId = ((User)session._Client).LastServerId;
+            serverList.ServerInfo = DataClasses.Server.Instance.ServerList.ToArray();
+
+            DataClasses.Server.ClientSockets.SendPacket(session, serverList);
+        }
 
 	}
 

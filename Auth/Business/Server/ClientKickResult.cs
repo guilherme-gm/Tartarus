@@ -17,11 +17,11 @@
 using Common.DataClasses;
 using Common.DataClasses.Network;
 
-namespace Auth.Business
+namespace Auth.Business.Server
 {
-	public class ClientLogout : ICommand
-    {
-        public void Execute(Session session, Packet message)
+	public class ClientKickResult : ICommand
+	{
+		public void Execute(Session session, Packet message)
         {
 
 		}

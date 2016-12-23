@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Business\ICommand.cs" />
-    <Compile Include="Business\LoginResult.cs" />
+    <Compile Include="Business\Server\LoginResult.cs" />
     <Compile Include="DataClasses\Auth.cs" />
     <Compile Include="DataClasses\Creature.cs" />
     <Compile Include="DataClasses\FieldProp.cs" />

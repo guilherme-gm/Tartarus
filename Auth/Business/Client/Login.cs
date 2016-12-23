@@ -23,9 +23,9 @@ using CA = Auth.DataClasses.Network.ClientAuth;
 using AC = Auth.DataClasses.Network.AuthClient;
 using Auth.DataClasses.Network;
 
-namespace Auth.Business
+namespace Auth.Business.Client
 {
-	public class ClientLogin : ICommand
+	public class Login : ICommand
     {
         public const string DesKey = "MERONG";
         public static XDes DesCipher = new XDes(DesKey);
@@ -47,7 +47,7 @@ namespace Auth.Business
             if (user != null)
             {
                 session._Client = user;
-                Server.Instance.AddUser(session);
+                DataClasses.Server.Instance.AddUser(session);
 
                 result.ResultCode = 0;
                 if (Settings.LoginDebug)
@@ -60,7 +60,7 @@ namespace Auth.Business
                     ConsoleUtils.ShowInfo("User '{0}' login failed (Invalid credentials)", packet.Username);
             }
 
-            Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendPacket(session, result);
         }
 
 	}
