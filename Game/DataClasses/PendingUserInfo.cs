@@ -1,4 +1,4 @@
-/**
+﻿/**
 * This file is part of Tartarus Emulator.
 * 
 * Tartarus is free software: you can redistribute it and/or modify
@@ -14,22 +14,23 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
-using Common.DataClasses;
-using Common.DataClasses.Network;
-using CA = Auth.DataClasses.Network.ClientAuth;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Auth.Business.Server
+namespace Game.DataClasses
 {
-	public class Login : ICommand
+    public class PendingUserInfo
     {
-        public void Execute(Session session, Packet message)
+        public int AccountId { get; set; }
+        public int Permission { get; set; }
+        public long OneTimeKey { get; set; }
+
+        public PendingUserInfo()
         {
-            CA.Account packet = (CA.Account)message;
 
-            
-		}
-
-	}
-
+        }
+    }
 }
-

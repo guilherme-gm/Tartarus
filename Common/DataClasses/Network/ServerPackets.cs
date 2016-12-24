@@ -22,6 +22,7 @@ namespace Common.DataClasses.Network
     public enum GameAuthPackets : ushort
     {
         Login = 0x1000,  // 4096
+        ClientLogin = 0x1011, // 4113
     }
 
     /// <summary>
@@ -30,5 +31,6 @@ namespace Common.DataClasses.Network
     public enum AuthGamePackets : ushort
     {
         GameLoginResult = 0x1001, // 4097
+        ClientLogin = 0x1010, // 4112
     }
 }

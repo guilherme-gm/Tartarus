@@ -16,6 +16,8 @@
 */
 using Common.DataClasses.Network;
 using System;
+using System.IO;
+using System.Text;
 
 namespace Common.DataClasses.Network.AuthGame
 {
@@ -25,14 +27,40 @@ namespace Common.DataClasses.Network.AuthGame
 
         public int AccountId { get; set; }
 
+        public int Permission { get; set; }
+
+        public ClientLogin()
+        {
+            this.Id = (ushort)AuthGamePackets.ClientLogin;
+        }
+
         public override void Read(byte[] data)
         {
-            throw new NotImplementedException();
+            BinaryReader br = new BinaryReader(new MemoryStream(data));
+            base.Read(br);
+
+            this.UserId = Encoding.UTF8.GetString(br.ReadBytes(61)).TrimEnd('\0');
+            this.AccountId = br.ReadInt32();
+            this.Permission = br.ReadInt32();
         }
 
         public override byte[] Write()
         {
-            throw new NotImplementedException();
+            MemoryStream stream = new MemoryStream();
+            BinaryWriter writer = new BinaryWriter(stream);
+
+            // Writes a fake header
+            writer.Write(new byte[HeaderSize]);
+
+            // Write packet body
+            this.WriteString(writer, this.UserId, 61);
+            writer.Write(this.AccountId);
+            writer.Write(this.Permission);
+
+            // finishes packet
+            base.Write(writer);
+
+            return stream.ToArray();
         }
     }
 

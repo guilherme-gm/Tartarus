@@ -18,26 +18,33 @@ using Auth.DataClasses;
 using Common.DataClasses;
 using Common.DataClasses.Network;
 using AC = Auth.DataClasses.Network.AuthClient;
+using GA = Common.DataClasses.Network.GameAuth;
 
-namespace Auth.Business.Client
+namespace Auth.Business.Server
 {
-	public class ServerList : ICommand
+	public class ClientLogin : ICommand
     {
         public void Execute(Session session, Packet message)
         {
-            AC.ServerList serverList = new AC.ServerList();
+            GA.ClientLogin packet = (GA.ClientLogin)message;
 
-            serverList.LastLoginServerId = ((User)session._Client).LastServerId;
-            serverList.ServerInfo = new ServerInfo[DataClasses.Server.Instance.ServerList.Count];
-
-            int i = 0;
-            foreach(GameServer server in DataClasses.Server.Instance.ServerList.Values)
+            User user;
+            if (!DataClasses.Server.Instance.ConnectedUsers.TryGetValue(packet.AccountId, out user))
             {
-                serverList.ServerInfo[i] = server.ServerInfo;
-                i++;
+                return;
             }
 
-            DataClasses.Server.ClientSockets.SendPacket(session, serverList);
+            AC.SelectServer selectServer = new AC.SelectServer();
+            selectServer.Result = 0;
+            selectServer.OneTimeKey = packet.OneTimeKey;
+            selectServer.PendingTime = 10;
+
+            user.Server = (GameServer)session._Client;
+            user.LastServerId = user.Server.ServerInfo.Id;
+
+            // TODO : Persist LastServerId
+
+            DataClasses.Server.ClientSockets.SendPacket(user._Session, selectServer);
         }
 
 	}

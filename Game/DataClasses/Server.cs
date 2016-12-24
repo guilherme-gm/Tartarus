@@ -19,6 +19,7 @@ using Common.Service;
 using Common.Utils;
 using Game.Services;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Game.DataClasses
@@ -50,9 +51,12 @@ namespace Game.DataClasses
 
         private bool Reconnecting;
 
+        private Dictionary<string, PendingUserInfo> PendingUsers;
+
         private Server()
         {
             Instance = this;
+            this.PendingUsers = new Dictionary<string, PendingUserInfo>();
         }
 
         public void Start()
@@ -137,6 +141,18 @@ namespace Game.DataClasses
             AuthSocket.OnSocketDisconnect += AuthSocket_OnSocketDisconnect;
             AuthSocket.OnConnectionFailed += AuthSocket_OnConnectionFailed;
             AuthSocket.StartConnection();
+        }
+
+        public void AddPendingUser(string userId, PendingUserInfo info)
+        {
+            if (this.PendingUsers.ContainsKey(userId))
+            {
+                this.PendingUsers[userId] = info;
+            }
+            else
+            {
+                this.PendingUsers.Add(userId, info);
+            }
         }
     }
 }

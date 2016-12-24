@@ -47,18 +47,16 @@ namespace Auth.DataClasses
             }
         }
 
-		private List<Session> ConnectedUsers;
-        private List<Session> ConnectedServers;
+		public Dictionary<int, User> ConnectedUsers;
 
-        public List<ServerInfo> ServerList { get; set; }
+        public Dictionary<ushort, GameServer> ServerList { get; set; }
 
         private Server()
         {
             Instance = this;
 
-            this.ConnectedUsers = new List<Session>();
-            this.ConnectedServers = new List<Session>();
-            this.ServerList = new List<ServerInfo>();
+            this.ConnectedUsers = new Dictionary<int, User>();
+            this.ServerList = new Dictionary<ushort, GameServer>();
         }
 
 		public void Start()
@@ -96,21 +94,22 @@ namespace Auth.DataClasses
 
         public void AddUser(Session session)
         {
-            this.ConnectedUsers.Add(session);
+            User user = (User)session._Client;
+            this.ConnectedUsers.Add(user.AccountId, user);
         }
 
         private void ClientSockets_OnSocketDisconnect(Session session)
         {
-            this.ConnectedUsers.Remove(session);
-            ConsoleUtils.ShowInfo("User {0} disconnected.", ((User)session._Client).UserId);
+            User user = (User)session._Client;
+            this.ConnectedUsers.Remove(user.AccountId);
+            ConsoleUtils.ShowInfo("User {0} disconnected.", user.UserId);
         }
 
         internal bool AddServer(GameServer gameServer)
         {
-            if (!this.ServerList.Exists(server => server.Id == gameServer.ServerInfo.Id))
+            if (!this.ServerList.ContainsKey(gameServer.ServerInfo.Id))
             {
-                this.ServerList.Add(gameServer.ServerInfo);
-                this.ConnectedServers.Add(gameServer._Session);
+                this.ServerList.Add(gameServer.ServerInfo.Id, gameServer);
                 ConsoleUtils.ShowInfo(
                     "Server {0} (Id: {1}) added to Server List.",
                     gameServer.ServerInfo.Name, gameServer.ServerInfo.Id
@@ -131,8 +130,7 @@ namespace Auth.DataClasses
 
         private void ServerSockets_OnSocketDisconnect(Session session)
         {
-            this.ServerList.Remove(((GameServer)session._Client).ServerInfo);
-            this.ConnectedServers.Remove(session);
+            this.ServerList.Remove(((GameServer)session._Client).ServerInfo.Id);
             ConsoleUtils.ShowInfo("GameServer {0} disconnected.", ((GameServer)session._Client).ServerInfo.Name);
         }
 

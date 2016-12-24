@@ -28,6 +28,11 @@ namespace Auth.DataClasses.Network.AuthClient
 
 		public uint PendingTime { get; set; }
 
+        public SelectServer()
+        {
+            this.Id = (ushort)AuthClientPackets.SelectServer;
+        }
+
         public override void Read(byte[] data)
         {
             throw new NotImplementedException();

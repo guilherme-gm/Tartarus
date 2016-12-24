@@ -31,6 +31,7 @@ namespace Auth.DataClasses
             Session session = new Session();
             session._Client = new GameServer();
             session._NetworkData = new NetworkData(socket);
+            session._Client._Session = session;
 
             return session;
         }

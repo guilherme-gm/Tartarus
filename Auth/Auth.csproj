@@ -73,7 +73,7 @@
     <Compile Include="Business\Server\ClientLogout.cs" />
     <Compile Include="Business\ICommand.cs" />
     <Compile Include="Business\Client\ImbcLogin.cs" />
-    <Compile Include="Business\Server\Login.cs" />
+    <Compile Include="Business\Server\ClientLogin.cs" />
     <Compile Include="Business\Server\RegisterServer.cs" />
     <Compile Include="Business\Server\SecurityCheck.cs" />
     <Compile Include="Business\Client\SelectServer.cs" />

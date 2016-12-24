@@ -16,23 +16,46 @@
 */
 using Common.DataClasses.Network;
 using System;
+using System.IO;
 
 namespace Common.DataClasses.Network.GameAuth
 {
 	public class ClientLogin : Packet
 	{
-        public string UserId { get; set; }
+        public int AccountId { get; set; }
 
         public long OneTimeKey { get; set; }
 
+        public ClientLogin()
+        {
+            this.Id = (ushort)GameAuthPackets.ClientLogin;
+        }
+
         public override void Read(byte[] data)
         {
-            throw new NotImplementedException();
+            BinaryReader br = new BinaryReader(new MemoryStream(data));
+            base.Read(br);
+
+            this.AccountId = br.ReadInt32();
+            this.OneTimeKey = br.ReadInt64();
         }
 
         public override byte[] Write()
         {
-            throw new NotImplementedException();
+            MemoryStream stream = new MemoryStream();
+            BinaryWriter writer = new BinaryWriter(stream);
+
+            // Writes a fake header
+            writer.Write(new byte[HeaderSize]);
+
+            // Write packet body
+            writer.Write(this.AccountId);
+            writer.Write(this.OneTimeKey);
+
+            // finishes packet
+            base.Write(writer);
+
+            return stream.ToArray();
         }
     }
 

@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Business\ICommand.cs" />
+    <Compile Include="Business\Server\ClientLogin.cs" />
     <Compile Include="Business\Server\LoginResult.cs" />
     <Compile Include="DataClasses\Auth.cs" />
     <Compile Include="DataClasses\Creature.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="DataClasses\Monster.cs" />
     <Compile Include="DataClasses\MonsterBase.cs" />
     <Compile Include="DataClasses\NPC.cs" />
+    <Compile Include="DataClasses\PendingUserInfo.cs" />
     <Compile Include="DataClasses\Pet.cs" />
     <Compile Include="DataClasses\PetBase.cs" />
     <Compile Include="DataClasses\Player.cs" />
