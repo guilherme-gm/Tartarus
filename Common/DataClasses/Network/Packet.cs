@@ -67,6 +67,11 @@ namespace Common.DataClasses.Network
             writer.Write(Encoding.UTF8.GetBytes(value));
             writer.Write(new byte[length - value.Length]);
         }
+
+        protected string ReadString(BinaryReader reader, int length)
+        {
+            return Encoding.UTF8.GetString(reader.ReadBytes(length)).TrimEnd('\0');
+        }
 	}
 
 }

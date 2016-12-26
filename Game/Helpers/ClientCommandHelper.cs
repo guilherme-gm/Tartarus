@@ -15,15 +15,43 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Common.DataClasses.Network;
+using Common.Utils;
 using Game.Business;
+using Game.DataClasses.Network;
+using System;
+
+using CG = Game.DataClasses.Network.ClientGame;
 
 namespace Game.Helpers
 {
-	public class ClientCommandHelper
+	public static class ClientCommandHelper
 	{
-		public ICommand GetCommand(byte[] packet, Packet message)
+		public static ICommand GetCommand(byte[] packet, out Packet message)
 		{
-			return null;
+            ClientGamePackets packetId = (ClientGamePackets)BitConverter.ToUInt16(packet, 4);
+
+            switch (packetId)
+            {
+                case ClientGamePackets.Version:
+                    message = new CG.Version();
+                    return new Business.Client.Version();
+                case ClientGamePackets.CharacterList:
+                    message = new CG.CharacterList();
+                    return new Business.Client.CharacterList();
+                case ClientGamePackets.AccountWithAuth:
+                    message = new CG.AccountWithAuth();
+                    return new Business.Client.AccountWithAuth();
+                case ClientGamePackets.SystemSpecs:
+                    message = null;
+                    return null;
+                case ClientGamePackets.Unknown:
+                    message = null;
+                    return null;
+                default:
+                    ConsoleUtils.ShowFatalError("Invalid PacketId {0}. At {1}", packetId, "ClientCommandHelper.GetCommand()");
+                    message = null;
+                    return null;
+            }
 		}
 
 	}

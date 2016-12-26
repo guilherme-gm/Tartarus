@@ -1,4 +1,4 @@
-/**
+﻿/**
 * This file is part of Tartarus Emulator.
 * 
 * Tartarus is free software: you can redistribute it and/or modify
@@ -14,31 +14,21 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
-using Common.DataClasses;
-using Common.DataClasses.Network;
-using Common.Service;
-using Game.Business;
-using Game.Helpers;
 
-namespace Game.Services
+namespace Game.DataClasses.Network
 {
-	public class ClientController : IController
-	{
-		public void ProcessRequest(Session session, byte[] data)
-		{
-            Packet message;
+    public enum ClientGamePackets : ushort
+    {
+        Version = 0x0032,           // 50
+        CharacterList = 0x07D1,     // 2001
+        AccountWithAuth = 0x07D5,   // 2005
+        SystemSpecs = 0x1F40,       // 8000
+        Unknown = 0x270F,           // 9999
+    }
 
-            ICommand command = ClientCommandHelper.GetCommand(data, out message);
-            if (command == null)
-            {
-                return;
-            }
-
-            message.Read(data);
-            command.Execute(session, message);
-        }
-
-	}
-
+    public enum GameClientPackets : ushort
+    {
+        Result = 0x0000,            // 0
+        CharacterList = 0x07D4,     // 2004
+    }
 }
-

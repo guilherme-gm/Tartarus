@@ -43,6 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business\Client\AccountWithAuth.cs" />
+    <Compile Include="Business\Client\CharacterList.cs" />
+    <Compile Include="Business\Client\Version.cs" />
     <Compile Include="Business\ICommand.cs" />
     <Compile Include="Business\Server\ClientLogin.cs" />
     <Compile Include="Business\Server\LoginResult.cs" />
@@ -57,6 +60,12 @@
     <Compile Include="DataClasses\JobBase.cs" />
     <Compile Include="DataClasses\Monster.cs" />
     <Compile Include="DataClasses\MonsterBase.cs" />
+    <Compile Include="DataClasses\Network\ClientGame\AccountWithAuth.cs" />
+    <Compile Include="DataClasses\Network\ClientGame\CharacterList.cs" />
+    <Compile Include="DataClasses\Network\ClientGame\Version.cs" />
+    <Compile Include="DataClasses\Network\ClientPackets.cs" />
+    <Compile Include="DataClasses\Network\GameClient\CharacterList.cs" />
+    <Compile Include="DataClasses\Network\GameClient\Result.cs" />
     <Compile Include="DataClasses\NPC.cs" />
     <Compile Include="DataClasses\PendingUserInfo.cs" />
     <Compile Include="DataClasses\Pet.cs" />
@@ -74,6 +83,7 @@
     <Compile Include="DataClasses\SummonBase.cs" />
     <Compile Include="DataClasses\User.cs" />
     <Compile Include="DataClasses\AuthFactory.cs" />
+    <Compile Include="DataClasses\UserFactory.cs" />
     <Compile Include="Helpers\ClientCommandHelper.cs" />
     <Compile Include="Helpers\ServerCommandHelper.cs" />
     <Compile Include="Program.cs" />

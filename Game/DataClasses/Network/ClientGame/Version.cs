@@ -14,31 +14,27 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
-using Common.DataClasses;
+using Common.DataClasses.Network;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net.Sockets;
-using Common.RC4;
+using System.IO;
 
-namespace Auth.DataClasses
+namespace Game.DataClasses.Network.ClientGame
 {
-    public class UserFactory : SessionFactory
+    public class Version : Packet
     {
-        public const string RC4Key = "}h79q~B%al;k'y $E";
+        public string _Version { get; set; }
 
-        public override Session CreateSession(Socket socket)
+        public override void Read(byte[] data)
         {
-            Session session = new Session();
-            session._Client = new User();
-            session._NetworkData = new NetworkData(socket);
-            session._NetworkData.InCipher = new XRC4Cipher(RC4Key);
-            session._NetworkData.OutCipher = new XRC4Cipher(RC4Key);
-            session._Client._Session = session;
+            BinaryReader br = new BinaryReader(new MemoryStream(data));
+            base.Read(br);
 
-            return session;
+            this._Version = BitConverter.ToString(br.ReadBytes(20));
+        }
+
+        public override byte[] Write()
+        {
+            throw new NotImplementedException();
         }
     }
 }

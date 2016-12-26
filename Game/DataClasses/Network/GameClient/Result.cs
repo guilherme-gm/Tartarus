@@ -1,4 +1,4 @@
-/**
+﻿/**
 * This file is part of Tartarus Emulator.
 * 
 * Tartarus is free software: you can redistribute it and/or modify
@@ -17,31 +17,25 @@
 using Common.DataClasses.Network;
 using System;
 using System.IO;
-using System.Text;
 
-namespace Common.DataClasses.Network.AuthGame
+namespace Game.DataClasses.Network.GameClient
 {
-	public class ClientLogin : Packet
-	{
-        public string UserId { get; set; }
+    public class Result : Packet
+    {
+        public ushort RequestMessageId { get; set; }
 
-        public int AccountId { get; set; }
+        public ushort ResultCode { get; set; }
 
-        public int Permission { get; set; }
+        public int Value { get; set; }
 
-        public ClientLogin()
+        public Result()
         {
-            this.Id = (ushort)AuthGamePackets.ClientLogin;
+            this.Id = (ushort)GameClientPackets.Result;
         }
 
         public override void Read(byte[] data)
         {
-            BinaryReader br = new BinaryReader(new MemoryStream(data));
-            base.Read(br);
-
-            this.UserId = this.ReadString(br, 61);
-            this.AccountId = br.ReadInt32();
-            this.Permission = br.ReadInt32();
+            throw new NotImplementedException();
         }
 
         public override byte[] Write()
@@ -53,9 +47,9 @@ namespace Common.DataClasses.Network.AuthGame
             writer.Write(new byte[HeaderSize]);
 
             // Write packet body
-            this.WriteString(writer, this.UserId, 61);
-            writer.Write(this.AccountId);
-            writer.Write(this.Permission);
+            writer.Write(RequestMessageId);
+            writer.Write(ResultCode);
+            writer.Write(Value);
 
             // finishes packet
             base.Write(writer);

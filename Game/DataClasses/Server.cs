@@ -86,7 +86,6 @@ namespace Game.DataClasses
             AuthSocket.OnConnectionFailed += AuthSocket_OnConnectionFailed;
             AuthSocket.StartConnection();
 
-            /*
             ClientSockets =
                 new SocketService(
                     Settings.ServerIp,
@@ -96,7 +95,7 @@ namespace Game.DataClasses
                     new ClientController()
                 );
             ClientSockets.StartListening();
-            */
+
             ConsoleUtils.ShowStatus("Game Server initialized.");
 
             string input;

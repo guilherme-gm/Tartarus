@@ -15,30 +15,25 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Common.DataClasses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net.Sockets;
-using Common.RC4;
+using Common.DataClasses.Network;
 
-namespace Auth.DataClasses
+using CG = Game.DataClasses.Network.ClientGame;
+using GC = Game.DataClasses.Network.GameClient;
+
+namespace Game.Business.Client
 {
-    public class UserFactory : SessionFactory
+    public class CharacterList : ICommand
     {
-        public const string RC4Key = "}h79q~B%al;k'y $E";
-
-        public override Session CreateSession(Socket socket)
+        public void Execute(Session session, Packet message)
         {
-            Session session = new Session();
-            session._Client = new User();
-            session._NetworkData = new NetworkData(socket);
-            session._NetworkData.InCipher = new XRC4Cipher(RC4Key);
-            session._NetworkData.OutCipher = new XRC4Cipher(RC4Key);
-            session._Client._Session = session;
+            CG.CharacterList packet = (CG.CharacterList)message;
+            
+            // TODO : Get character list
 
-            return session;
+            GC.CharacterList characterList = new GC.CharacterList();
+            characterList.Count = 0;
+
+            DataClasses.Server.ClientSockets.SendPacket(session, characterList);
         }
     }
 }

@@ -43,10 +43,12 @@ namespace Auth.Business.Client
 
             UserRepository repo = new UserRepository();
             User user = repo.GetUser(packet.Username, password);
-
+            
             if (user != null)
             {
                 session._Client = user;
+                session._Client._Session = session;
+
                 DataClasses.Server.Instance.AddUser(session);
 
                 result.ResultCode = 0;
