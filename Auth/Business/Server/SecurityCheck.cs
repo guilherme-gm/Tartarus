@@ -19,14 +19,16 @@ using Common.DataClasses.Network;
 
 namespace Auth.Business.Server
 {
-	public class SecurityCheck : ICommand
+    #region SecurityCheck
+    public class SecurityCheck : ICommand
     {
+        #region Execute Packet
         public void Execute(Session session, Packet message)
         {
 
 		}
-
-	}
-
+        #endregion
+    }
+    #endregion
 }
 

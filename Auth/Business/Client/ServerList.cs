@@ -21,8 +21,10 @@ using AC = Auth.DataClasses.Network.AuthClient;
 
 namespace Auth.Business.Client
 {
-	public class ServerList : ICommand
+    #region ServerList
+    public class ServerList : ICommand
     {
+        #region Execute packet
         public void Execute(Session session, Packet message)
         {
             AC.ServerList serverList = new AC.ServerList();
@@ -39,8 +41,8 @@ namespace Auth.Business.Client
 
             DataClasses.Server.ClientSockets.SendPacket(session, serverList);
         }
-
-	}
-
+        #endregion
+    }
+    #endregion
 }
 

@@ -19,11 +19,13 @@ using Common.DataClasses;
 
 namespace Auth.Business
 {
-	public interface ICommand
+    #region ICommand
+    public interface ICommand
 	{
-		void Execute(Session session, Packet message);
-
-	}
-
+        #region Execute Packet
+        void Execute(Session session, Packet message);
+        #endregion
+    }
+    #endregion
 }
 

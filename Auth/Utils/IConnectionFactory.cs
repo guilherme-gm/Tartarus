@@ -23,10 +23,14 @@ using System.Threading.Tasks;
 
 namespace Auth.Utils
 {
+    #region IConnectionFactory
     interface IConnectionFactory
     {
+        #region Operators
         DbConnection GetConnection();
 
         void Close(DbConnection con);
+        #endregion
     }
+    #endregion
 }

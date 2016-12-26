@@ -22,8 +22,10 @@ using GA = Common.DataClasses.Network.GameAuth;
 
 namespace Auth.Business.Server
 {
-	public class ClientLogin : ICommand
+    #region ClientLogin
+    public class ClientLogin : ICommand
     {
+        #region Execute Packet
         public void Execute(Session session, Packet message)
         {
             GA.ClientLogin packet = (GA.ClientLogin)message;
@@ -46,8 +48,8 @@ namespace Auth.Business.Server
 
             DataClasses.Server.ClientSockets.SendPacket(user._Session, selectServer);
         }
-
-	}
-
+        #endregion
+    }
+    #endregion
 }
 

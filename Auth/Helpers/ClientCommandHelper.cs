@@ -24,10 +24,13 @@ using CA = Auth.DataClasses.Network.ClientAuth;
 
 namespace Auth.Helpers
 {
+    #region ClientCommandHelper
     public static class ClientCommandHelper
     {
+        #region GetCommand
         public static ICommand GetCommand(byte[] packet, out Packet message)
         {
+            #region Packet Switch Case
             ClientAuthPackets packetId = (ClientAuthPackets)BitConverter.ToUInt16(packet, 4);
 
             switch (packetId)
@@ -55,9 +58,10 @@ namespace Auth.Helpers
                     message = null;
                     return null;
             }
+            #endregion
         }
-
+        #endregion
     }
-
+    #endregion
 }
 

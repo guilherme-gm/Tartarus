@@ -25,11 +25,15 @@ using Auth.DataClasses.Network;
 
 namespace Auth.Business.Client
 {
-	public class Login : ICommand
+    #region Login
+    public class Login : ICommand
     {
+        #region Authentication Method
         public const string DesKey = "MERONG";
         public static XDes DesCipher = new XDes(DesKey);
+        #endregion
 
+        #region Execute Packet
         public void Execute(Session session, Packet message)
         {
             CA.Account packet = (CA.Account)message;
@@ -64,8 +68,9 @@ namespace Auth.Business.Client
 
             DataClasses.Server.ClientSockets.SendPacket(session, result);
         }
+        #endregion
 
-	}
-
+    }
+    #endregion
 }
 

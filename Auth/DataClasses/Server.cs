@@ -24,11 +24,15 @@ using System.Collections.Generic;
 
 namespace Auth.DataClasses
 {
-	public class Server
+    #region Server
+    public class Server
 	{
+        #region Get/Set
         public static SocketService ClientSockets { get; private set; }
         public static SocketService ServerSockets { get; private set; }
+        #endregion
 
+        #region Instance & Dictionary
         private static Server _Instance;
 
         public static Server Instance
@@ -50,7 +54,9 @@ namespace Auth.DataClasses
 		public Dictionary<int, User> ConnectedUsers;
 
         public Dictionary<ushort, GameServer> ServerList { get; set; }
+        #endregion
 
+        #region Server Instance
         private Server()
         {
             Instance = this;
@@ -59,7 +65,7 @@ namespace Auth.DataClasses
             this.ServerList = new Dictionary<ushort, GameServer>();
         }
 
-		public void Start()
+        public void Start()
 		{
             ClientSockets =
                 new SocketService(
@@ -133,8 +139,8 @@ namespace Auth.DataClasses
             this.ServerList.Remove(((GameServer)session._Client).ServerInfo.Id);
             ConsoleUtils.ShowInfo("GameServer {0} disconnected.", ((GameServer)session._Client).ServerInfo.Name);
         }
-
+        #endregion
     }
-
+    #endregion
 }
 

@@ -22,8 +22,10 @@ using AG = Common.DataClasses.Network.AuthGame;
 
 namespace Auth.Business.Server
 {
-	public class RegisterServer : ICommand
+    #region RegisterServer
+    public class RegisterServer : ICommand
     {
+        #region Execute Packet
         public void Execute(Session session, Packet message)
         {
             GA.Login packet = (GA.Login)message;
@@ -43,8 +45,8 @@ namespace Auth.Business.Server
 
             DataClasses.Server.ServerSockets.SendPacket(session, result);
         }
-
-	}
-
+        #endregion
+    }
+    #endregion
 }
 

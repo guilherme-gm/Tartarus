@@ -18,11 +18,13 @@ using Common.Utils;
 
 namespace Auth
 {
+    #region Authentication Server Settings
     /// <summary>
     /// Stores Auth-server Settings
     /// </summary>
     public static class Settings
     {
+        #region Get/Set
         public static string WindowName { get; private set; }
 
         public static string ServerIp { get; private set; }
@@ -34,9 +36,12 @@ namespace Auth
         public static ushort GameServerPort { get; private set; }
 
         public static bool UseMD5Password { get; private set; }
+        #endregion
 
+        #region Load From Configuration
         public static void Load()
         {
+            #region Confiration Variables
             SettingsReader reader = new SettingsReader();
             reader.LoadSettings("Settings/auth-server.conf");
 
@@ -50,6 +55,9 @@ namespace Auth
 
             GameServerPort = reader.ReadUInt16("gameserver_port", 4444, ushort.MinValue, ushort.MaxValue);
             UseMD5Password = reader.ReadBoolean("use_md5", false);
+            #endregion
         }
+        #endregion
     }
+    #endregion
 }

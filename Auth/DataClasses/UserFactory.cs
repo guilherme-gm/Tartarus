@@ -25,8 +25,10 @@ using Common.RC4;
 
 namespace Auth.DataClasses
 {
+    #region UserFactory
     public class UserFactory : SessionFactory
     {
+        #region Session
         public const string RC4Key = "}h79q~B%al;k'y $E";
 
         public override Session CreateSession(Socket socket)
@@ -40,5 +42,7 @@ namespace Auth.DataClasses
 
             return session;
         }
+        #endregion
     }
+    #endregion
 }

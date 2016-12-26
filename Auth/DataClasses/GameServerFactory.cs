@@ -24,8 +24,10 @@ using Common.DataClasses;
 
 namespace Auth.DataClasses
 {
+    #region GameServerFactory
     public class GameServerFactory : SessionFactory
     {
+        #region CreateSession
         public override Session CreateSession(Socket socket)
         {
             Session session = new Session();
@@ -35,5 +37,7 @@ namespace Auth.DataClasses
 
             return session;
         }
+        #endregion
     }
+    #endregion
 }

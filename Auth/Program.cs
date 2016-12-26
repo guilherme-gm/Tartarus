@@ -21,6 +21,7 @@ namespace Auth
 {
     class Program
     {
+        #region Display Instance
         static void Main(string[] args)
         {
             Settings.Load();
@@ -30,5 +31,6 @@ namespace Auth
             ConsoleUtils.ShowHeader(Settings.WindowName);
             Server.Instance.Start();
         }
+        #endregion
     }
 }

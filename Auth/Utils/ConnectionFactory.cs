@@ -23,8 +23,10 @@ using System.Threading.Tasks;
 
 namespace Auth.Utils
 {
+    #region ConnectionFactory
     public class ConnectionFactory : IConnectionFactory
     {
+        #region Instances
         private static ConnectionFactory _Instance;
 
         public static ConnectionFactory Instance
@@ -47,7 +49,9 @@ namespace Auth.Utils
         {
             Instance = this;
         }
+        #endregion
 
+        #region Database Connection
         public DbConnection GetConnection()
         {
             MySql.Data.MySqlClient.MySqlConnection conn;
@@ -72,5 +76,7 @@ namespace Auth.Utils
         {
             con.Close();
         }
+        #endregion
     }
+    #endregion
 }

@@ -16,6 +16,9 @@
 */
 namespace Auth.DataClasses.Network
 {
+    #region Client to Auth / Auth To Client - Packets
+
+    #region Packets Sent by Client
     /// <summary>
     /// Packets sent by the client
     /// </summary>
@@ -28,7 +31,9 @@ namespace Auth.DataClasses.Network
         ServerList = 0x2725,    // 10021
         SelectServer = 0x2727,  // 10023
     }
+    #endregion
 
+    #region Packets Sent by Server
     /// <summary>
     /// Packets sent by auth server
     /// </summary>
@@ -38,4 +43,7 @@ namespace Auth.DataClasses.Network
         ServerList = 0x2726,    // 10022
         SelectServer = 0x2728,  // 10024
     }
+    #endregion
+
+    #endregion
 }

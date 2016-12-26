@@ -20,8 +20,10 @@ using System.IO;
 
 namespace Auth.DataClasses.Network.ClientAuth
 {
+    #region ServerList Packets
     public class ServerList : Packet
     {
+        #region Read/Write Packets
         public override void Read(byte[] data)
         {
             BinaryReader br = new BinaryReader(new MemoryStream(data));
@@ -32,7 +34,8 @@ namespace Auth.DataClasses.Network.ClientAuth
         {
             throw new NotImplementedException();
         }
+        #endregion
     }
-
+    #endregion
 }
 

@@ -23,8 +23,10 @@ using AG = Common.DataClasses.Network.AuthGame;
 
 namespace Auth.Business.Client
 {
-	public class SelectServer : ICommand
+    #region SelectServer
+    public class SelectServer : ICommand
     {
+        #region Execute Packet
         public void Execute(Session session, Packet message)
         {
             CA.SelectServer packet = (CA.SelectServer)message;
@@ -50,8 +52,8 @@ namespace Auth.Business.Client
             }
 
 		}
-
-	}
-
+        #endregion
+    }
+    #endregion
 }
 
