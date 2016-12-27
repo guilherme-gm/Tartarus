@@ -28,6 +28,8 @@ namespace Common.Service
 
     public delegate void ConnectError();
 
+    public delegate void Connect(Session session);
+
     public class SocketService
     {
         /// <summary>
@@ -41,6 +43,11 @@ namespace Common.Service
         public event ConnectError OnConnectionFailed;
 
         /// <summary>
+        /// Event triggered when an attemp to connect to a server succed
+        /// </summary>
+        public event Connect OnConnectionSuccess;
+
+        /// <summary>
         /// Size of a packet header
         /// </summary>
         private const int HeaderSize = Packet.HeaderSize;
@@ -51,14 +58,14 @@ namespace Common.Service
 		private bool Encrypted;
 
         /// <summary>
+        /// If data is Encrypted, this is the encryption key.
+        /// </summary>
+        private string CipherKey;
+
+        /// <summary>
         /// Ip and Port used to listen connections
         /// </summary>
         private IPEndPoint IpEndPoint;
-
-        /// <summary>
-        /// Session Factory used to initialize connections
-        /// </summary>
-        private SessionFactory _SessionFactory;
 
         /// <summary>
         /// The controller that will handle the packets
@@ -77,10 +84,10 @@ namespace Common.Service
         /// <param name="port">Port</param>
         /// <param name="isEncrypted">Is data encrypted?</param>
         /// <param name="key">Encryption key</param>
-        public SocketService(string ip, ushort port, bool isEncrypted, SessionFactory sessionFactory, IController controller)
+        public SocketService(string ip, ushort port, IController controller, bool isEncrypted, string cipherKey = "")
         {
             this.Encrypted = isEncrypted;
-            this._SessionFactory = sessionFactory;
+            this.CipherKey = cipherKey;
             this.Controller = controller;
             this.Started = false;
 
@@ -203,7 +210,8 @@ namespace Common.Service
             socket.EndConnect(ar);
 
             // Initializes session
-            Session session = this._SessionFactory.CreateSession(socket);
+            Session session = new Session(socket, this.CipherKey);
+            this.Connected(session);
 
             // Starts to receive data
             socket.BeginReceive(
@@ -228,7 +236,7 @@ namespace Common.Service
             // Starts to accept another connection
             listener.BeginAccept(new AsyncCallback(AcceptCallback), listener);
 
-            Session client = this._SessionFactory.CreateSession(connector);
+            Session client = new Session(connector, this.CipherKey);
 
             connector.BeginReceive(
                 client._NetworkData.Buffer,
@@ -426,6 +434,14 @@ namespace Common.Service
             if (this.OnConnectionFailed != null)
             {
                 this.OnConnectionFailed();
+            }
+        }
+
+        private void Connected(Session session)
+        {
+            if (this.OnConnectionSuccess != null)
+            {
+                this.OnConnectionSuccess(session);
             }
         }
     }

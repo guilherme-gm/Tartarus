@@ -29,7 +29,9 @@ namespace Auth.Business.Server
             GA.Login packet = (GA.Login)message;
             AG.GameLoginResult result = new AG.GameLoginResult();
 
-            GameServer server = (GameServer)session._Client;
+            GameServer server = new GameServer();
+            session._Client = server;
+            server._Session = session;
             server.ServerInfo = packet.ServerInfo;
 
             if (DataClasses.Server.Instance.AddServer(server))

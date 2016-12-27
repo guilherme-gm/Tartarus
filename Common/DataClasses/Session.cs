@@ -14,6 +14,7 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
+using System.Net.Sockets;
 
 namespace Common.DataClasses
 {
@@ -23,9 +24,15 @@ namespace Common.DataClasses
         
         public Client _Client { get; set; }
 
-        public Session()
+        public Session(Socket socket, string cipherKey = "")
         {
-
+            this._NetworkData = new NetworkData(socket);
+            this._Client = null;
+            if (!cipherKey.Equals(""))
+            {
+                this._NetworkData.InCipher = new RC4.XRC4Cipher(cipherKey);
+                this._NetworkData.OutCipher = new RC4.XRC4Cipher(cipherKey);
+            }
         }
 
 	}

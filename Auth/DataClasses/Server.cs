@@ -26,6 +26,8 @@ namespace Auth.DataClasses
 {
 	public class Server
 	{
+        private const string RC4Key = "}h79q~B%al;k'y $E";
+
         public static SocketService ClientSockets { get; private set; }
         public static SocketService ServerSockets { get; private set; }
 
@@ -65,9 +67,9 @@ namespace Auth.DataClasses
                 new SocketService(
                     Settings.ServerIp,
                     Settings.ServerPort,
+                    new ClientController(),
                     true,
-                    new UserFactory(),
-                    new ClientController()
+                    RC4Key
                 );
             ClientSockets.OnSocketDisconnect += ClientSockets_OnSocketDisconnect;
             ClientSockets.StartListening();
@@ -76,9 +78,8 @@ namespace Auth.DataClasses
                 new SocketService(
                     Settings.ServerIp,
                     Settings.GameServerPort,
-                    false,
-                    new GameServerFactory(),
-                    new ServerController()
+                    new ServerController(),
+                    false
                 );
             ServerSockets.OnSocketDisconnect += ServerSockets_OnSocketDisconnect;
             ServerSockets.StartListening();

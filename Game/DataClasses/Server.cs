@@ -26,6 +26,8 @@ namespace Game.DataClasses
 {
     public class Server
     {
+        private const string RC4Key = "}h79q~B%al;k'y $E";
+
         public static SocketService ClientSockets { get; private set; }
         public static SocketService AuthSocket { get; private set; }
 
@@ -58,7 +60,7 @@ namespace Game.DataClasses
             Instance = this;
             this.PendingUsers = new Dictionary<string, PendingUserInfo>();
         }
-
+        
         public void Start()
         {
             this.Reconnecting = false;
@@ -78,21 +80,21 @@ namespace Game.DataClasses
                 new SocketService(
                     Settings.ServerIp,
                     Settings.AuthPort,
-                    false,
-                    new AuthFactory(),
-                    new ServerController()
+                    new ServerController(),
+                    false
                 );
             AuthSocket.OnSocketDisconnect += AuthSocket_OnSocketDisconnect;
             AuthSocket.OnConnectionFailed += AuthSocket_OnConnectionFailed;
+            AuthSocket.OnConnectionSuccess += AuthSocket_OnConnectionSuccess;
             AuthSocket.StartConnection();
 
             ClientSockets =
                 new SocketService(
                     Settings.ServerIp,
                     Settings.ServerPort,
+                    new ClientController(),
                     true,
-                    new UserFactory(),
-                    new ClientController()
+                    RC4Key
                 );
             ClientSockets.StartListening();
 
@@ -113,12 +115,12 @@ namespace Game.DataClasses
                 new SocketService(
                     Settings.ServerIp,
                     Settings.AuthPort,
-                    false,
-                    new AuthFactory(),
-                    new ServerController()
+                    new ServerController(),
+                    false
                 );
             AuthSocket.OnSocketDisconnect += AuthSocket_OnSocketDisconnect;
             AuthSocket.OnConnectionFailed += AuthSocket_OnConnectionFailed;
+            AuthSocket.OnConnectionSuccess += AuthSocket_OnConnectionSuccess;
             AuthSocket.StartConnection();
         }
 
@@ -133,13 +135,21 @@ namespace Game.DataClasses
                 new SocketService(
                     Settings.ServerIp,
                     Settings.AuthPort,
-                    false,
-                    new AuthFactory(),
-                    new ServerController()
+                    new ServerController(),
+                    false
                 );
             AuthSocket.OnSocketDisconnect += AuthSocket_OnSocketDisconnect;
             AuthSocket.OnConnectionFailed += AuthSocket_OnConnectionFailed;
+            AuthSocket.OnConnectionSuccess += AuthSocket_OnConnectionSuccess;
             AuthSocket.StartConnection();
+        }
+
+        private void AuthSocket_OnConnectionSuccess(Session session)
+        {
+            Server.AuthSocket.SendPacket(
+                session,
+                new Common.DataClasses.Network.GameAuth.Login() { ServerInfo = Server.ServerInfo }
+            );
         }
 
         public void AddPendingUser(string userId, PendingUserInfo info)

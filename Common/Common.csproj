@@ -46,7 +46,6 @@
   <ItemGroup>
     <Compile Include="DataClasses\Client.cs" />
     <Compile Include="DataClasses\Network\ServerPackets.cs" />
-    <Compile Include="DataClasses\SessionFactory.cs" />
     <Compile Include="Service\IController.cs" />
     <Compile Include="Utils\ConsoleMessage.cs" />
     <Compile Include="Utils\ConsoleUtils.cs" />

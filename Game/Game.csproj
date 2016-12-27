@@ -49,7 +49,6 @@
     <Compile Include="Business\ICommand.cs" />
     <Compile Include="Business\Server\ClientLogin.cs" />
     <Compile Include="Business\Server\LoginResult.cs" />
-    <Compile Include="DataClasses\Auth.cs" />
     <Compile Include="DataClasses\Creature.cs" />
     <Compile Include="DataClasses\FieldProp.cs" />
     <Compile Include="DataClasses\GameObject.cs" />
@@ -82,8 +81,6 @@
     <Compile Include="DataClasses\Summon.cs" />
     <Compile Include="DataClasses\SummonBase.cs" />
     <Compile Include="DataClasses\User.cs" />
-    <Compile Include="DataClasses\AuthFactory.cs" />
-    <Compile Include="DataClasses\UserFactory.cs" />
     <Compile Include="Helpers\ClientCommandHelper.cs" />
     <Compile Include="Helpers\ServerCommandHelper.cs" />
     <Compile Include="Program.cs" />
