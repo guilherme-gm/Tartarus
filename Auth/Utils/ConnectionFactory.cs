@@ -57,7 +57,11 @@ namespace Auth.Utils
             MySql.Data.MySqlClient.MySqlConnection conn;
             string connectionString;
 
-            connectionString = "server=127.0.0.1;uid=rappelz;pwd=rappelz;database=rappelz_auth;";
+            connectionString =
+                string.Format("server={0};uid={1};pwd={2};database={3};",
+                        Settings.DatabaseIp, Settings.DatabaseUsername,
+                        Settings.DatabasePassword, Settings.DatabaseName
+                );
 
             try
             {

@@ -42,6 +42,11 @@ namespace Game
         public static ushort MaxConnections { get; private set; }
         public static ushort AuthPort { get; private set; }
 
+        public static string DatabaseIp { get; private set; }
+        public static string DatabaseUsername { get; private set; }
+        public static string DatabasePassword { get; private set; }
+        public static string DatabaseName { get; private set; }
+
         public static void Load()
         {
             SettingsReader reader = new SettingsReader();
@@ -65,6 +70,11 @@ namespace Game
 
             MaxConnections = reader.ReadUInt16("max_connections", 0, ushort.MinValue, ushort.MaxValue);
             AuthPort = reader.ReadUInt16("auth_port", 4444, ushort.MinValue, ushort.MaxValue);
+
+            DatabaseIp = reader.ReadString("database_ip", "127.0.0.1", false);
+            DatabaseUsername = reader.ReadString("database_username", "tartarus", false);
+            DatabasePassword = reader.ReadString("database_password", "tartarus", false);
+            DatabaseName = reader.ReadString("database_name", "tartarus_game", false);
         }
     }
 }

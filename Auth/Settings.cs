@@ -38,6 +38,11 @@ namespace Auth
         public static bool UseMD5Password { get; private set; }
 
         public static bool PersistServerId { get; private set; }
+        
+        public static string DatabaseIp { get; private set; }
+        public static string DatabaseUsername { get; private set; }
+        public static string DatabasePassword { get; private set; }
+        public static string DatabaseName { get; private set; }
         #endregion
 
         #region Load From Configuration
@@ -59,6 +64,11 @@ namespace Auth
             UseMD5Password = reader.ReadBoolean("use_md5", false);
 
             PersistServerId = reader.ReadBoolean("persist_server_id", false);
+
+            DatabaseIp = reader.ReadString("database_ip", "127.0.0.1", false);
+            DatabaseUsername = reader.ReadString("database_username", "tartarus", false);
+            DatabasePassword = reader.ReadString("database_password", "tartarus", false);
+            DatabaseName = reader.ReadString("database_name", "tartarus_auth", false);
             #endregion
         }
         #endregion
