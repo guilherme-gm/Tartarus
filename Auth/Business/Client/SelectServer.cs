@@ -19,6 +19,7 @@ using Common.DataClasses;
 using Common.DataClasses.Network;
 using Common.Utils;
 using CA = Auth.DataClasses.Network.ClientAuth;
+using AC = Auth.DataClasses.Network.AuthClient;
 using AG = Common.DataClasses.Network.AuthGame;
 
 namespace Auth.Business.Client
@@ -48,7 +49,12 @@ namespace Auth.Business.Client
                     "User '{0}' is trying to join invalid server id '{1}'",
                     ((User)session._Client).UserId, packet.ServerId
                 );
-                // TODO : Is there an error code for this?
+
+                AC.SelectServer selectServer = new AC.SelectServer();
+                // Official servers sends 0x9 (AlreadyExist) when this happens, but this causes client to freeze.
+                selectServer.Result = (ushort)AC.SelectServer.ResultCodes.AccessDenied;
+
+                DataClasses.Server.ClientSockets.SendPacket(session, selectServer);
             }
 
 		}

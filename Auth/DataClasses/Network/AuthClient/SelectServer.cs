@@ -23,6 +23,16 @@ namespace Auth.DataClasses.Network.AuthClient
     #region SelectServer Packets
     public class SelectServer : Packet
 	{
+        #region Enums
+        public enum ResultCodes : ushort
+        {
+            Success = 0x0,
+            NotExist = 0x1,
+            AccessDenied = 0x6,
+            AlreadyExists = 0x9
+        }
+        #endregion
+
         #region Get/Set Packets
         public ushort Result { get; set; }
 
