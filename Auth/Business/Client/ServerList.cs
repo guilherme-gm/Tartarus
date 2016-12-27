@@ -29,7 +29,14 @@ namespace Auth.Business.Client
         {
             AC.ServerList serverList = new AC.ServerList();
 
-            serverList.LastLoginServerId = ((User)session._Client).LastServerId;
+            if (Settings.PersistServerId)
+            {
+                serverList.LastLoginServerId = ((User)session._Client).LastServerId;
+            }
+            else
+            {
+                serverList.LastLoginServerId = 0;
+            }
             serverList.ServerInfo = new ServerInfo[DataClasses.Server.Instance.ServerList.Count];
 
             int i = 0;

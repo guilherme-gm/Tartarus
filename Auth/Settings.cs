@@ -36,12 +36,14 @@ namespace Auth
         public static ushort GameServerPort { get; private set; }
 
         public static bool UseMD5Password { get; private set; }
+
+        public static bool PersistServerId { get; private set; }
         #endregion
 
         #region Load From Configuration
         public static void Load()
         {
-            #region Confiration Variables
+            #region Configuration Variables
             SettingsReader reader = new SettingsReader();
             reader.LoadSettings("Settings/auth-server.conf");
 
@@ -55,6 +57,8 @@ namespace Auth
 
             GameServerPort = reader.ReadUInt16("gameserver_port", 4444, ushort.MinValue, ushort.MaxValue);
             UseMD5Password = reader.ReadBoolean("use_md5", false);
+
+            PersistServerId = reader.ReadBoolean("persist_server_id", false);
             #endregion
         }
         #endregion

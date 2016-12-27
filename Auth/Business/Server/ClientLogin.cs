@@ -15,6 +15,7 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Auth.DataClasses;
+using Auth.DataRepository;
 using Common.DataClasses;
 using Common.DataClasses.Network;
 using AC = Auth.DataClasses.Network.AuthClient;
@@ -42,9 +43,13 @@ namespace Auth.Business.Server
             selectServer.PendingTime = 10;
 
             user.Server = (GameServer)session._Client;
-            user.LastServerId = user.Server.ServerInfo.Id;
+            if (Settings.PersistServerId)
+            {
+                user.LastServerId = user.Server.ServerInfo.Id;
 
-            // TODO : Persist LastServerId
+                UserRepository userRepository = new UserRepository();
+                userRepository.SaveUser(user);
+            }
 
             DataClasses.Server.ClientSockets.SendPacket(user._Session, selectServer);
         }

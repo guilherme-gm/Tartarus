@@ -60,6 +60,23 @@ namespace Auth.DataRepository.MySql
             return user;
 		}
         #endregion
+
+        #region Update(User)
+        public void Update(User user)
+        {
+            MySqlConnection con = (MySqlConnection)ConFactory.GetConnection();
+
+            MySqlCommand command = con.CreateCommand();
+            command.CommandText = "UPDATE `Login` SET `permission` = @permission, `last_serverid` = @last_serverid WHERE `account_id` = @account_id";
+            command.Parameters.AddWithValue("permission", user.Permission);
+            command.Parameters.AddWithValue("last_serverid", user.LastServerId);
+            command.Parameters.AddWithValue("account_id", user.AccountId);
+            command.ExecuteNonQuery();
+
+            ConFactory.Close(con);
+        }
+        #endregion
+
     }
     #endregion
 }

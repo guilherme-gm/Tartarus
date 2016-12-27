@@ -23,6 +23,7 @@ namespace Auth.DataRepository
 	{
         #region Register Functions
         User Select(string id, string password);
+        void Update(User user);
         #endregion
     }
     #endregion

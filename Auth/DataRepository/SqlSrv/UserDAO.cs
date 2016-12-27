@@ -27,6 +27,14 @@ namespace Auth.DataRepository.SqlSrv
 			return null;
 		}
         #endregion
+        
+        #region Update(User)
+        public void Update(User user)
+        {
+           
+        }
+        #endregion
+
     }
     #endregion
 }

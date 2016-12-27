@@ -35,6 +35,11 @@ namespace Auth.DataRepository
 		{
             return this._UserDao.Select(id, password);
 		}
+
+        public void SaveUser(User user)
+        {
+            this._UserDao.Update(user);
+        }
         #endregion
     }
     #endregion
