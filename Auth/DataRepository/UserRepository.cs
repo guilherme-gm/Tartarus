@@ -20,10 +20,12 @@ using Auth.DataClasses;
 
 namespace Auth.DataRepository
 {
-	public class UserRepository
+    #region UserRepository
+    public class UserRepository
 	{
         private IUserDAO _UserDao;
 
+        #region Instance & Assignment
         public UserRepository()
         {
             this._UserDao = new MySql.UserDAO();
@@ -33,8 +35,8 @@ namespace Auth.DataRepository
 		{
             return this._UserDao.Select(id, password);
 		}
-
-	}
-
+        #endregion
+    }
+    #endregion
 }
 

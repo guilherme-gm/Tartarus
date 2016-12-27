@@ -18,10 +18,13 @@ using Auth.DataClasses;
 
 namespace Auth.DataRepository
 {
-	public interface IUserDAO
+    #region IUserDAO
+    public interface IUserDAO
 	{
+        #region Register Functions
         User Select(string id, string password);
+        #endregion
     }
-
+    #endregion
 }
 

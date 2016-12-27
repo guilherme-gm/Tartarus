@@ -20,14 +20,18 @@ using System.IO;
 
 namespace Auth.DataClasses.Network.AuthClient
 {
-	public class SelectServer : Packet
+    #region SelectServer Packets
+    public class SelectServer : Packet
 	{
-		public ushort Result { get; set; }
+        #region Get/Set Packets
+        public ushort Result { get; set; }
 
 		public long OneTimeKey { get; set; }
 
 		public uint PendingTime { get; set; }
+        #endregion
 
+        #region SelectServer/Read/Write Packets
         public SelectServer()
         {
             this.Id = (ushort)AuthClientPackets.SelectServer;
@@ -56,7 +60,8 @@ namespace Auth.DataClasses.Network.AuthClient
 
             return stream.ToArray();
         }
+        #endregion
     }
-
+    #endregion
 }
 

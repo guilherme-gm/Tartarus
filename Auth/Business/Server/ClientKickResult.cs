@@ -19,14 +19,17 @@ using Common.DataClasses.Network;
 
 namespace Auth.Business.Server
 {
-	public class ClientKickResult : ICommand
+    #region ClientKickResult
+    public class ClientKickResult : ICommand
 	{
-		public void Execute(Session session, Packet message)
+        #region Execute Packet
+        public void Execute(Session session, Packet message)
         {
 
 		}
-
-	}
-
+        #endregion
+    }
+    #endregion
 }
+
 

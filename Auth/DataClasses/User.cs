@@ -18,8 +18,10 @@ using Common.DataClasses;
 
 namespace Auth.DataClasses
 {
-	public class User : Client
+    #region Users
+    public class User : Client
 	{
+        #region Get/Set
         public int AccountId { get; set; }
 
         public string UserId { get; set; }
@@ -27,13 +29,15 @@ namespace Auth.DataClasses
         public GameServer Server { get; set; }
         public int Permission { get; internal set; }
         public ushort LastServerId { get; internal set; }
+        #endregion
 
+        #region Instance
         public User()
 		{
 
 		}
-
-	}
-
+        #endregion
+    }
+    #endregion
 }
 

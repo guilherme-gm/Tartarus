@@ -22,8 +22,10 @@ using Common.Service;
 
 namespace Auth.Services
 {
+    #region ServerController
     public class ServerController : IController
     {
+        #region Request Processor
         public void ProcessRequest(Session session, byte[] data)
         {
             Packet message;
@@ -37,7 +39,8 @@ namespace Auth.Services
             message.Read(data);
             command.Execute(session, message);
         }
+        #endregion
     }
-
+#endregion
 }
 

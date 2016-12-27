@@ -21,14 +21,18 @@ using System.IO;
 
 namespace Auth.DataClasses.Network.AuthClient
 {
-	public class Result : Packet
+    #region Result Packets
+    public class Result : Packet
 	{
-		public ushort RequestMessageId { get; set; }
+        #region Get/Set Packets
+        public ushort RequestMessageId { get; set; }
 
 		public ushort ResultCode { get; set; }
 
 		public int Value { get; set; }
+        #endregion
 
+        #region Result/Read/Write Packets
         public Result()
         {
             this.Id = (ushort) AuthClientPackets.Result;
@@ -57,7 +61,8 @@ namespace Auth.DataClasses.Network.AuthClient
 
             return stream.ToArray();
         }
+        #endregion
     }
-
+    #endregion
 }
 

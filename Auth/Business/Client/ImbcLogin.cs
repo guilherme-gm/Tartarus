@@ -19,14 +19,16 @@ using Common.DataClasses.Network;
 
 namespace Auth.Business.Client
 {
-	public class ImbcLogin : ICommand
+    #region ImbcLogin
+    public class ImbcLogin : ICommand
     {
+        #region Execute Packet
         public void Execute(Session session, Packet message)
         {
 
 		}
-
-	}
-
+        #endregion
+    }
+    #endregion
 }
 

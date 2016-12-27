@@ -18,14 +18,16 @@ using Auth.DataClasses;
 
 namespace Auth.DataRepository.SqlSrv
 {
-	public class UserDAO : IUserDAO
+    #region SqlSrv UserDAO
+    public class UserDAO : IUserDAO
 	{
-		public User Select(string id, string password)
+        #region Select(Id,Password) From User
+        public User Select(string id, string password)
 		{
 			return null;
 		}
-
-	}
-
+        #endregion
+    }
+    #endregion
 }
 

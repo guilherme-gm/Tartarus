@@ -21,12 +21,16 @@ using System.Text;
 
 namespace Auth.DataClasses.Network.ClientAuth
 {
-	public class Account : Packet
+    #region Account Packets
+    public class Account : Packet
 	{
-		public string Username { get; set; }
+        #region Get/Set Packets
+        public string Username { get; set; }
 
         public byte[] Password { get; set; }
+        #endregion
 
+        #region Read/Write Packets
         public override void Read(byte[] data)
         {
             BinaryReader br = new BinaryReader(new MemoryStream(data));
@@ -41,7 +45,8 @@ namespace Auth.DataClasses.Network.ClientAuth
         {
             throw new NotImplementedException();
         }
+        #endregion
     }
-
+    #endregion
 }
 

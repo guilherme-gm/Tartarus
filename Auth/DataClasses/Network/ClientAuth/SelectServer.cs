@@ -20,10 +20,14 @@ using System.IO;
 
 namespace Auth.DataClasses.Network.ClientAuth
 {
-	public class SelectServer : Packet
+    #region SelectServer Packets
+    public class SelectServer : Packet
 	{
+        #region Get/Set Packets
         public ushort ServerId { get; set; }
+        #endregion
 
+        #region SelectServer/Read/Write Packets
         public SelectServer()
         {
             this.Id = (ushort)ClientAuthPackets.SelectServer;
@@ -41,7 +45,8 @@ namespace Auth.DataClasses.Network.ClientAuth
         {
             throw new NotImplementedException();
         }
+        #endregion
     }
-
+    #endregion
 }
 

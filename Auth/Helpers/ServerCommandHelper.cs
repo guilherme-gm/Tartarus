@@ -22,10 +22,13 @@ using Common.Utils;
 
 namespace Auth.Helpers
 {
-	public class ServerCommandHelper
+    #region ServerCommandHelper
+    public class ServerCommandHelper
 	{
+        #region GetCommand
         public static ICommand GetCommand(byte[] packet, out Packet message)
         {
+            #region Packet Switch Case
             GameAuthPackets packetId = (GameAuthPackets)BitConverter.ToUInt16(packet, 4);
 
             switch (packetId)
@@ -41,9 +44,10 @@ namespace Auth.Helpers
                     message = null;
                     return null;
             }
+            #endregion
         }
-
+        #endregion
     }
-
+#endregion
 }
 

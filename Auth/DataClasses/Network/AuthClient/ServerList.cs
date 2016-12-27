@@ -21,12 +21,16 @@ using System.IO;
 
 namespace Auth.DataClasses.Network.AuthClient
 {
-	public class ServerList : Packet
+    #region ServerList Packets
+    public class ServerList : Packet
 	{
-		public ushort LastLoginServerId { get; set; }
+        #region Get/Set Packets
+        public ushort LastLoginServerId { get; set; }
 
         public ushort Count { get; private set; }
+        #endregion
 
+        #region ServerInfo/Read/Write Packets
         private ServerInfo[] _ServerInfo;
 
         public ServerInfo[] ServerInfo
@@ -80,7 +84,8 @@ namespace Auth.DataClasses.Network.AuthClient
 
             return stream.ToArray();
         }
+        #endregion
     }
-
+    #endregion
 }
 

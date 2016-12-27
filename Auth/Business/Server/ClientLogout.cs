@@ -19,14 +19,16 @@ using Common.DataClasses.Network;
 
 namespace Auth.Business.Server
 {
-	public class ClientLogout : ICommand
+    #region ClientLogout
+    public class ClientLogout : ICommand
     {
+        #region Execute Packet
         public void Execute(Session session, Packet message)
         {
 
 		}
-
-	}
-
+        #endregion
+    }
+    #endregion
 }
 

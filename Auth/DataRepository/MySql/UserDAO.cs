@@ -21,7 +21,8 @@ using System.Data.Common;
 
 namespace Auth.DataRepository.MySql
 {
-	public class UserDAO : IUserDAO
+    #region MySql UserDAO
+    public class UserDAO : IUserDAO
 	{
         private IConnectionFactory ConFactory;
 
@@ -30,7 +31,8 @@ namespace Auth.DataRepository.MySql
             ConFactory = ConnectionFactory.Instance;
         }
 
-		public User Select(string id, string password)
+        #region Select(Id,Password) From User
+        public User Select(string id, string password)
 		{
             User user = null;
 
@@ -57,8 +59,8 @@ namespace Auth.DataRepository.MySql
 
             return user;
 		}
-
-	}
-
+        #endregion
+    }
+    #endregion
 }
 

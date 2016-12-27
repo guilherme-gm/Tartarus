@@ -18,11 +18,14 @@ using Common.DataClasses;
 
 namespace Auth.DataClasses
 {
-	public class GameServer : Client
+    #region GameServer
+    public class GameServer : Client
 	{
-		public ServerInfo ServerInfo { get; set; }
+        #region Get/Set
+        public ServerInfo ServerInfo { get; set; }
+        #endregion
 
-	}
-
+    }
+    #endregion
 }
 
