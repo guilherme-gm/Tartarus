@@ -108,8 +108,11 @@ namespace Auth.DataClasses
         private void ClientSockets_OnSocketDisconnect(Session session)
         {
             User user = (User)session._Client;
-            this.ConnectedUsers.Remove(user.AccountId);
-            ConsoleUtils.ShowInfo("User {0} disconnected.", user.UserId);
+            if (user != null)
+            {
+                this.ConnectedUsers.Remove(user.AccountId);
+                ConsoleUtils.ShowInfo("User {0} disconnected.", user.UserId);
+            }
         }
 
         internal bool AddServer(GameServer gameServer)
@@ -137,8 +140,12 @@ namespace Auth.DataClasses
 
         private void ServerSockets_OnSocketDisconnect(Session session)
         {
-            this.ServerList.Remove(((GameServer)session._Client).ServerInfo.Id);
-            ConsoleUtils.ShowInfo("GameServer {0} disconnected.", ((GameServer)session._Client).ServerInfo.Name);
+            GameServer server = (GameServer)session._Client;
+            if (server != null)
+            {
+                this.ServerList.Remove(((GameServer)session._Client).ServerInfo.Id);
+                ConsoleUtils.ShowInfo("GameServer {0} disconnected.", ((GameServer)session._Client).ServerInfo.Name);
+            }
         }
         #endregion
     }
