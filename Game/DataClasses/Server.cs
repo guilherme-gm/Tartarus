@@ -78,25 +78,21 @@ namespace Game.DataClasses
 
             AuthSocket =
                 new SocketService(
-                    Settings.ServerIp,
-                    Settings.AuthPort,
                     new ServerController(),
                     false
                 );
             AuthSocket.OnSocketDisconnect += AuthSocket_OnSocketDisconnect;
             AuthSocket.OnConnectionFailed += AuthSocket_OnConnectionFailed;
             AuthSocket.OnConnectionSuccess += AuthSocket_OnConnectionSuccess;
-            AuthSocket.StartConnection();
+            AuthSocket.StartConnection(Settings.AuthIp, Settings.AuthPort);
 
             ClientSockets =
                 new SocketService(
-                    Settings.ServerIp,
-                    Settings.ServerPort,
                     new ClientController(),
                     true,
                     RC4Key
                 );
-            ClientSockets.StartListening();
+            ClientSockets.StartListening(Settings.ServerPort, Settings.OpenExternal);
 
             ConsoleUtils.ShowStatus("Game Server initialized.");
 
@@ -113,15 +109,13 @@ namespace Game.DataClasses
             await Task.Delay(2000);
             AuthSocket =
                 new SocketService(
-                    Settings.ServerIp,
-                    Settings.AuthPort,
                     new ServerController(),
                     false
                 );
             AuthSocket.OnSocketDisconnect += AuthSocket_OnSocketDisconnect;
             AuthSocket.OnConnectionFailed += AuthSocket_OnConnectionFailed;
             AuthSocket.OnConnectionSuccess += AuthSocket_OnConnectionSuccess;
-            AuthSocket.StartConnection();
+            AuthSocket.StartConnection(Settings.AuthIp, Settings.AuthPort);
         }
 
         private async void AuthSocket_OnSocketDisconnect(Session session)
@@ -133,15 +127,13 @@ namespace Game.DataClasses
             await Task.Delay(2000);
             AuthSocket =
                 new SocketService(
-                    Settings.ServerIp,
-                    Settings.AuthPort,
                     new ServerController(),
                     false
                 );
             AuthSocket.OnSocketDisconnect += AuthSocket_OnSocketDisconnect;
             AuthSocket.OnConnectionFailed += AuthSocket_OnConnectionFailed;
             AuthSocket.OnConnectionSuccess += AuthSocket_OnConnectionSuccess;
-            AuthSocket.StartConnection();
+            AuthSocket.StartConnection(Settings.AuthIp, Settings.AuthPort);
         }
 
         private void AuthSocket_OnConnectionSuccess(Session session)

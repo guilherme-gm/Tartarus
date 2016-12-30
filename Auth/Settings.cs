@@ -27,7 +27,7 @@ namespace Auth
         #region Get/Set
         public static string WindowName { get; private set; }
 
-        public static string ServerIp { get; private set; }
+        public static bool OpenExternal { get; private set; }
         public static ushort ServerPort { get; private set; }
 
         public static bool LoginDebug { get; private set; }
@@ -55,7 +55,7 @@ namespace Auth
             WindowName = reader.ReadString("window_name", "Auth-Server", false);
             ServerPort = reader.ReadUInt16("server_port", 8841, ushort.MinValue, ushort.MaxValue);
 
-            ServerIp = reader.ReadString("server_ip", "127.0.0.1", false);
+            OpenExternal = reader.ReadBoolean("open_external", false);
 
             LoginDebug = reader.ReadBoolean("login_debug", true);
             ConsoleSilent = reader.ReadInt32("console_silent", 0, 0, int.MaxValue);

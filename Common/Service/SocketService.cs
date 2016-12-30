@@ -63,11 +63,6 @@ namespace Common.Service
         private string CipherKey;
 
         /// <summary>
-        /// Ip and Port used to listen connections
-        /// </summary>
-        private IPEndPoint IpEndPoint;
-
-        /// <summary>
         /// The controller that will handle the packets
         /// </summary>
         private IController Controller;
@@ -84,38 +79,19 @@ namespace Common.Service
         /// <param name="port">Port</param>
         /// <param name="isEncrypted">Is data encrypted?</param>
         /// <param name="key">Encryption key</param>
-        public SocketService(string ip, ushort port, IController controller, bool isEncrypted, string cipherKey = "")
+        public SocketService(IController controller, bool isEncrypted, string cipherKey = "")
         {
             this.Encrypted = isEncrypted;
             this.CipherKey = cipherKey;
             this.Controller = controller;
             this.Started = false;
-
-            try
-            {
-                IPAddress ipAddress;
-                if (!IPAddress.TryParse(ip, out ipAddress))
-                {
-                    ConsoleUtils.ShowError("Failed to parse Server IP ({0}), defaulting to 127.0.0.1", ip);
-                    ipAddress = IPAddress.Parse("127.0.0.1");
-                }
-
-                this.IpEndPoint = new IPEndPoint(ipAddress, port);
-            }
-            catch (Exception e)
-            {
-                ConsoleUtils.ShowFatalError(
-                    "Unexpected error: {0}\nAt {1}",
-                    e.Message, "SocketService()"
-                );
-            }
         }
 
         /// <summary>
         /// Starts to listen for incoming connections.
         /// </summary>
         /// <returns>true in case of success, false otherwise</returns>
-        public bool StartListening()
+        public bool StartListening(ushort port, bool openExternal)
         {
             if (this.Started)
             {
@@ -125,11 +101,20 @@ namespace Common.Service
                 );
                 return false;
             }
+
             Socket listener = new Socket(SocketType.Stream, ProtocolType.Tcp);
 
             try
             {
-                listener.Bind(this.IpEndPoint);
+                if (openExternal)
+                {
+                    listener.Bind(new IPEndPoint(IPAddress.Any, port));
+                }
+                else
+                {
+                    listener.Bind(new IPEndPoint(IPAddress.Parse("127.0.0.1"), port));
+                }
+
                 listener.Listen(100);
                 listener.BeginAccept(new AsyncCallback(AcceptCallback), listener);
             }
@@ -146,9 +131,8 @@ namespace Common.Service
 
             this.Started = true;
             ConsoleUtils.ShowInfo(
-                "Listening to connection on {0}:{1}",
-                this.IpEndPoint.Address.ToString(),
-                this.IpEndPoint.Port
+                "Listening to connection on port {0}",
+                port
             );
 
             return true;
@@ -158,7 +142,7 @@ namespace Common.Service
         /// Starts to connect to an IP and Port
         /// </summary>
         /// <returns>If it has connected</returns>
-        public bool StartConnection()
+        public bool StartConnection(string ip, ushort port)
         {
             if (this.Started)
             {
@@ -172,7 +156,7 @@ namespace Common.Service
 
             try
             {
-                socket.BeginConnect(this.IpEndPoint, new AsyncCallback(ConnectCallback), socket);
+                socket.BeginConnect(ip, port, new AsyncCallback(ConnectCallback), socket);
             }
             catch (Exception e)
             {
@@ -188,8 +172,8 @@ namespace Common.Service
             this.Started = true;
             ConsoleUtils.ShowInfo(
                 "Connecting to {0}:{1}",
-                this.IpEndPoint.Address.ToString(),
-                this.IpEndPoint.Port
+                ip,
+                port
             );
 
             return true;
@@ -447,4 +431,3 @@ namespace Common.Service
     }
 
 }
-

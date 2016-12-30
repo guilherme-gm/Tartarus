@@ -25,6 +25,7 @@ namespace Game
     {
         public static string WindowName { get; private set; }
 
+        public static bool OpenExternal { get; private set; }
         public static string ServerIp { get; private set; }
         public static ushort ServerPort { get; private set; }
 
@@ -40,6 +41,7 @@ namespace Game
         public static int ConsoleSilent { get; private set; }
 
         public static ushort MaxConnections { get; private set; }
+        public static string AuthIp { get; private set; }
         public static ushort AuthPort { get; private set; }
 
         public static string DatabaseIp { get; private set; }
@@ -54,6 +56,7 @@ namespace Game
 
             WindowName = reader.ReadString("window_name", "Game", false);
 
+            OpenExternal = reader.ReadBoolean("open_external", false);
             ServerIp = reader.ReadString("server_ip", "127.0.0.1", false);
             ServerPort = reader.ReadUInt16("server_port", 6900, ushort.MinValue, ushort.MaxValue);
 
@@ -69,6 +72,7 @@ namespace Game
             ConsoleSilent = reader.ReadInt32("console_silent", 0, int.MinValue, int.MaxValue);
 
             MaxConnections = reader.ReadUInt16("max_connections", 0, ushort.MinValue, ushort.MaxValue);
+            AuthIp = reader.ReadString("auth_ip", "127.0.0.1", false);
             AuthPort = reader.ReadUInt16("auth_port", 4444, ushort.MinValue, ushort.MaxValue);
 
             DatabaseIp = reader.ReadString("database_ip", "127.0.0.1", false);

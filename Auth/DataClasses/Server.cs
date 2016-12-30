@@ -71,24 +71,20 @@ namespace Auth.DataClasses
 		{
             ClientSockets =
                 new SocketService(
-                    Settings.ServerIp,
-                    Settings.ServerPort,
                     new ClientController(),
                     true,
                     RC4Key
                 );
             ClientSockets.OnSocketDisconnect += ClientSockets_OnSocketDisconnect;
-            ClientSockets.StartListening();
+            ClientSockets.StartListening(Settings.ServerPort, Settings.OpenExternal);
 
             ServerSockets =
                 new SocketService(
-                    Settings.ServerIp,
-                    Settings.GameServerPort,
                     new ServerController(),
                     false
                 );
             ServerSockets.OnSocketDisconnect += ServerSockets_OnSocketDisconnect;
-            ServerSockets.StartListening();
+            ServerSockets.StartListening(Settings.GameServerPort, Settings.OpenExternal);
             
             ConsoleUtils.ShowStatus("Auth Server initialized.");
 
