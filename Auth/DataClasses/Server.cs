@@ -73,7 +73,8 @@ namespace Auth.DataClasses
                 new SocketService(
                     new ClientController(),
                     true,
-                    RC4Key
+                    RC4Key,
+                    new AuthSessionFactory()
                 );
             ClientSockets.OnSocketDisconnect += ClientSockets_OnSocketDisconnect;
             ClientSockets.StartListening(Settings.ServerPort, Settings.OpenExternal);

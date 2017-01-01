@@ -1,4 +1,4 @@
-/**
+﻿/**
 * This file is part of Tartarus Emulator.
 * 
 * Tartarus is free software: you can redistribute it and/or modify
@@ -15,28 +15,24 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using System.Net.Sockets;
-using System.Security.Cryptography;
+using Common.DataClasses;
 
-namespace Common.DataClasses
+namespace Auth.DataClasses
 {
-	public class Session
-	{
-		public NetworkData _NetworkData { get; set; }
-        
-        public Client _Client { get; set; }
+    #region AuthSession
+    public class AuthSession : Session
+    {
+        #region Get/Set
+        public bool UsesAes { get; set; }
 
-        public Session(Socket socket, string cipherKey = "")
+        public byte[] AesInfo { get; set; }
+        #endregion
+
+        #region Constructor
+        public AuthSession(Socket socket, string cipherKey = "") : base(socket, cipherKey)
         {
-            this._NetworkData = new NetworkData(socket);
-            this._Client = null;
-            if (!cipherKey.Equals(""))
-            {
-                this._NetworkData.InCipher = new RC4.XRC4Cipher(cipherKey);
-                this._NetworkData.OutCipher = new RC4.XRC4Cipher(cipherKey);
-            }
         }
-
-	}
-
+        #endregion
+    }
+    #endregion
 }
-

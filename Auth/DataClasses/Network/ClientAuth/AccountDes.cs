@@ -22,7 +22,7 @@ using System.Text;
 namespace Auth.DataClasses.Network.ClientAuth
 {
     #region Account Packets
-    public class Account : Packet
+    public class AccountDes : Packet
 	{
         #region Get/Set Packets
         public string Username { get; set; }
@@ -38,7 +38,6 @@ namespace Auth.DataClasses.Network.ClientAuth
 
             this.Username = Encoding.UTF8.GetString(br.ReadBytes(61)).TrimEnd('\0');
             this.Password = br.ReadBytes(56);
-            // Unknown 5 bytes
         }
 
         public override byte[] Write()

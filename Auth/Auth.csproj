@@ -68,6 +68,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business\Client\RSAPublicKey.cs" />
     <Compile Include="Business\Server\ClientKickResult.cs" />
     <Compile Include="Business\Client\Login.cs" />
     <Compile Include="Business\Server\ClientLogout.cs" />
@@ -79,12 +80,17 @@
     <Compile Include="Business\Client\SelectServer.cs" />
     <Compile Include="Business\Client\ServerList.cs" />
     <Compile Include="Business\Client\Version.cs" />
+    <Compile Include="DataClasses\AuthSession.cs" />
+    <Compile Include="DataClasses\AuthSessionFactory.cs" />
     <Compile Include="DataClasses\GameServer.cs" />
+    <Compile Include="DataClasses\Network\AuthClient\AesKeyIV.cs" />
     <Compile Include="DataClasses\Network\AuthClient\Result.cs" />
     <Compile Include="DataClasses\Network\AuthClient\SelectServer.cs" />
     <Compile Include="DataClasses\Network\AuthClient\ServerList.cs" />
-    <Compile Include="DataClasses\Network\ClientAuth\Account.cs" />
+    <Compile Include="DataClasses\Network\ClientAuth\AccountAes.cs" />
+    <Compile Include="DataClasses\Network\ClientAuth\AccountDes.cs" />
     <Compile Include="DataClasses\Network\ClientAuth\ImbcAccount.cs" />
+    <Compile Include="DataClasses\Network\ClientAuth\RSAPublicKey.cs" />
     <Compile Include="DataClasses\Network\ClientAuth\SelectServer.cs" />
     <Compile Include="DataClasses\Network\ClientAuth\ServerList.cs" />
     <Compile Include="DataClasses\Network\ClientAuth\Version.cs" />

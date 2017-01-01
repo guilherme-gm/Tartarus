@@ -1,4 +1,4 @@
-/**
+﻿/**
 * This file is part of Tartarus Emulator.
 * 
 * Tartarus is free software: you can redistribute it and/or modify
@@ -14,34 +14,35 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
-using Auth.Business;
-using Auth.Helpers;
-using Common.DataClasses;
 using Common.DataClasses.Network;
-using Common.Service;
+using System;
+using System.IO;
+using System.Text;
 
-namespace Auth.Services
+namespace Auth.DataClasses.Network.ClientAuth
 {
-    #region ClientController
-    public class ClientController : IController
-	{
-        #region ClientController
-        public ClientController() { }
+    #region Account Packets
+    public class RSAPublicKey : Packet
+    {
+        #region Get/Set Packets
+        public int KeySize { get; set; }
+
+        public string Key { get; set; }
         #endregion
 
-        #region RequestProcessor
-        public void ProcessRequest(Session session, byte[] data)
+        #region Read/Write Packets
+        public override void Read(byte[] data)
         {
-            Packet message;
+            BinaryReader br = new BinaryReader(new MemoryStream(data));
+            base.Read(br);
 
-            ICommand command = ClientCommandHelper.GetCommand(session, data, out message);
-            if (command == null)
-            {
-                return;
-            }
+            this.KeySize = br.ReadInt32();
+            this.Key = this.ReadString(br, this.KeySize);
+        }
 
-            message.Read(data);
-            command.Execute(session, message);
+        public override byte[] Write()
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }

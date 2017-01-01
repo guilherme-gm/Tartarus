@@ -14,34 +14,36 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
-using Auth.Business;
-using Auth.Helpers;
-using Common.DataClasses;
 using Common.DataClasses.Network;
-using Common.Service;
+using System;
+using System.IO;
+using System.Text;
 
-namespace Auth.Services
+namespace Auth.DataClasses.Network.ClientAuth
 {
-    #region ClientController
-    public class ClientController : IController
+    #region Account Packets
+    public class AccountAes : Packet
 	{
-        #region ClientController
-        public ClientController() { }
+        #region Get/Set Packets
+        public string Username { get; set; }
+
+        public byte[] Password { get; set; }
         #endregion
 
-        #region RequestProcessor
-        public void ProcessRequest(Session session, byte[] data)
+        #region Read/Write Packets
+        public override void Read(byte[] data)
         {
-            Packet message;
+            BinaryReader br = new BinaryReader(new MemoryStream(data));
+            base.Read(br);
 
-            ICommand command = ClientCommandHelper.GetCommand(session, data, out message);
-            if (command == null)
-            {
-                return;
-            }
+            this.Username = Encoding.UTF8.GetString(br.ReadBytes(61)).TrimEnd('\0');
+            int passwordSize = br.ReadInt32();
+            this.Password = br.ReadBytes(passwordSize);
+        }
 
-            message.Read(data);
-            command.Execute(session, message);
+        public override byte[] Write()
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }

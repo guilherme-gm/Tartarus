@@ -68,6 +68,11 @@ namespace Common.Service
         private IController Controller;
 
         /// <summary>
+        /// Factory used to get a new Session for this connection
+        /// </summary>
+        private ISessionFactory SessionFactory;
+
+        /// <summary>
         /// Is service started?
         /// </summary>
         private bool Started;
@@ -79,11 +84,16 @@ namespace Common.Service
         /// <param name="port">Port</param>
         /// <param name="isEncrypted">Is data encrypted?</param>
         /// <param name="key">Encryption key</param>
-        public SocketService(IController controller, bool isEncrypted, string cipherKey = "")
+        public SocketService(IController controller, bool isEncrypted, string cipherKey = "", ISessionFactory factory = null)
         {
             this.Encrypted = isEncrypted;
             this.CipherKey = cipherKey;
             this.Controller = controller;
+            if (factory == null)
+                this.SessionFactory = new SessionFactory();
+            else
+                this.SessionFactory = factory;
+
             this.Started = false;
         }
 
@@ -194,7 +204,7 @@ namespace Common.Service
             socket.EndConnect(ar);
 
             // Initializes session
-            Session session = new Session(socket, this.CipherKey);
+            Session session = this.SessionFactory.GetSession(socket, this.CipherKey);
             this.Connected(session);
 
             // Starts to receive data
@@ -220,7 +230,7 @@ namespace Common.Service
             // Starts to accept another connection
             listener.BeginAccept(new AsyncCallback(AcceptCallback), listener);
 
-            Session client = new Session(connector, this.CipherKey);
+            Session client = this.SessionFactory.GetSession(connector, this.CipherKey);
 
             connector.BeginReceive(
                 client._NetworkData.Buffer,

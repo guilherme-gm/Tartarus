@@ -15,7 +15,9 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Auth.Business;
+using Auth.DataClasses;
 using Auth.DataClasses.Network;
+using Common.DataClasses;
 using Common.DataClasses.Network;
 using Common.Utils;
 using System;
@@ -28,7 +30,7 @@ namespace Auth.Helpers
     public static class ClientCommandHelper
     {
         #region GetCommand
-        public static ICommand GetCommand(byte[] packet, out Packet message)
+        public static ICommand GetCommand(Session session, byte[] packet, out Packet message)
         {
             #region Packet Switch Case
             ClientAuthPackets packetId = (ClientAuthPackets)BitConverter.ToUInt16(packet, 4);
@@ -38,11 +40,17 @@ namespace Auth.Helpers
                 case ClientAuthPackets.Unknown:
                     message = null;
                     return null;
+                case ClientAuthPackets.RSAPublicKey:
+                    message = new CA.RSAPublicKey();
+                    return new Business.Client.RSAPublicKey();
                 case ClientAuthPackets.Version:
                     message = new CA.Version();
                     return new Business.Client.Version();
                 case ClientAuthPackets.Account:
-                    message = new CA.Account();
+                    if (((AuthSession)session).UsesAes)
+                        message = new CA.AccountAes();
+                    else
+                        message = new CA.AccountDes();
                     return new Business.Client.Login();
                 case ClientAuthPackets.ImbcAccount:
                     message = new CA.ImbcAccount();

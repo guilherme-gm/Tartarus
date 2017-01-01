@@ -22,6 +22,7 @@ using Common.Utils;
 using CA = Auth.DataClasses.Network.ClientAuth;
 using AC = Auth.DataClasses.Network.AuthClient;
 using Auth.DataClasses.Network;
+using System;
 
 namespace Auth.Business.Client
 {
@@ -36,17 +37,38 @@ namespace Auth.Business.Client
         #region Execute Packet
         public void Execute(Session session, Packet message)
         {
-            CA.Account packet = (CA.Account)message;
             AC.Result result = new AC.Result();
             result.RequestMessageId = (ushort)ClientAuthPackets.Account;
 
-            string password = DesCipher.Decrypt(packet.Password).TrimEnd('\0');
+            AuthSession authSession = (AuthSession)session;
+            string password;
+            string username;
+
+            if (authSession.UsesAes)
+            {
+                CA.AccountAes packet = (CA.AccountAes)message;
+                username = packet.Username;
+
+                byte[] key = new byte[16];
+                byte[] iv = new byte[16];
+
+                Buffer.BlockCopy(authSession.AesInfo, 0, key, 0, 16);
+                Buffer.BlockCopy(authSession.AesInfo, 16, iv, 0, 16);
+
+                password = AesUtils.Decrypt(packet.Password, key, iv);
+            }
+            else
+            {
+                CA.AccountDes packet = (CA.AccountDes)message;
+                username = packet.Username;
+                password = DesCipher.Decrypt(packet.Password).TrimEnd('\0');
+            }
 
             if (Settings.LoginDebug)
-                ConsoleUtils.ShowInfo("User '{0}' is trying to connect.", packet.Username);
+                ConsoleUtils.ShowInfo("User '{0}' is trying to connect.", username);
 
             UserRepository repo = new UserRepository();
-            User user = repo.GetUser(packet.Username, password);
+            User user = repo.GetUser(username, password);
             
             if (user != null)
             {
@@ -63,7 +85,7 @@ namespace Auth.Business.Client
             {
                 result.ResultCode = 1;
                 if (Settings.LoginDebug)
-                    ConsoleUtils.ShowInfo("User '{0}' login failed (Invalid credentials)", packet.Username);
+                    ConsoleUtils.ShowInfo("User '{0}' login failed (Invalid credentials)", username);
             }
 
             DataClasses.Server.ClientSockets.SendPacket(session, result);

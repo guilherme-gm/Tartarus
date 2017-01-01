@@ -24,6 +24,7 @@ namespace Auth.DataClasses.Network
     /// </summary>
     public enum ClientAuthPackets : ushort
     {
+        RSAPublicKey = 0x0047,  //    71
         Unknown = 0x270F,       //  9999
         Version = 0x2711,       // 10001
         Account = 0x271A,       // 10010
@@ -39,6 +40,7 @@ namespace Auth.DataClasses.Network
     /// </summary>
     public enum AuthClientPackets : ushort
     {
+        AesKeyIV = 0x0048,      //    72
         Result = 0x2710,        // 10000
         ServerList = 0x2726,    // 10022
         SelectServer = 0x2728,  // 10024
