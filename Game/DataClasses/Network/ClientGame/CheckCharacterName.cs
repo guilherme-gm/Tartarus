@@ -14,22 +14,33 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
+using Common.DataClasses.Network;
+using System;
+using System.IO;
 
-namespace Game.DataClasses.Network
+namespace Game.DataClasses.Network.ClientGame
 {
-    public enum ClientGamePackets : ushort
+    public class CheckCharacterName : Packet
     {
-        Version = 0x0032,           // 50
-        CharacterList = 0x07D1,     // 2001
-        AccountWithAuth = 0x07D5,   // 2005
-        CheckCharacterName = 0x07D6,// 2006
-        SystemSpecs = 0x1F40,       // 8000
-        Unknown = 0x270F,           // 9999
-    }
+        public enum ResultCode : ushort
+        {
+            Success = 0x0,
+            Invalid = 0x13,
+        }
 
-    public enum GameClientPackets : ushort
-    {
-        Result = 0x0000,            // 0
-        CharacterList = 0x07D4,     // 2004
+        public string Name { get; set; }
+
+        public override void Read(byte[] data)
+        {
+            BinaryReader br = new BinaryReader(new MemoryStream(data));
+            base.Read(br);
+
+            this.Name = this.ReadString(br, 19);
+        }
+
+        public override byte[] Write()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

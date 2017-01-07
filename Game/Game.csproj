@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="Business\Client\AccountWithAuth.cs" />
     <Compile Include="Business\Client\CharacterList.cs" />
+    <Compile Include="Business\Client\CheckCharacterName.cs" />
     <Compile Include="Business\Client\Version.cs" />
     <Compile Include="Business\ICommand.cs" />
     <Compile Include="Business\Server\ClientLogin.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="DataClasses\MonsterBase.cs" />
     <Compile Include="DataClasses\Network\ClientGame\AccountWithAuth.cs" />
     <Compile Include="DataClasses\Network\ClientGame\CharacterList.cs" />
+    <Compile Include="DataClasses\Network\ClientGame\CheckCharacterName.cs" />
     <Compile Include="DataClasses\Network\ClientGame\Version.cs" />
     <Compile Include="DataClasses\Network\ClientPackets.cs" />
     <Compile Include="DataClasses\Network\GameClient\CharacterList.cs" />

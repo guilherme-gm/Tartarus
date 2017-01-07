@@ -41,6 +41,9 @@ namespace Game.Helpers
                 case ClientGamePackets.AccountWithAuth:
                     message = new CG.AccountWithAuth();
                     return new Business.Client.AccountWithAuth();
+                case ClientGamePackets.CheckCharacterName:
+                    message = new CG.CheckCharacterName();
+                    return new Business.Client.CheckCharacterName();
                 case ClientGamePackets.SystemSpecs:
                     message = null;
                     return null;
