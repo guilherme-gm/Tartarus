@@ -210,10 +210,37 @@ namespace Game.DataRepository
         }
         #endregion
 
-        public bool DeleteCharacter(int charId)
+        #region Delete Character(Account ID, Character Name)
+        public bool DeleteCharacter(int accountId, string characterName)
         {
-            return false;
+            IConnectionFactory conFactory = ConnectionFactory.Instance;
+            MySqlConnection con = (MySqlConnection)conFactory.GetConnection();
+            bool deleted = false;
+
+            try
+            {
+                using (MySqlCommand command = con.CreateCommand())
+                {
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.CommandText = "usp_Lobby_DeleteCharacter";
+                    command.Parameters.AddWithValue("accountId", accountId);
+                    command.Parameters.AddWithValue("characterName", characterName);
+                    command.ExecuteNonQuery();
+                    deleted = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                ConsoleUtils.ShowSQL("{0} (At: {1})", ex.Message, "LobbyRepository.DeleteCharacter");
+                deleted = false;
+            }
+            finally
+            {
+                conFactory.Close(con);
+            }
+            return deleted;
         }
+        #endregion
     }
     #endregion
 }

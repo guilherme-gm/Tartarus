@@ -41,6 +41,9 @@ namespace Game.Helpers
                 case ClientGamePackets.CreateCharacter:
                     message = new CG.CreateCharacter();
                     return new Business.Client.CreateCharacter();
+                case ClientGamePackets.DeleteCharacter:
+                    message = new CG.DeleteCharacter();
+                    return new Business.Client.DeleteCharacter();
                 case ClientGamePackets.AccountWithAuth:
                     message = new CG.AccountWithAuth();
                     return new Business.Client.AccountWithAuth();
