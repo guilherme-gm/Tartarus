@@ -108,6 +108,37 @@ namespace Game.DataRepository
         }
         #endregion
 
+        #region Name Exists(name)
+        public bool NameExists(string name)
+        {
+            IConnectionFactory conFactory = ConnectionFactory.Instance;
+            MySqlConnection con = (MySqlConnection)conFactory.GetConnection();
+            bool exists = true;
+
+            try
+            {
+                using (MySqlCommand cmd = con.CreateCommand())
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.CommandText = "usp_Lobby_NameExists";
+                    cmd.Parameters.AddWithValue("cName", name);
+                    exists = Convert.ToBoolean(cmd.ExecuteScalar());
+                }
+            }
+            catch (Exception ex)
+            {
+                ConsoleUtils.ShowSQL("{0} (At: {1})", ex.Message, "LobbyRepository.NameExists()");
+                exists = true;
+            }
+            finally
+            {
+                conFactory.Close(con);
+            }
+
+            return exists;
+        }
+        #endregion
+        
         #region Create Character(Account ID, Character Info)
         public bool CreateCharacter(int accountId, LobbyCharacterInfo character, Item[] startItems, int startX, int startY)
         {

@@ -25,6 +25,7 @@ namespace Game.DataClasses.Network.ClientGame
         public enum ResultCode : ushort
         {
             Success = 0x0,
+            AlreadyExists = 0x9,
             Invalid = 0x13,
         }
 

@@ -16,6 +16,7 @@
 */
 using Common.DataClasses;
 using Common.DataClasses.Network;
+using Game.DataRepository;
 using System.Text.RegularExpressions;
 using CG = Game.DataClasses.Network.ClientGame;
 using GC = Game.DataClasses.Network.GameClient;
@@ -31,11 +32,15 @@ namespace Game.Business.Client
             CG.CheckCharacterName packet = (CG.CheckCharacterName)message;
             GC.Result result = new GC.Result();
 
+            LobbyRepository repo = new LobbyRepository();
+
             result.RequestMessageId = packet.Id;
-            if (Regex.IsMatch(packet.Name, @"^[a-zA-Z0-9]+$"))
-                result.ResultCode = (ushort)CG.CheckCharacterName.ResultCode.Success;
-            else
+            if (!Regex.IsMatch(packet.Name, @"^[a-zA-Z0-9]+$"))
                 result.ResultCode = (ushort)CG.CheckCharacterName.ResultCode.Invalid;
+            else if (repo.NameExists(packet.Name))
+                result.ResultCode = (ushort)CG.CheckCharacterName.ResultCode.AlreadyExists;
+            else
+                result.ResultCode = (ushort)CG.CheckCharacterName.ResultCode.Success;
 
             DataClasses.Server.ClientSockets.SendPacket(session, result);
         }
