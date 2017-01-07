@@ -16,7 +16,9 @@
 */
 using Common.DataClasses;
 using Common.DataClasses.Network;
-
+using Game.DataClasses;
+using Game.DataClasses.Lobby;
+using Game.DataRepository;
 using CG = Game.DataClasses.Network.ClientGame;
 using GC = Game.DataClasses.Network.GameClient;
 
@@ -27,11 +29,20 @@ namespace Game.Business.Client
         public void Execute(Session session, Packet message)
         {
             CG.CharacterList packet = (CG.CharacterList)message;
-            
-            // TODO : Get character list
-
             GC.CharacterList characterList = new GC.CharacterList();
-            characterList.Count = 0;
+
+            // Invalid request (client not logged)
+            if (session._Client == null)
+                return;
+
+            LobbyRepository repo = new LobbyRepository();
+            LobbyCharacterInfo[] characters = repo.GetCharacterList(((User)session._Client).AccountId);
+
+            characterList.Count = (ushort)characters.Length;
+            characterList.Characters = characters;
+            // TODO : Missing values
+            characterList.CurrentServerTime = 0;
+            characterList.LastLoginIndex = 0;
 
             DataClasses.Server.ClientSockets.SendPacket(session, characterList);
         }

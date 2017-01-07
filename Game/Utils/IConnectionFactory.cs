@@ -1,4 +1,4 @@
-/**
+﻿/**
 * This file is part of Tartarus Emulator.
 * 
 * Tartarus is free software: you can redistribute it and/or modify
@@ -14,11 +14,23 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
+using System;
+using System.Collections.Generic;
+using System.Data.Common;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
 namespace Game.Utils
 {
-	public interface IConnectionFactory
-	{
-	}
+    #region IConnectionFactory
+    interface IConnectionFactory
+    {
+        #region Operators
+        DbConnection GetConnection();
 
+        void Close(DbConnection con);
+        #endregion
+    }
+    #endregion
 }
-

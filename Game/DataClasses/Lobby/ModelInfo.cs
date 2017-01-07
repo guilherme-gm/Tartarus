@@ -1,4 +1,4 @@
-/**
+﻿/**
 * This file is part of Tartarus Emulator.
 * 
 * Tartarus is free software: you can redistribute it and/or modify
@@ -14,20 +14,21 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
-using Common.DataClasses;
 
-namespace Game.DataClasses
+namespace Game.DataClasses.Lobby
 {
-	public class User : Client
-	{
-		public int AccountId { get; set; }
+    public class ModelInfo
+    {
+        public int Sex { get; set; }
+        public int Race { get; set; }
+        public int[] ModelId { get; set; } //5
+        public int TextureId { get; set; }
+        public int[] WearInfo{ get; set; } // 24
 
-        public User(int accountId)
+        public ModelInfo()
         {
-            this.AccountId = accountId;
+            this.ModelId = new int[5];
+            this.WearInfo = new int[24];
         }
-
-	}
-
+    }
 }
-

@@ -16,6 +16,7 @@
 */
 using Common.DataClasses;
 using Common.DataClasses.Network;
+using Game.DataClasses;
 using Game.DataClasses.Network;
 
 using CG = Game.DataClasses.Network.ClientGame;
@@ -30,6 +31,10 @@ namespace Game.Business.Client
             CG.AccountWithAuth packet = (CG.AccountWithAuth)message;
 
             // TODO : Validate login
+            PendingUserInfo info = DataClasses.Server.Instance.RetrievePendingUser(packet.Account);
+            if (info == null)
+                return;
+            session._Client = new User(info.AccountId);
 
             GC.Result result = new GC.Result();
             result.RequestMessageId = (ushort)ClientGamePackets.AccountWithAuth;

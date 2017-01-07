@@ -33,6 +33,26 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MySql.Data">
+      <HintPath>..\3rdparty\mysql-connector-net-6.9.9\v4.5\MySql.Data.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="MySql.Data.Entity.EF5">
+      <HintPath>..\3rdparty\mysql-connector-net-6.9.9\v4.5\MySql.Data.Entity.EF5.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="MySql.Data.Entity.EF6">
+      <HintPath>..\3rdparty\mysql-connector-net-6.9.9\v4.5\MySql.Data.Entity.EF6.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="MySql.Fabric.Plugin">
+      <HintPath>..\3rdparty\mysql-connector-net-6.9.9\v4.5\MySql.Fabric.Plugin.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="MySql.Web">
+      <HintPath>..\3rdparty\mysql-connector-net-6.9.9\v4.5\MySql.Web.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -57,6 +77,8 @@
     <Compile Include="DataClasses\ItemBase.cs" />
     <Compile Include="DataClasses\Job.cs" />
     <Compile Include="DataClasses\JobBase.cs" />
+    <Compile Include="DataClasses\Lobby\LobbyCharacterInfo.cs" />
+    <Compile Include="DataClasses\Lobby\ModelInfo.cs" />
     <Compile Include="DataClasses\Monster.cs" />
     <Compile Include="DataClasses\MonsterBase.cs" />
     <Compile Include="DataClasses\Network\ClientGame\AccountWithAuth.cs" />
@@ -81,6 +103,7 @@
     <Compile Include="DataClasses\Summon.cs" />
     <Compile Include="DataClasses\SummonBase.cs" />
     <Compile Include="DataClasses\User.cs" />
+    <Compile Include="DataRepository\LobbyRepository.cs" />
     <Compile Include="Helpers\ClientCommandHelper.cs" />
     <Compile Include="Helpers\ServerCommandHelper.cs" />
     <Compile Include="Program.cs" />

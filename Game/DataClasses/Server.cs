@@ -35,6 +35,17 @@ namespace Game.DataClasses
 
         private static Server _Instance;
 
+        internal PendingUserInfo RetrievePendingUser(string account)
+        {
+            PendingUserInfo info;
+            if (!this.PendingUsers.TryGetValue(account, out info))
+            {
+                return null;
+            }
+
+            return info;
+        }
+
         public static Server Instance
         {
             get
