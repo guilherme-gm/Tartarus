@@ -38,6 +38,9 @@ namespace Game.Helpers
                 case ClientGamePackets.CharacterList:
                     message = new CG.CharacterList();
                     return new Business.Client.CharacterList();
+                case ClientGamePackets.CreateCharacter:
+                    message = new CG.CreateCharacter();
+                    return new Business.Client.CreateCharacter();
                 case ClientGamePackets.AccountWithAuth:
                     message = new CG.AccountWithAuth();
                     return new Business.Client.AccountWithAuth();

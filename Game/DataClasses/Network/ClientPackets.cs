@@ -21,6 +21,7 @@ namespace Game.DataClasses.Network
     {
         Version = 0x0032,           // 50
         CharacterList = 0x07D1,     // 2001
+        CreateCharacter = 0x07D2,   // 2002
         AccountWithAuth = 0x07D5,   // 2005
         CheckCharacterName = 0x07D6,// 2006
         SystemSpecs = 0x1F40,       // 8000

@@ -14,6 +14,8 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
+using Common.Utils;
+using Game.DataClasses;
 using Game.DataClasses.Lobby;
 using Game.Utils;
 using MySql.Data.MySqlClient;
@@ -53,7 +55,7 @@ namespace Game.DataRepository
 
                     using (DbDataReader charReader = charCommand.ExecuteReader())
                     {
-                        if (charReader.Read())
+                        while (charReader.Read())
                         {
                             LobbyCharacterInfo character = new LobbyCharacterInfo();
                             itemCommand.Parameters["characterId"].Value = charReader.GetInt64(0);
@@ -106,10 +108,76 @@ namespace Game.DataRepository
         }
         #endregion
 
-        public void CreateCharacter(LobbyCharacterInfo character)
+        #region Create Character(Account ID, Character Info)
+        public bool CreateCharacter(int accountId, LobbyCharacterInfo character, Item[] startItems, int startX, int startY)
         {
+            IConnectionFactory conFactory = ConnectionFactory.Instance;
+            MySqlConnection con = (MySqlConnection)conFactory.GetConnection();
+            long id = -1;
+            
+            using (MySqlTransaction tran = con.BeginTransaction())
+            {
+                try
+                {
+                    using (MySqlCommand command = con.CreateCommand())
+                    {
+                        command.CommandType = System.Data.CommandType.StoredProcedure;
+                        command.CommandText = "usp_Lobby_CreateCharacter";
+                        command.Parameters.AddWithValue("accountId", accountId);
+                        command.Parameters.AddWithValue("cName", character.Name);
+                        command.Parameters.AddWithValue("race", character.ModelInfo.Race);
+                        command.Parameters.AddWithValue("sex", character.ModelInfo.Sex);
+                        command.Parameters.AddWithValue("job", character.Job);
+                        command.Parameters.AddWithValue("skinColor", character.SkinColor);
+                        command.Parameters.AddWithValue("hairId", character.ModelInfo.ModelId[0]);
+                        command.Parameters.AddWithValue("faceId", character.ModelInfo.ModelId[1]);
+                        command.Parameters.AddWithValue("bodyId", character.ModelInfo.ModelId[2]);
+                        command.Parameters.AddWithValue("handsId", character.ModelInfo.ModelId[3]);
+                        command.Parameters.AddWithValue("feetId", character.ModelInfo.ModelId[4]);
+                        command.Parameters.AddWithValue("textureId", character.ModelInfo.TextureId);
+                        command.Parameters.AddWithValue("startX", startX);
+                        command.Parameters.AddWithValue("startY", startY);
+                        command.Parameters.Add(new MySqlParameter("characterId", MySqlDbType.UInt64) { Direction = System.Data.ParameterDirection.Output });
+                        
+                        command.ExecuteNonQuery();
+                        id = Convert.ToInt64(command.Parameters["characterId"].Value);
+                    }
 
+                    using (MySqlCommand command = con.CreateCommand())
+                    {
+                        command.CommandType = System.Data.CommandType.StoredProcedure;
+                        command.CommandText = "usp_Character_InsertItem";
+                        command.Parameters.AddWithValue("charId", id);
+                        command.Parameters.AddWithValue("iCode", 0);
+                        command.Parameters.AddWithValue("position", 0);
+                        command.Parameters.AddWithValue("amount", 0);
+                        command.Parameters.AddWithValue("iLevel", 0);
+
+                        foreach (Item item in startItems)
+                        {
+                            command.Parameters["iCode"].Value = item.Code;
+                            command.Parameters["position"].Value = item.Position;
+                            command.Parameters["amount"].Value = item.Amount;
+                            command.Parameters["iLevel"].Value = item.Level;
+                            command.ExecuteNonQuery();
+                        }
+                    }
+
+                    tran.Commit();
+                }
+                catch (Exception ex)
+                {
+                    ConsoleUtils.ShowSQL("{0} (At: {1})", ex.Message, "LobbyRepository.CreateCharacter");
+                    tran.Rollback();
+                    return false;
+                }
+            }
+
+            conFactory.Close(con);
+
+            return true;
         }
+        #endregion
 
         public bool DeleteCharacter(int charId)
         {
