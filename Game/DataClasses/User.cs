@@ -21,6 +21,7 @@ namespace Game.DataClasses
 	public class User : Client
 	{
 		public int AccountId { get; set; }
+        public string DeleteCharacter { get; set; }
 
         public User(int accountId)
         {

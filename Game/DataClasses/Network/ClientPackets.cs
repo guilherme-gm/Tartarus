@@ -26,6 +26,7 @@ namespace Game.DataClasses.Network
         AccountWithAuth = 0x07D5,   // 2005
         CheckCharacterName = 0x07D6,// 2006
         SystemSpecs = 0x1F40,       // 8000
+        SecurityNo = 0x232D,        // 9005
         Unknown = 0x270F,           // 9999
     }
 
@@ -33,5 +34,6 @@ namespace Game.DataClasses.Network
     {
         Result = 0x0000,            // 0
         CharacterList = 0x07D4,     // 2004
+        RequestSecurityNo = 0x232C, // 9003
     }
 }

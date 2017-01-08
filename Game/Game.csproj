@@ -68,6 +68,7 @@
     <Compile Include="Business\Client\CheckCharacterName.cs" />
     <Compile Include="Business\Client\CreateCharacter.cs" />
     <Compile Include="Business\Client\DeleteCharacter.cs" />
+    <Compile Include="Business\Client\SecurityNo.cs" />
     <Compile Include="Business\Client\Version.cs" />
     <Compile Include="Business\ICommand.cs" />
     <Compile Include="Business\Server\ClientLogin.cs" />
@@ -89,9 +90,11 @@
     <Compile Include="DataClasses\Network\ClientGame\CheckCharacterName.cs" />
     <Compile Include="DataClasses\Network\ClientGame\CreateCharacter.cs" />
     <Compile Include="DataClasses\Network\ClientGame\DeleteCharacter.cs" />
+    <Compile Include="DataClasses\Network\ClientGame\SecurityNo.cs" />
     <Compile Include="DataClasses\Network\ClientGame\Version.cs" />
     <Compile Include="DataClasses\Network\ClientPackets.cs" />
     <Compile Include="DataClasses\Network\GameClient\CharacterList.cs" />
+    <Compile Include="DataClasses\Network\GameClient\RequestSecurityNo.cs" />
     <Compile Include="DataClasses\Network\GameClient\Result.cs" />
     <Compile Include="DataClasses\NPC.cs" />
     <Compile Include="DataClasses\PendingUserInfo.cs" />
@@ -110,6 +113,7 @@
     <Compile Include="DataClasses\SummonBase.cs" />
     <Compile Include="DataClasses\User.cs" />
     <Compile Include="DataRepository\LobbyRepository.cs" />
+    <Compile Include="DataRepository\SecurityRepository.cs" />
     <Compile Include="Helpers\ClientCommandHelper.cs" />
     <Compile Include="Helpers\ServerCommandHelper.cs" />
     <Compile Include="Program.cs" />

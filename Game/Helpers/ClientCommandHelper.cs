@@ -53,6 +53,9 @@ namespace Game.Helpers
                 case ClientGamePackets.SystemSpecs:
                     message = null;
                     return null;
+                case ClientGamePackets.SecurityNo:
+                    message = new CG.SecurityNo();
+                    return new Business.Client.SecurityNo();
                 case ClientGamePackets.Unknown:
                     message = null;
                     return null;

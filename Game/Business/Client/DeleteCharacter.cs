@@ -31,21 +31,32 @@ namespace Game.Business.Client
         public void Execute(Session session, Packet message)
         {
             CG.DeleteCharacter packet = (CG.DeleteCharacter)message;
-            GC.Result result = new GC.Result();
 
             User user = (User)session._Client;
             if (user == null)
                 return;
 
-            LobbyRepository repo = new LobbyRepository();
+            if (!Settings.DeleteUseSecurity)
+            {
+                GC.Result result = new GC.Result();
+                LobbyRepository repo = new LobbyRepository();
 
-            result.RequestMessageId = packet.Id;
-            if (repo.DeleteCharacter(user.AccountId, packet.CharacterName))
-                result.ResultCode = (ushort)CG.DeleteCharacter.ResultCodes.Success;
-            
-            // TODO : Is there an else for this?
+                result.RequestMessageId = packet.Id;
+                if (repo.DeleteCharacter(user.AccountId, packet.CharacterName))
+                    result.ResultCode = (ushort)CG.DeleteCharacter.ResultCodes.Success;
 
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+                // TODO : Is there an else for this?
+
+                DataClasses.Server.ClientSockets.SendPacket(session, result);
+            }
+            else
+            {
+                user.DeleteCharacter = packet.CharacterName;
+
+                GC.RequestSecurityNo reqSecurity = new GC.RequestSecurityNo();
+                reqSecurity.Mode = (int)GC.RequestSecurityNo.SecurityMode.DeleteCharacter;
+                DataClasses.Server.ClientSockets.SendPacket(session, reqSecurity);
+            }
         }
         #endregion
     }

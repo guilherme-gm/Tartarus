@@ -35,8 +35,7 @@ namespace Game
 
         public static int MinPermission { get; private set; }
 
-        public static bool KeepDeletedCharacters { get; private set; }
-        public static string ForbiddenCharacters { get; private set; }
+        public static bool DeleteUseSecurity { get; private set; }
 
         public static int ConsoleSilent { get; private set; }
 
@@ -66,8 +65,7 @@ namespace Game
 
             MinPermission = reader.ReadInt32("min_permission", 0, int.MinValue, int.MaxValue);
 
-            KeepDeletedCharacters = reader.ReadBoolean("keep_deleted_characters", false);
-            ForbiddenCharacters = reader.ReadString("forbidden_characters", "", true);
+            DeleteUseSecurity = reader.ReadBoolean("delete_use_security", false);
 
             ConsoleSilent = reader.ReadInt32("console_silent", 0, int.MinValue, int.MaxValue);
 
