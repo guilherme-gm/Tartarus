@@ -69,6 +69,8 @@
     <Compile Include="Business\Client\CreateCharacter.cs" />
     <Compile Include="Business\Client\DeleteCharacter.cs" />
     <Compile Include="Business\Client\Login.cs" />
+    <Compile Include="Business\Client\RequestReturnLobby.cs" />
+    <Compile Include="Business\Client\ReturnLobby.cs" />
     <Compile Include="Business\Client\SecurityNo.cs" />
     <Compile Include="Business\Client\Version.cs" />
     <Compile Include="Business\ICommand.cs" />
@@ -99,6 +101,8 @@
     <Compile Include="DataClasses\Network\ClientGame\CreateCharacter.cs" />
     <Compile Include="DataClasses\Network\ClientGame\DeleteCharacter.cs" />
     <Compile Include="DataClasses\Network\ClientGame\Login.cs" />
+    <Compile Include="DataClasses\Network\ClientGame\RequestReturnLobby.cs" />
+    <Compile Include="DataClasses\Network\ClientGame\ReturnLobby.cs" />
     <Compile Include="DataClasses\Network\ClientGame\SecurityNo.cs" />
     <Compile Include="DataClasses\Network\ClientGame\Version.cs" />
     <Compile Include="DataClasses\Network\ClientPackets.cs" />

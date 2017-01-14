@@ -21,6 +21,8 @@ namespace Game.DataClasses.Network
     {
         Login = 0x0001,             // 1
         TimeSync = 0x0002,          // 2
+        ReturnLobby = 0x0017,       // 23
+        RequestReturnLobby = 0x0019,// 25
         Version = 0x0032,           // 50
         CharacterList = 0x07D1,     // 2001
         CreateCharacter = 0x07D2,   // 2002
