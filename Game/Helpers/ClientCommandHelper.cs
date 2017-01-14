@@ -32,6 +32,9 @@ namespace Game.Helpers
 
             switch (packetId)
             {
+                case ClientGamePackets.Login:
+                    message = new CG.Login();
+                    return new Business.Client.Login();
                 case ClientGamePackets.Version:
                     message = new CG.Version();
                     return new Business.Client.Version();

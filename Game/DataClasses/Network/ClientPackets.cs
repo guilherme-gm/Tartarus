@@ -19,6 +19,8 @@ namespace Game.DataClasses.Network
 {
     public enum ClientGamePackets : ushort
     {
+        Login = 0x0001,             // 1
+        TimeSync = 0x0002,          // 2
         Version = 0x0032,           // 50
         CharacterList = 0x07D1,     // 2001
         CreateCharacter = 0x07D2,   // 2002
@@ -33,7 +35,25 @@ namespace Game.DataClasses.Network
     public enum GameClientPackets : ushort
     {
         Result = 0x0000,            // 0
+        TimeSync = 0x0002,          // 2
+        LoginResult = 0x0004,       // 4
+        Chat = 0x0016,              // 22
+        WearInfo = 0x00CA,          // 202
+        Inventory = 0x00CF,         // 207
+        BeltSlotInfo = 0x00D8,      // 216
+        StatusChange = 0x01F4,      // 500
+        Property = 0x01FB,          // 507
+        QuestList = 0x0258,         // 600
+        ChangeLocation = 0x0385,    // 901
+        WeatherInfo = 0x0386,       // 902
+        StatInfo = 0x03E8,          // 1000
+        GoldUpdate = 0x03E9,        // 1001
+        LevelUpdate = 0x03EA,       // 1002
+        ExpUpdate = 0x03EB,         // 1003
+        GameTime = 0x044D,          // 1101
         CharacterList = 0x07D4,     // 2004
+        OpenUrl = 0x2328,           // 9000
+        UrlList = 0x2329,           // 9001
         RequestSecurityNo = 0x232C, // 9003
     }
 }
