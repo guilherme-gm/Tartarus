@@ -87,6 +87,8 @@ namespace Game.DataClasses
                 UserRatio = 0
             };
 
+            Database.ItemBase.Load();
+
             AuthSocket =
                 new SocketService(
                     new ServerController(),

@@ -24,7 +24,7 @@ namespace Game.DataClasses.GameWorld
 {
     public class CreatureAttribute
     {
-        public short Critical { get; set; }
+        public short Critical { get; set; } // Crit Ratio
         public short CriticalPower { get; set; }
         public short AttackPointRight { get; set; }
         public short AttackPointLeft { get; set; }
