@@ -36,81 +36,49 @@ namespace Game.DataClasses.Database
             }
 
             Db = new Dictionary<int, ItemBase>();
-            int i = ParseFile("Database/ItemDatabase.csv", false);
-            if (i >= 0)
-                ConsoleUtils.ShowInfo("'{0}' entries read from '{1}'.", i, "Database/ItemDatabase.csv");
+            StringUtils.ReadDatabase("Database/ItemDatabase.csv", 12, ReadEntry, false, true);
         }
 
-        private static int ParseFile(string fileName, bool allowReplace)
+        private static void ReadEntry(string fileName, int lineNum, string[] columns, string[] values, bool allowReplace)
         {
-            // File exists check
-            if (!File.Exists(fileName))
+            // Read Entry
+            ItemBase item = new ItemBase();
+            int j = 0;
+            try
             {
-                ConsoleUtils.ShowFatalError("Could not find Item Database file '{0}'.", fileName);
-                return -1;
+                item.Code = int.Parse(values[j++]);
+                j++; // Dummy name
+                item.Type = int.Parse(values[j++]);
+                item.Group = int.Parse(values[j++]);
+                item.Class = int.Parse(values[j++]);
+                item.Grade = byte.Parse(values[j++]);
+                item.Rank = int.Parse(values[j++]);
+                item.Level = int.Parse(values[j++]);
+                item.Enhance = int.Parse(values[j++]);
+                item.SocketCount = int.Parse(values[j++]);
+                item.Weight = float.Parse(values[j++]);
+                item.WearType = int.Parse(values[j++]);
+            }
+            catch (Exception)
+            {
+                ConsoleUtils.ShowError("Could not parse column '{0}' in '{1}' at line '{2}'. Skipping line.", columns[j - 1], fileName, lineNum);
+                return;
             }
 
-            // Loads up the file and pattern
-            string pattern = "(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?)$";
-            string[] lines = File.ReadAllLines(fileName);
-            Regex regex = new Regex(pattern);
-
-            // Load column names
-            Match match = regex.Match(lines[0]);
-            string[] columns = new string[match.Groups.Count - 1];
-            for (int i = 1; i < match.Groups.Count; i++)
+            // Inserts entry in Database
+            if (Db.ContainsKey(item.Code))
             {
-                columns[i - 1] = match.Groups[i].ToString();
+                if (!allowReplace)
+                {
+                    ConsoleUtils.ShowError("Duplicated code detected in '{0}' at line '{1}'. Skipping entry.", fileName, lineNum);
+                    return;
+                }
+                Db[item.Code] = item;
             }
-
-            // Run through entries
-            int count = 0;
-            for (int i = 1; i < lines.Length; i++)
+            else
             {
-                int j = 1;
-                match = regex.Match(lines[i]);
-
-                // Parse entry
-                ItemBase item = new ItemBase();
-                try
-                {
-                    item.Code = int.Parse(match.Groups[j++].ToString());
-                    j++; // Dummy name
-                    item.Type = int.Parse(match.Groups[j++].ToString());
-                    item.Group = int.Parse(match.Groups[j++].ToString());
-                    item.Class = int.Parse(match.Groups[j++].ToString());
-                    item.Grade = byte.Parse(match.Groups[j++].ToString());
-                    item.Rank = int.Parse(match.Groups[j++].ToString());
-                    item.Level = int.Parse(match.Groups[j++].ToString());
-                    item.Enhance = int.Parse(match.Groups[j++].ToString());
-                    item.SocketCount = int.Parse(match.Groups[j++].ToString());
-                    item.Weight = float.Parse(match.Groups[j++].ToString());
-                    item.WearType = int.Parse(match.Groups[j++].ToString());
-                }
-                catch (Exception)
-                {
-                    ConsoleUtils.ShowError("Could not parse column '{0}' in '{1}' at line '{2}'. Skipping line.", columns[j-2], fileName, i);
-                    continue;
-                }
-
-                // Inserts entry in Database
-                if (Db.ContainsKey(item.Code))
-                {
-                    if (!allowReplace)
-                    {
-                        ConsoleUtils.ShowError("Duplicated code detected in '{0}' at line '{1}'. Skipping entry.", fileName, i);
-                        continue;
-                    }
-                    Db[item.Code] = item;
-                }
-                else
-                {
-                    Db.Add(item.Code, item);
-                }
-                count++;
+                Db.Add(item.Code, item);
             }
-
-            return count;
         }
         #endregion
 
