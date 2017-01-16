@@ -76,6 +76,7 @@ namespace Game.DataClasses
         {
             this.Reconnecting = false;
 
+            #region Sets Server Info
             ServerInfo = new ServerInfo()
             {
                 AdultServer = false,
@@ -86,9 +87,16 @@ namespace Game.DataClasses
                 ScreenshotUrl = Settings.NoticeUrl,
                 UserRatio = 0
             };
+            #endregion
 
+            #region Load Databases
             Database.ItemBase.Load();
+            Database.StatBase.Load(); // Must always load before Job
+            Database.JobBase.Load();
+            Database.JobLevelBonus.Load();
+            #endregion
 
+            #region Start Connection
             AuthSocket =
                 new SocketService(
                     new ServerController(),
@@ -108,6 +116,7 @@ namespace Game.DataClasses
             ClientSockets.StartListening(Settings.ServerPort, Settings.OpenExternal);
 
             ConsoleUtils.ShowStatus("Game Server initialized.");
+            #endregion
 
             string input;
             do
@@ -116,6 +125,7 @@ namespace Game.DataClasses
             } while (input != "quit");
         }
 
+        #region Inter-Server Connection Events
         private async void AuthSocket_OnConnectionFailed()
         {
             ConsoleUtils.ShowError("Could not connect to Auth-Server, trying again in 2 seconds");
@@ -156,6 +166,7 @@ namespace Game.DataClasses
                 new Common.DataClasses.Network.GameAuth.Login() { ServerInfo = Server.ServerInfo }
             );
         }
+        #endregion
 
         public void AddPendingUser(string userId, PendingUserInfo info)
         {

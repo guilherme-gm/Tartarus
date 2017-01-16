@@ -77,6 +77,9 @@
     <Compile Include="Business\Server\ClientLogin.cs" />
     <Compile Include="Business\Server\LoginResult.cs" />
     <Compile Include="DataClasses\Creature.cs" />
+    <Compile Include="DataClasses\Database\JobLevelBonus.cs" />
+    <Compile Include="DataClasses\Database\StatBase.cs" />
+    <Compile Include="DataClasses\Database\JobBase.cs" />
     <Compile Include="DataClasses\Database\ItemBase.cs" />
     <Compile Include="DataClasses\GameWorld\CreatureAttribute.cs" />
     <Compile Include="DataClasses\GameWorld\CreatureStat.cs" />

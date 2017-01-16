@@ -17,47 +17,45 @@
 using Common.Utils;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text.RegularExpressions;
 
 namespace Game.DataClasses.Database
 {
-    public class ItemBase
+    public class JobBase
     {
-        public static Dictionary<int, ItemBase> Db;
+        public static Dictionary<int, JobBase> Db;
 
         #region Database Loading
         public static void Load()
         {
             if (Db != null)
             {
-                ConsoleUtils.ShowFatalError("Trying to load already loaded Item Database. Load Aborted.");
+                ConsoleUtils.ShowFatalError("Trying to load already loaded Job Database. Load Aborted.");
                 return;
             }
 
-            Db = new Dictionary<int, ItemBase>();
-            StringUtils.ReadDatabase("Database/ItemDatabase.csv", 12, ReadEntry, false, true);
+            Db = new Dictionary<int, JobBase>();
+            StringUtils.ReadDatabase("Database/JobDatabase.csv", 10, ReadEntry, false, true);
         }
 
         private static void ReadEntry(string fileName, int lineNum, string[] columns, string[] values, bool allowReplace)
         {
             // Read Entry
-            ItemBase item = new ItemBase();
+            JobBase job = new JobBase();
+            short statId;
             int j = 0;
             try
             {
-                item.Code = int.Parse(values[j++]);
+                job.Id = int.Parse(values[j++]);
                 j++; // Dummy name
-                item.Type = int.Parse(values[j++]);
-                item.Group = int.Parse(values[j++]);
-                item.Class = int.Parse(values[j++]);
-                item.Grade = byte.Parse(values[j++]);
-                item.Rank = int.Parse(values[j++]);
-                item.Level = int.Parse(values[j++]);
-                item.Enhance = int.Parse(values[j++]);
-                item.SocketCount = int.Parse(values[j++]);
-                item.Weight = float.Parse(values[j++]);
-                item.WearType = int.Parse(values[j++]);
+                statId = short.Parse(values[j++]);
+                job.Class = byte.Parse(values[j++]);
+                job.Depth = byte.Parse(values[j++]);
+                job.MaxLevel = short.Parse(values[j++]);
+                job.MaxJLevel = short.Parse(values[j++]);
+                job.NextJobs = new int[3];
+                job.NextJobs[0] = int.Parse(values[j++]);
+                job.NextJobs[1] = int.Parse(values[j++]);
+                job.NextJobs[2] = int.Parse(values[j++]);
             }
             catch (Exception)
             {
@@ -65,47 +63,51 @@ namespace Game.DataClasses.Database
                 return;
             }
 
+            // Ensure stat exists
+            job.Stat = StatBase.Get(statId);
+            if (job.Stat == null)
+            {
+                ConsoleUtils.ShowError("Job '{0}' StatId '{1}' not found on Stat Database in '{2}' line '{3}'. Skipping line.", job.Id, statId, fileName, lineNum);
+                return;
+            }
+
             // Inserts entry in Database
-            if (Db.ContainsKey(item.Code))
+            if (Db.ContainsKey(job.Id))
             {
                 if (!allowReplace)
                 {
                     ConsoleUtils.ShowError("Duplicated code detected in '{0}' at line '{1}'. Skipping entry.", fileName, lineNum);
                     return;
                 }
-                Db[item.Code] = item;
+                Db[job.Id] = job;
             }
             else
             {
-                Db.Add(item.Code, item);
+                Db.Add(job.Id, job);
             }
         }
         #endregion
 
         #region Database Commands
-        public static ItemBase Get(int itemId)
+        public static JobBase Get(int jobId)
         {
-            ItemBase item;
-            if (!Db.TryGetValue(itemId, out item))
+            JobBase job;
+            if (!Db.TryGetValue(jobId, out job))
             {
                 return null;
             }
-            return item;
+            return job;
         }
         #endregion
 
         #region Properties
-        public int Code { get; private set; }
-        public int Type { get; private set; }
-        public int Group { get; private set; }
-        public int Class { get; private set; }
-        public byte Grade { get; private set; }
-        public int Rank { get; private set; }
-        public int Level { get; private set; }
-        public int Enhance { get; private set; }
-        public int SocketCount { get; private set; }
-        public float Weight { get; private set; }
-        public int WearType { get; private set; }
+        public int Id { get; private set; }
+        public StatBase Stat { get; private set; }
+        public byte Class { get; private set; }
+        public byte Depth { get; private set; }
+        public short MaxLevel { get; private set; }
+        public short MaxJLevel { get; private set; }
+        public int[] NextJobs { get; private set; }
         #endregion
     }
 }

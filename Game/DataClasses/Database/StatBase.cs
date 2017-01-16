@@ -17,47 +17,41 @@
 using Common.Utils;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text.RegularExpressions;
 
 namespace Game.DataClasses.Database
 {
-    public class ItemBase
+    public class StatBase
     {
-        public static Dictionary<int, ItemBase> Db;
+        public static Dictionary<short, StatBase> Db;
 
         #region Database Loading
         public static void Load()
         {
             if (Db != null)
             {
-                ConsoleUtils.ShowFatalError("Trying to load already loaded Item Database. Load Aborted.");
+                ConsoleUtils.ShowFatalError("Trying to load already loaded Stat Database. Load Aborted.");
                 return;
             }
 
-            Db = new Dictionary<int, ItemBase>();
-            StringUtils.ReadDatabase("Database/ItemDatabase.csv", 12, ReadEntry, false, true);
+            Db = new Dictionary<short, StatBase>();
+            StringUtils.ReadDatabase("Database/StatDatabase.csv", 8, ReadEntry, false, true);
         }
 
         private static void ReadEntry(string fileName, int lineNum, string[] columns, string[] values, bool allowReplace)
         {
             // Read Entry
-            ItemBase item = new ItemBase();
+            StatBase stat = new StatBase();
             int j = 0;
             try
             {
-                item.Code = int.Parse(values[j++]);
-                j++; // Dummy name
-                item.Type = int.Parse(values[j++]);
-                item.Group = int.Parse(values[j++]);
-                item.Class = int.Parse(values[j++]);
-                item.Grade = byte.Parse(values[j++]);
-                item.Rank = int.Parse(values[j++]);
-                item.Level = int.Parse(values[j++]);
-                item.Enhance = int.Parse(values[j++]);
-                item.SocketCount = int.Parse(values[j++]);
-                item.Weight = float.Parse(values[j++]);
-                item.WearType = int.Parse(values[j++]);
+                stat.Id = short.Parse(values[j++]);
+                stat.Strength = short.Parse(values[j++]);
+                stat.Vitality = short.Parse(values[j++]);
+                stat.Dexterity = short.Parse(values[j++]);
+                stat.Agility = short.Parse(values[j++]);
+                stat.Intelligence = short.Parse(values[j++]);
+                stat.Wisdom = short.Parse(values[j++]);
+                stat.Luck = short.Parse(values[j++]);
             }
             catch (Exception)
             {
@@ -66,46 +60,43 @@ namespace Game.DataClasses.Database
             }
 
             // Inserts entry in Database
-            if (Db.ContainsKey(item.Code))
+            if (Db.ContainsKey(stat.Id))
             {
                 if (!allowReplace)
                 {
                     ConsoleUtils.ShowError("Duplicated code detected in '{0}' at line '{1}'. Skipping entry.", fileName, lineNum);
                     return;
                 }
-                Db[item.Code] = item;
+                Db[stat.Id] = stat;
             }
             else
             {
-                Db.Add(item.Code, item);
+                Db.Add(stat.Id, stat);
             }
         }
         #endregion
 
         #region Database Commands
-        public static ItemBase Get(int itemId)
+        public static StatBase Get(short statId)
         {
-            ItemBase item;
-            if (!Db.TryGetValue(itemId, out item))
+            StatBase stat;
+            if (!Db.TryGetValue(statId, out stat))
             {
                 return null;
             }
-            return item;
+            return stat;
         }
         #endregion
 
         #region Properties
-        public int Code { get; private set; }
-        public int Type { get; private set; }
-        public int Group { get; private set; }
-        public int Class { get; private set; }
-        public byte Grade { get; private set; }
-        public int Rank { get; private set; }
-        public int Level { get; private set; }
-        public int Enhance { get; private set; }
-        public int SocketCount { get; private set; }
-        public float Weight { get; private set; }
-        public int WearType { get; private set; }
+        public short Id { get; private set; }
+        public short Strength { get; private set; }
+        public short Vitality { get; private set; }
+        public short Dexterity { get; private set; }
+        public short Agility { get; private set; }
+        public short Intelligence { get; private set; }
+        public short Wisdom { get; private set; }
+        public short Luck { get; private set; }
         #endregion
     }
 }
