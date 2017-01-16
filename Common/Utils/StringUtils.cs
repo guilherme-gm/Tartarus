@@ -61,6 +61,7 @@ namespace Common.Utils
             string[] columns = new string[columnsCount];
             foreach (string line in File.ReadLines(fileName))
             {
+                lineNum++;
                 Match match = regex.Match(line);
                 if (match.Groups.Count != columnsCount + 1)
                 {
@@ -68,7 +69,7 @@ namespace Common.Utils
                 }
                 else
                 {
-                    if (lineNum == 0)
+                    if (lineNum == 1)
                     {
                         // First row, header
                         for (int i = 1; i < match.Groups.Count; i++)
@@ -99,7 +100,6 @@ namespace Common.Utils
                         count++;
                     }
                 }
-                lineNum++;
             }
 
             ConsoleUtils.ShowInfo("'{0}' entries read from '{1}'.", count, fileName);
