@@ -18,13 +18,13 @@ using Game.DataClasses;
 
 namespace Game.DataClasses
 {
-	public class Summon : Creature
-	{
-		private Player Master;
+	//public class Summon : Creature
+	//{
+	//	private Player Master;
 
-		private SummonBase summonBase;
+	//	private SummonBase summonBase;
 
-	}
+	//}
 
 }
 

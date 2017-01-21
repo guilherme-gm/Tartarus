@@ -18,13 +18,13 @@ namespace Game.DataClasses
 {
 	public class Position
 	{
-		private float X;
+		public float X { get; set; }
 
-		private float Y;
+		public float Y { get; set; }
 
-		private float Z;
+		public float Z { get; set; }
 
-		private byte Layer;
+		public byte Layer { get; set; }
 
 	}
 

@@ -18,9 +18,9 @@ using Game.DataClasses;
 
 namespace Game.DataClasses
 {
-	public class NPC : Creature
-	{
-	}
+	//public class NPC : Creature
+	//{
+	//}
 
 }
 

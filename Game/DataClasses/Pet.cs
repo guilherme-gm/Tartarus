@@ -18,11 +18,11 @@ using Game.DataClasses;
 
 namespace Game.DataClasses
 {
-	public class Pet : Creature
-	{
-		private PetBase petBase;
+	//public class Pet : Creature
+	//{
+	//	private PetBase petBase;
 
-	}
+	//}
 
 }
 

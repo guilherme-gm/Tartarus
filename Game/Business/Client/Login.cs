@@ -39,6 +39,9 @@ namespace Game.Business.Client
             };
             DataClasses.Server.ClientSockets.SendPacket(session, result);
 
+            Player player = Player.Create((User)session._Client, packet.Name);
+            player.Load();
+
             result = new GC.StatInfo()
             {
                 Handle = 0x80000600,
@@ -121,27 +124,27 @@ namespace Game.Business.Client
             result = new GC.LoginResult()
             {
                 IsAccepted = true,
-                Handle = 0x80000600,
-                X = 164624,
-                Y = 52561,
-                Z = 0,
-                Layer = 1,
-                FaceDirection = 0,
+                Handle = player.GID,
+                X = player.Position.X,
+                Y = player.Position.Y,
+                Z = player.Position.Z,
+                Layer = player.Position.Layer,
+                FaceDirection = 0, // TODO: Face Direction
                 RegionSize = 180,
-                HP = 320,
-                MP = 320,
-                MaxHP = 320,
-                MaxMP = 320,
-                Havoc = 0,
-                MaxHavoc = 0,
-                Sex = 2,
-                Race = 4,
-                SkinColor = 8487040,
-                FaceId = 202,
-                HairId = 102,
-                Name = "Tartarus",
+                HP = player.HP,
+                MP = (short) player.MP, // TODO : Client uses short, while server Int
+                MaxHP = 320, // TODO : MaxHp
+                MaxMP = 320, // TODO : MaxMp
+                Havoc = player.Havoc,
+                MaxHavoc = player.MaxHavoc,
+                Sex = player.Sex,
+                Race = player.Race,
+                SkinColor = player.SkinColor,
+                HairId = player.BaseModel[0],
+                FaceId = player.BaseModel[1],
+                Name = player.Name,
                 CellSize = 6,
-                GuildId = 0
+                GuildId = player.GuildId
             };
             DataClasses.Server.ClientSockets.SendPacket(session, result);
 
@@ -166,8 +169,8 @@ namespace Game.Business.Client
 
             result = new GC.GoldUpdate()
             {
-                Gold = 0,
-                Chaos = 0
+                Gold = player.Gold,
+                Chaos = player.Chaos
             };
             DataClasses.Server.ClientSockets.SendPacket(session, result);
 
@@ -176,7 +179,7 @@ namespace Game.Business.Client
                 Handle = 0x80000600,
                 IsNumber = true,
                 Name = "chaos",
-                Value = 0
+                Value = player.Chaos
             };
             DataClasses.Server.ClientSockets.SendPacket(session, result);
 
@@ -201,7 +204,7 @@ namespace Game.Business.Client
                 Handle = 0x80000600,
                 IsNumber = true,
                 Name = "job",
-                Value = 200
+                Value = player.Job.Id
             };
             DataClasses.Server.ClientSockets.SendPacket(session, result);
 

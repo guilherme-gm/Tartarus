@@ -18,9 +18,9 @@ using Game.DataClasses;
 
 namespace Game.DataClasses
 {
-	public class SkillProp : GameObject
-	{
-	}
+	//public class SkillProp : GameObject
+	//{
+	//}
 
 }
 

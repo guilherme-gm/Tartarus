@@ -22,6 +22,7 @@ namespace Game.DataClasses
 	{
 		public int AccountId { get; set; }
         public string DeleteCharacter { get; set; }
+        public Player Character { get; set; }
 
         public User(int accountId)
         {

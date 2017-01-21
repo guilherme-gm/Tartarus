@@ -18,11 +18,11 @@ using Game.DataClasses;
 
 namespace Game.DataClasses
 {
-	public class Monster : Creature
-	{
-		private MonsterBase monsterBase;
+	//public class Monster : Creature
+	//{
+	//	private MonsterBase monsterBase;
 
-	}
+	//}
 
 }
 

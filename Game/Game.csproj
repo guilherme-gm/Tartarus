@@ -76,7 +76,7 @@
     <Compile Include="Business\ICommand.cs" />
     <Compile Include="Business\Server\ClientLogin.cs" />
     <Compile Include="Business\Server\LoginResult.cs" />
-    <Compile Include="DataClasses\Creature.cs" />
+    <Compile Include="DataClasses\Objects\Creature.cs" />
     <Compile Include="DataClasses\Database\JobLevelBonus.cs" />
     <Compile Include="DataClasses\Database\StatBase.cs" />
     <Compile Include="DataClasses\Database\JobBase.cs" />
@@ -84,7 +84,7 @@
     <Compile Include="DataClasses\GameWorld\CreatureAttribute.cs" />
     <Compile Include="DataClasses\GameWorld\CreatureStat.cs" />
     <Compile Include="DataClasses\FieldProp.cs" />
-    <Compile Include="DataClasses\GameObject.cs" />
+    <Compile Include="DataClasses\Objects\GameObject.cs" />
     <Compile Include="DataClasses\GameWorld\ItemBaseInfo.cs" />
     <Compile Include="DataClasses\GameWorld\ItemInfo.cs" />
     <Compile Include="DataClasses\GameWorld\PendingQuestInfo.cs" />
@@ -93,7 +93,6 @@
     <Compile Include="DataClasses\Item.cs" />
     <Compile Include="DataClasses\ItemBase.cs" />
     <Compile Include="DataClasses\Job.cs" />
-    <Compile Include="DataClasses\JobBase.cs" />
     <Compile Include="DataClasses\Lobby\LobbyCharacterInfo.cs" />
     <Compile Include="DataClasses\Lobby\ModelInfo.cs" />
     <Compile Include="DataClasses\Monster.cs" />
@@ -134,7 +133,7 @@
     <Compile Include="DataClasses\PendingUserInfo.cs" />
     <Compile Include="DataClasses\Pet.cs" />
     <Compile Include="DataClasses\PetBase.cs" />
-    <Compile Include="DataClasses\Player.cs" />
+    <Compile Include="DataClasses\Objects\Player.cs" />
     <Compile Include="DataClasses\Position.cs" />
     <Compile Include="DataClasses\Region.cs" />
     <Compile Include="DataClasses\Server.cs" />
@@ -146,6 +145,7 @@
     <Compile Include="DataClasses\Summon.cs" />
     <Compile Include="DataClasses\SummonBase.cs" />
     <Compile Include="DataClasses\User.cs" />
+    <Compile Include="DataRepository\CharacterRepository.cs" />
     <Compile Include="DataRepository\LobbyRepository.cs" />
     <Compile Include="DataRepository\SecurityRepository.cs" />
     <Compile Include="Helpers\ClientCommandHelper.cs" />

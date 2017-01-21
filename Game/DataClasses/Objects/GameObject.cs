@@ -14,10 +14,24 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
+using Game.DataClasses;
+
 namespace Game.DataClasses
 {
-	public class JobBase
+	public abstract class GameObject
 	{
+		public bool InWorld { get; set; }
+
+		public Region Region { get; set; }
+
+		public Position Position { get; set; }
+
+		public uint GID { get; set; }
+
+        public GameObject(uint gid)
+        {
+            this.GID = gid;
+        }
 	}
 
 }

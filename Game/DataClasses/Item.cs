@@ -43,7 +43,8 @@ namespace Game.DataClasses
         public DateTime CreateTime { get; set; }
         public DateTime UpdateTime { get; set; }
 
-        public Item()
+        // TODO : 0 is a placeholder
+        public Item() : base(0)
         {
             this.Socket = new int[MaxSockets];
             this.ElementalEffectExpireTime = new DateTime();
