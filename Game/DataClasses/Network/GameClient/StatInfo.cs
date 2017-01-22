@@ -60,7 +60,7 @@ namespace Game.DataClasses.Network.GameClient
             writer.Write(this.Stat.Dexterity);
             writer.Write(this.Stat.Agility);
             writer.Write(this.Stat.Intelligence);
-            writer.Write(this.Stat.Mentality);
+            writer.Write(this.Stat.Wisdom);
             writer.Write(this.Stat.Luck);
 
             writer.Write(this.Attribute.Critical);

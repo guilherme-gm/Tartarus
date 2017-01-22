@@ -15,14 +15,17 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Game.DataClasses;
+using Game.DataClasses.GameWorld;
 using Game.DataClasses.Lobby;
 using Game.DataRepository;
 using System.Collections.Generic;
+using GC = Game.DataClasses.Network.GameClient;
 
 namespace Game.DataClasses
 {
 	public class Player : Creature
 	{
+        #region Object Creation
         private static uint LastUsedHandle = 0x0806;
         private static Stack<uint> HandlePool = new Stack<uint>();
         
@@ -47,6 +50,7 @@ namespace Game.DataClasses
             Player player = new Player(gid, user, name);
             return player;
         }
+        #endregion
 
         public User User { get; set; }
         
@@ -87,12 +91,63 @@ namespace Game.DataClasses
         {
             this.User = user;
             this.Name = name;
+            this.inventory = new Inventory();
+            this.Position = new Position();
         }
 
         public bool Load()
         {
+            // Loads character base
             CharacterRepository repo = new CharacterRepository();
-            return repo.LoadCharacter(this);
+            if (!repo.LoadCharacter(this))
+                return false;
+
+            // TODO : Loads character inventory
+
+            CalculateStats();
+            CalculateStatsByState();
+
+            return true;
+        }
+
+        public void CalculateStats()
+        {
+            // Loads character base stat info
+            this.Stats.LoadBase();
+
+            // TODO : Get level bonus stats
+
+            // TODO : Get equipped item stats
+
+            // TODO : Calculate Attributes
+
+            GC.StatInfo statInfo = new GC.StatInfo()
+            {
+                Handle = this.GID,
+                Stat = this.Stats,
+                Attribute = new CreatureAttribute(),
+                Type = 0
+            };
+            Server.ClientSockets.SendPacket(this.User._Session, statInfo);
+        }
+
+        public void CalculateStatsByState()
+        {
+            // Reset stats to 0
+            this.StatsByState = new CreatureStat();
+
+            // TODO : Get equipped item stats
+
+            // TODO : Calculate Attributes
+
+            GC.StatInfo statInfo = new GC.StatInfo()
+            {
+                Handle = this.GID,
+                Stat = this.Stats,
+                Attribute = new CreatureAttribute(),
+                Type = 0
+            };
+            Server.ClientSockets.SendPacket(this.User._Session, statInfo);
         }
 	}
 

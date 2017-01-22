@@ -40,84 +40,11 @@ namespace Game.Business.Client
             DataClasses.Server.ClientSockets.SendPacket(session, result);
 
             Player player = Player.Create((User)session._Client, packet.Name);
-            player.Load();
-
-            result = new GC.StatInfo()
-            {
-                Handle = 0x80000600,
-                Stat = new DataClasses.GameWorld.CreatureStat()
-                {
-                    StatId = 200,
-                    Strength = 10,
-                    Agility = 10,
-                    Vitality = 10,
-                    Dexterity = 10,
-                    Intelligence = 10,
-                    Luck = 10,
-                    Mentality = 10
-                },
-                Attribute = new DataClasses.GameWorld.CreatureAttribute()
-                {
-                    
-                },
-                Type = 0
-            };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
-
-            result = new GC.StatInfo()
-            {
-                Handle = 0x80000600,
-                Stat = new DataClasses.GameWorld.CreatureStat()
-                {
-
-                },
-                Attribute = new DataClasses.GameWorld.CreatureAttribute()
-                {
-
-                },
-                Type = 1
-            };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
-
-            result = new GC.Property()
-            {
-                Handle = 0x80000600,
-                IsNumber = true,
-                Name = "max_havoc",
-                Value = 0
-            };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
-
-            result = new GC.Property()
-            {
-                Handle = 0x80000600,
-                IsNumber = true,
-                Name = "max_chaos",
-                Value = 0
-            };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            bool load = player.Load();
             
-            result = new GC.Property()
-            {
-                Handle = 0x80000600,
-                IsNumber = true,
-                Name = "max_stamina",
-                Value = 50000
-            };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
-
             result = new DataClasses.Network.Both.TimeSync()
             {
                 Time = 16174
-            };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
-
-            result = new GC.Property()
-            {
-                Handle = 0x80000600,
-                IsNumber = true,
-                Name = "max_havoc",
-                Value = 0
             };
             DataClasses.Server.ClientSockets.SendPacket(session, result);
 
@@ -148,6 +75,70 @@ namespace Game.Business.Client
             };
             DataClasses.Server.ClientSockets.SendPacket(session, result);
 
+            // Stat Info
+            result = new GC.StatInfo()
+            {
+                Handle = player.GID,
+                Stat = player.Stats,
+                Attribute = new DataClasses.GameWorld.CreatureAttribute(),
+                Type = 0
+            };
+            DataClasses.Server.ClientSockets.SendPacket(session, result);
+
+            result = new GC.StatInfo()
+            {
+                Handle = player.GID,
+                Stat = player.StatsByState,
+                Attribute = new DataClasses.GameWorld.CreatureAttribute(),
+                Type = 1
+            };
+            DataClasses.Server.ClientSockets.SendPacket(session, result);
+
+            result = new GC.Property()
+            {
+                Handle = player.GID,
+                IsNumber = true,
+                Name = "max_havoc",
+                Value = 0
+            };
+            DataClasses.Server.ClientSockets.SendPacket(session, result);
+
+            result = new GC.Property()
+            {
+                Handle = player.GID,
+                IsNumber = true,
+                Name = "max_chaos",
+                Value = 0
+            };
+            DataClasses.Server.ClientSockets.SendPacket(session, result);
+
+            result = new GC.Property()
+            {
+                Handle = player.GID,
+                IsNumber = true,
+                Name = "max_stamina",
+                Value = 50000
+            };
+            DataClasses.Server.ClientSockets.SendPacket(session, result);
+
+            result = new DataClasses.Network.Both.TimeSync()
+            {
+                Time = 16174
+            };
+            DataClasses.Server.ClientSockets.SendPacket(session, result);
+
+            result = new GC.Property()
+            {
+                Handle = player.GID,
+                IsNumber = true,
+                Name = "max_havoc",
+                Value = 0
+            };
+            DataClasses.Server.ClientSockets.SendPacket(session, result);
+
+            // ====================
+
+
             result = new GC.Inventory()
             {
                 Count = 0,
@@ -159,7 +150,7 @@ namespace Game.Business.Client
 
             result = new GC.WearInfo()
             {
-                Handle = 0x80000600,
+                Handle = player.GID,
                 ElementalEffectType = new byte[24],
                 ItemCode = new int[24],
                 ItemEnhance = new int[24],
@@ -176,7 +167,7 @@ namespace Game.Business.Client
 
             result = new GC.Property()
             {
-                Handle = 0x80000600,
+                Handle = player.GID,
                 IsNumber = true,
                 Name = "chaos",
                 Value = player.Chaos
@@ -185,7 +176,7 @@ namespace Game.Business.Client
 
             result = new GC.LevelUpdate()
             {
-                Handle = 0x80000600,
+                Handle = player.GID,
                 JobLevel = 1,
                 Level = 1
             };
@@ -193,7 +184,7 @@ namespace Game.Business.Client
 
             result = new GC.ExpUpdate()
             {
-                Handle = 0x80000600,
+                Handle = player.GID,
                 Exp = 0,
                 JP = 0
             };
@@ -201,7 +192,7 @@ namespace Game.Business.Client
 
             result = new GC.Property()
             {
-                Handle = 0x80000600,
+                Handle = player.GID,
                 IsNumber = true,
                 Name = "job",
                 Value = player.Job.Id
@@ -210,7 +201,7 @@ namespace Game.Business.Client
 
             result = new GC.Property()
             {
-                Handle = 0x80000600,
+                Handle = player.GID,
                 IsNumber = true,
                 Name = "job_level",
                 Value = 1
@@ -219,7 +210,7 @@ namespace Game.Business.Client
 
             result = new GC.Property()
             {
-                Handle = 0x80000600,
+                Handle = player.GID,
                 IsNumber = true,
                 Name = "job_0",
                 Value = 0
@@ -228,7 +219,7 @@ namespace Game.Business.Client
 
             result = new GC.Property()
             {
-                Handle = 0x80000600,
+                Handle = player.GID,
                 IsNumber = true,
                 Name = "jlv_0",
                 Value = 0
@@ -237,7 +228,7 @@ namespace Game.Business.Client
 
             result = new GC.Property()
             {
-                Handle = 0x80000600,
+                Handle = player.GID,
                 IsNumber = true,
                 Name = "job_1",
                 Value = 0
@@ -246,7 +237,7 @@ namespace Game.Business.Client
 
             result = new GC.Property()
             {
-                Handle = 0x80000600,
+                Handle = player.GID,
                 IsNumber = true,
                 Name = "jlv_1",
                 Value = 0
@@ -255,7 +246,7 @@ namespace Game.Business.Client
 
             result = new GC.Property()
             {
-                Handle = 0x80000600,
+                Handle = player.GID,
                 IsNumber = true,
                 Name = "job_2",
                 Value = 0
@@ -264,7 +255,7 @@ namespace Game.Business.Client
 
             result = new GC.Property()
             {
-                Handle = 0x80000600,
+                Handle = player.GID,
                 IsNumber = true,
                 Name = "jlv_2",
                 Value = 0
@@ -286,7 +277,7 @@ namespace Game.Business.Client
 
             result = new GC.Property()
             {
-                Handle = 0x80000600,
+                Handle = player.GID,
                 IsNumber = true,
                 Name = "huntaholic_ent",
                 Value = 12
@@ -295,7 +286,7 @@ namespace Game.Business.Client
 
             result = new GC.Property()
             {
-                Handle = 0x80000600,
+                Handle = player.GID,
                 IsNumber = true,
                 Name = "dk_count",
                 Value = 0
@@ -304,7 +295,7 @@ namespace Game.Business.Client
 
             result = new GC.Property()
             {
-                Handle = 0x80000600,
+                Handle = player.GID,
                 IsNumber = true,
                 Name = "pk_count",
                 Value = 0
@@ -313,7 +304,7 @@ namespace Game.Business.Client
 
             result = new GC.Property()
             {
-                Handle = 0x80000600,
+                Handle = player.GID,
                 IsNumber = true,
                 Name = "immoral",
                 Value = 0
@@ -322,7 +313,7 @@ namespace Game.Business.Client
 
             result = new GC.Property()
             {
-                Handle = 0x80000600,
+                Handle = player.GID,
                 IsNumber = true,
                 Name = "stamina",
                 Value = 300
@@ -331,7 +322,7 @@ namespace Game.Business.Client
 
             result = new GC.Property()
             {
-                Handle = 0x80000600,
+                Handle = player.GID,
                 IsNumber = true,
                 Name = "channel",
                 Value = 1
@@ -340,7 +331,7 @@ namespace Game.Business.Client
 
             result = new GC.StatusChange()
             {
-                Handle = 0x80000600,
+                Handle = player.GID,
                 Status = 0
             };
             DataClasses.Server.ClientSockets.SendPacket(session, result);
@@ -370,7 +361,7 @@ namespace Game.Business.Client
             
             result = new GC.Property()
             {
-                Handle = 0x80000600,
+                Handle = player.GID,
                 IsNumber = true,
                 Name = "playtime",
                 Value = 0
@@ -379,7 +370,7 @@ namespace Game.Business.Client
 
             result = new GC.Property()
             {
-                Handle = 0x80000600,
+                Handle = player.GID,
                 IsNumber = true,
                 Name = "playtime_limit",
                 Value = 1080000
@@ -388,7 +379,7 @@ namespace Game.Business.Client
 
             result = new GC.Property()
             {
-                Handle = 0x80000600,
+                Handle = player.GID,
                 IsNumber = true,
                 Name = "playtime_limit2",
                 Value = 1800000
@@ -411,7 +402,7 @@ namespace Game.Business.Client
 
             result = new GC.Property()
             {
-                Handle = 0x80000600,
+                Handle = player.GID,
                 IsNumber = false,
                 Name = "client_info",
                 Value = 0,
@@ -421,7 +412,7 @@ namespace Game.Business.Client
 
             result = new GC.Property()
             {
-                Handle = 0x80000600,
+                Handle = player.GID,
                 IsNumber = true,
                 Name = "stamina_regen",
                 Value = 30

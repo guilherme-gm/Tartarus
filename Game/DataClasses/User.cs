@@ -24,9 +24,10 @@ namespace Game.DataClasses
         public string DeleteCharacter { get; set; }
         public Player Character { get; set; }
 
-        public User(int accountId)
+        public User(int accountId, Session session)
         {
             this.AccountId = accountId;
+            this._Session = session;
         }
 
 	}

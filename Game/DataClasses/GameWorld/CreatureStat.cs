@@ -15,10 +15,8 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Common.Utils;
+using Game.DataClasses.Database;
 
 namespace Game.DataClasses.GameWorld
 {
@@ -30,7 +28,25 @@ namespace Game.DataClasses.GameWorld
         public short Dexterity { get; set; }
         public short Agility { get; set; }
         public short Intelligence { get; set; }
-        public short Mentality { get; set; }
+        public short Wisdom { get; set; }
         public short Luck { get; set; }
+
+        internal void LoadBase()
+        {
+            StatBase sBase = StatBase.Get(this.StatId);
+            if (sBase == null)
+            {
+                string msg = String.Format("StatBase id '{0}' not found. At CreatureStat.LoadBase()", this.StatId);
+                ConsoleUtils.ShowFatalError(msg);
+                throw new Exception(msg);
+            }
+            this.Strength = sBase.Strength;
+            this.Vitality = sBase.Vitality;
+            this.Dexterity = sBase.Dexterity;
+            this.Agility = sBase.Agility;
+            this.Intelligence = sBase.Intelligence;
+            this.Wisdom = sBase.Wisdom;
+            this.Luck = sBase.Luck;
+        }
     }
 }

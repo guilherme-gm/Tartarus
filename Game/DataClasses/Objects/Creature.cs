@@ -16,6 +16,7 @@
 */
 using Game.DataClasses;
 using Game.DataClasses.Database;
+using Game.DataClasses.GameWorld;
 
 namespace Game.DataClasses
 {
@@ -37,8 +38,7 @@ namespace Game.DataClasses
         public int MP { get; set; }
 
         public int MaxMP { get; set; }
-
-
+        
         public int Stamina { get; set; }
 
         public int MaxStamina { get; set; }
@@ -59,9 +59,14 @@ namespace Game.DataClasses
 
         public int TotalJP { get; set; }
 
+        public CreatureStat Stats { get; set; }
+        public CreatureStat StatsByState { get; set; }
+
+
         public Creature(uint gid) : base(gid)
         {
-
+            this.Stats = new CreatureStat();
+            this.StatsByState = new CreatureStat();
         }
     }
 
