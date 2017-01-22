@@ -83,11 +83,11 @@ namespace Game.DataRepository
                             player.JobLevel = charReader.GetInt32(i++);
                             player.JP = charReader.GetInt32(i++);
                             player.TotalJP = charReader.GetInt32(i++);
-                            player.PrevJobs = new JobBase[3];
+                            player.PrevJobs = new JobBase[Creature.MaxPrevJobs];
                             player.PrevJobs[0] = JobBase.Get(charReader.GetInt32(i++));
                             player.PrevJobs[1] = JobBase.Get(charReader.GetInt32(i++));
                             player.PrevJobs[2] = JobBase.Get(charReader.GetInt32(i++));
-                            player.PrevJobLevel = new int[3];
+                            player.PrevJobLevel = new int[Creature.MaxPrevJobs];
                             player.PrevJobLevel[0] = charReader.GetInt32(i++);
                             player.PrevJobLevel[1] = charReader.GetInt32(i++);
                             player.PrevJobLevel[2] = charReader.GetInt32(i++);

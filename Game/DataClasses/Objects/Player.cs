@@ -20,6 +20,8 @@ using Game.DataClasses.Lobby;
 using Game.DataRepository;
 using System.Collections.Generic;
 using GC = Game.DataClasses.Network.GameClient;
+using System;
+using Game.DataClasses.Database;
 
 namespace Game.DataClasses
 {
@@ -115,7 +117,12 @@ namespace Game.DataClasses
             // Loads character base stat info
             this.Stats.LoadBase();
 
-            // TODO : Get level bonus stats
+            // Get level bonus stats
+            for (int i = 0; i < PrevJobs.Length; ++i)
+            {
+                if (PrevJobs[i] != null)
+                    CalcuteJobStats(PrevJobs[i], PrevJobLevel[i]);
+            }
 
             // TODO : Get equipped item stats
 
@@ -129,6 +136,39 @@ namespace Game.DataClasses
                 Type = 0
             };
             Server.ClientSockets.SendPacket(this.User._Session, statInfo);
+        }
+
+        private void CalcuteJobStats(JobBase job, int level)
+        {
+            JobLevelBonus bonus = JobLevelBonus.Get(job.Id);
+            if (bonus == null)
+                return;
+            int level1, level2 = 0, level3 = 0;
+
+            if (this.JobLevel > 20)
+            {
+                level1 = 20;
+                if (this.JobLevel > 40)
+                {
+                    level2 = 20;
+                    level3 = this.JobLevel - 40;
+                }
+                else
+                {
+                    level2 = this.JobLevel - 20;
+                }
+            }
+            else
+            {
+                level1 = this.JobLevel;
+            }
+
+            this.Stats.Strength += (short)(bonus.Str1 * level1 + bonus.Str2 * level2 + bonus.Str3 * level3);
+            this.Stats.Agility += (short)(bonus.Agi1 * level1 + bonus.Agi2 * level2 + bonus.Agi3 * level3);
+            this.Stats.Dexterity += (short)(bonus.Dex1 * level1 + bonus.Dex2 * level2 + bonus.Dex3 * level3);
+            this.Stats.Intelligence += (short)(bonus.Int1 * level1 + bonus.Int2 * level2 + bonus.Int3 * level3);
+            this.Stats.Luck += (short)(bonus.Luk1 * level1 + bonus.Luk2 * level2 + bonus.Luk3 * level3);
+            this.Stats.Wisdom += (short)(bonus.Wis1 * level1 + bonus.Wis2 * level2 + bonus.Wis3 * level3);
         }
 
         public void CalculateStatsByState()

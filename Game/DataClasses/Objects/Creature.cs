@@ -22,6 +22,8 @@ namespace Game.DataClasses
 {
 	public abstract class Creature : GameObject
 	{
+        public const int MaxPrevJobs = 3;
+
         public int Race { get; set; }
 
         public int Level { get; set; }
@@ -67,6 +69,8 @@ namespace Game.DataClasses
         {
             this.Stats = new CreatureStat();
             this.StatsByState = new CreatureStat();
+            this.PrevJobs = new JobBase[MaxPrevJobs];
+            this.PrevJobLevel = new int[MaxPrevJobs];
         }
     }
 
