@@ -63,12 +63,15 @@ namespace Game.DataClasses
 
         public CreatureStat Stats { get; set; }
         public CreatureStat StatsByState { get; set; }
-
+        public CreatureAttribute Attributes { get; set; }
+        public CreatureAttribute AttributesByState { get; set; }
 
         public Creature(uint gid) : base(gid)
         {
             this.Stats = new CreatureStat();
             this.StatsByState = new CreatureStat();
+            this.Attributes = new CreatureAttribute();
+            this.AttributesByState = new CreatureAttribute();
             this.PrevJobs = new JobBase[MaxPrevJobs];
             this.PrevJobLevel = new int[MaxPrevJobs];
         }

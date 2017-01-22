@@ -114,6 +114,8 @@ namespace Game.DataClasses
 
         public void CalculateStats()
         {
+            this.Attributes = new CreatureAttribute();
+
             // Loads character base stat info
             this.Stats.LoadBase();
 
@@ -126,16 +128,61 @@ namespace Game.DataClasses
 
             // TODO : Get equipped item stats
 
-            // TODO : Calculate Attributes
+            // Calculate Attributes
+            // TODO : Does equipment stats really affects attributes calc?
+            CalculateAttributes();
 
             GC.StatInfo statInfo = new GC.StatInfo()
             {
                 Handle = this.GID,
                 Stat = this.Stats,
-                Attribute = new CreatureAttribute(),
+                Attribute = this.Attributes,
                 Type = 0
             };
             Server.ClientSockets.SendPacket(this.User._Session, statInfo);
+        }
+
+        private void CalculateAttributes()
+        {
+            // Formulas from: http://rappelz.wikia.com/wiki/Stats_%26_Ability#Formulae
+
+            // Make temporary variables to improve readability
+            CreatureStat st = this.Stats;
+            CreatureAttribute at = this.Attributes;
+
+            this.MaxHp += 33 * st.Vitality + 20 * this.Level;
+            this.MaxMP += 30 * st.Intelligence + 20 * this.Level;
+
+            // TODO : Left Hand
+            //if (IsRanged) {
+            //at.AttackPointRight += (short)((6 / 5f) * this.Stats.Agility + (11 / 5f) * this.Stats.Dexterity + this.Level);
+            //} else {
+            at.AttackPointRight += (short)((14 / 5f) * st.Strength + this.Level + 9);
+            //}
+
+            // TODO : Left Hand
+            at.AccuracyRight += (short)((1 / 2f) * st.Dexterity + Level);
+            at.MagicPoint += (short)(2 * st.Intelligence + this.Level);
+            at.Defence += (short)((5 / 3f) * st.Vitality + this.Level);
+            at.Avoid += (short)((1 / 2f) * st.Agility + this.Level);
+            at.AttackSpeed += (short)(100 + (1 / 10f) * st.Agility);
+            at.MagicAccuracy += (short)((4 / 10f) * st.Wisdom + (1 / 10f) * st.Dexterity + this.Level);
+            at.MagicDefence += (short)(2 * st.Wisdom + this.Level);
+            at.MagicAvoid += (short)((1 / 2f) * st.Wisdom + this.Level);
+            at.MoveSpeed += 120;
+            at.HPRegenPercentage += 5;
+            at.MPRegenPercentage += 5;
+            //at.BlockChance += 0;
+            at.Critical += (short)((1 / 5f) * st.Luck + 3);
+            at.CastingSpeed += 100;
+            at.HPRegenPoint += (short)(2 * this.Level + 48);
+            at.MPRegenPoint += (short)(4.1 * st.Wisdom + 2 * this.Level + 48);
+            //at.BlockDefence += 0;
+            at.CriticalPower += 80;
+            at.CoolTimeSpeed += 100;
+            at.MaxWeight += (short)(10 * st.Strength + 10 * this.Level);
+            
+            this.Attributes = at;
         }
 
         private void CalcuteJobStats(JobBase job, int level)
@@ -183,8 +230,8 @@ namespace Game.DataClasses
             GC.StatInfo statInfo = new GC.StatInfo()
             {
                 Handle = this.GID,
-                Stat = this.Stats,
-                Attribute = new CreatureAttribute(),
+                Stat = this.StatsByState,
+                Attribute = this.AttributesByState,
                 Type = 0
             };
             Server.ClientSockets.SendPacket(this.User._Session, statInfo);

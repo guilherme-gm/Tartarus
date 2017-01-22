@@ -59,9 +59,9 @@ namespace Game.Business.Client
                 FaceDirection = 0, // TODO: Face Direction
                 RegionSize = 180,
                 HP = player.HP,
-                MP = (short) player.MP, // TODO : Client uses short, while server Int
-                MaxHP = 320, // TODO : MaxHp
-                MaxMP = 320, // TODO : MaxMp
+                MP = (short) player.MP, // TODO : 6.2 Client uses short, but newer clients int
+                MaxHP = player.MaxHp,
+                MaxMP = (short)player.MaxMP,// TODO : 6.2 Client uses short, but newer clients int
                 Havoc = player.Havoc,
                 MaxHavoc = player.MaxHavoc,
                 Sex = player.Sex,
@@ -80,7 +80,7 @@ namespace Game.Business.Client
             {
                 Handle = player.GID,
                 Stat = player.Stats,
-                Attribute = new DataClasses.GameWorld.CreatureAttribute(),
+                Attribute = player.Attributes,
                 Type = 0
             };
             DataClasses.Server.ClientSockets.SendPacket(session, result);
@@ -89,7 +89,7 @@ namespace Game.Business.Client
             {
                 Handle = player.GID,
                 Stat = player.StatsByState,
-                Attribute = new DataClasses.GameWorld.CreatureAttribute(),
+                Attribute = player.AttributesByState,
                 Type = 1
             };
             DataClasses.Server.ClientSockets.SendPacket(session, result);
