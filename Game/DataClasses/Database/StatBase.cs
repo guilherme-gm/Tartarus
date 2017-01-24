@@ -15,11 +15,14 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Common.Utils;
+using FileHelpers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Game.DataClasses.Database
 {
+    [DelimitedRecord(","), IgnoreFirst(1)]
     public class StatBase
     {
         public static Dictionary<short, StatBase> Db;
@@ -34,45 +37,53 @@ namespace Game.DataClasses.Database
             }
 
             Db = new Dictionary<short, StatBase>();
-            StringUtils.ReadDatabase("Database/StatDatabase.csv", 8, ReadEntry, false, true);
+            ReadDatabase("Database/StatDatabase.csv", true, false);
         }
 
-        private static void ReadEntry(string fileName, int lineNum, string[] columns, string[] values, bool allowReplace)
+        private static void ReadDatabase(string fileName,  bool required, bool allowReplace)
         {
-            // Read Entry
-            StatBase stat = new StatBase();
-            int j = 0;
-            try
+            int i = 0;
+
+            // File exists check
+            if (!File.Exists(fileName) && required)
             {
-                stat.Id = short.Parse(values[j++]);
-                stat.Strength = short.Parse(values[j++]);
-                stat.Vitality = short.Parse(values[j++]);
-                stat.Dexterity = short.Parse(values[j++]);
-                stat.Agility = short.Parse(values[j++]);
-                stat.Intelligence = short.Parse(values[j++]);
-                stat.Wisdom = short.Parse(values[j++]);
-                stat.Luck = short.Parse(values[j++]);
-            }
-            catch (Exception)
-            {
-                ConsoleUtils.ShowError("Could not parse column '{0}' in '{1}' at line '{2}'. Skipping line.", columns[j - 1], fileName, lineNum);
+                ConsoleUtils.ShowFatalError("Could not find database file '{0}'.", fileName);
                 return;
             }
 
-            // Inserts entry in Database
-            if (Db.ContainsKey(stat.Id))
+            // Starts the engine
+            var engine = new FileHelperAsyncEngine<StatBase>();
+            engine.ErrorMode = ErrorMode.SaveAndContinue;
+            using (engine.BeginReadFile(fileName))
             {
-                if (!allowReplace)
+                // Read entry
+                foreach (StatBase stat in engine)
                 {
-                    ConsoleUtils.ShowError("Duplicated code detected in '{0}' at line '{1}'. Skipping entry.", fileName, lineNum);
-                    return;
+                    // Inserts entry in Database
+                    if (Db.ContainsKey(stat.Id))
+                    {
+                        if (!allowReplace)
+                        {
+                            ConsoleUtils.ShowError("Duplicated id '{0}' detected in '{1}' at line '{2}'. Skipping entry.", stat.Id, fileName, engine.LineNumber);
+                            continue;
+                        }
+                        Db[stat.Id] = stat;
+                    }
+                    else
+                    {
+                        Db.Add(stat.Id, stat);
+                    }
+                    i++;
                 }
-                Db[stat.Id] = stat;
+
+                // Show errors
+                foreach (var err in engine.ErrorManager.Errors)
+                {
+                    ConsoleUtils.ShowError("Could not parse entry in '{0}' at line '{1}'. Skipping line.", fileName, err.LineNumber);
+                }
             }
-            else
-            {
-                Db.Add(stat.Id, stat);
-            }
+
+            ConsoleUtils.ShowInfo("'{0}' entries read from '{1}'.", i, fileName);
         }
         #endregion
 

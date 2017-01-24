@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FileHelpers">
+      <HintPath>..\3rdparty\FileHelpers\net45\FileHelpers.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="MySql.Data">
       <HintPath>..\3rdparty\mysql-connector-net-6.9.9\v4.5\MySql.Data.dll</HintPath>
       <Private>False</Private>
