@@ -15,8 +15,10 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Common.Utils;
-using System;
+using FileHelpers;
+using Game.DataClasses.Database.Records;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Game.DataClasses.Database
 {
@@ -34,60 +36,86 @@ namespace Game.DataClasses.Database
             }
 
             Db = new Dictionary<int, JobLevelBonus>();
-            StringUtils.ReadDatabase("Database/JobLevelBonusDatabase.csv", 23, ReadEntry, false, true);
+            ReadDatabase("Database/JobLevelBonusDatabase.csv", true, false);
         }
 
-        private static void ReadEntry(string fileName, int lineNum, string[] columns, string[] values, bool allowReplace)
+        private static void ReadDatabase(string fileName, bool required, bool allowReplace)
         {
-            // Read Entry
-            JobLevelBonus bonus = new JobLevelBonus();
-            int j = 0;
-            try
+            int i = 0;
+
+            // File exists check
+            if (!File.Exists(fileName) && required)
             {
-                bonus.JobId = int.Parse(values[j++]);
-                j++; // DummyName
-                bonus.Str1 = float.Parse(values[j++]);
-                bonus.Vit1 = float.Parse(values[j++]);
-                bonus.Dex1 = float.Parse(values[j++]);
-                bonus.Agi1 = float.Parse(values[j++]);
-                bonus.Int1 = float.Parse(values[j++]);
-                bonus.Wis1 = float.Parse(values[j++]);
-                bonus.Luk1 = float.Parse(values[j++]);
-                bonus.Str2 = float.Parse(values[j++]);
-                bonus.Vit2 = float.Parse(values[j++]);
-                bonus.Dex2 = float.Parse(values[j++]);
-                bonus.Agi2 = float.Parse(values[j++]);
-                bonus.Int2 = float.Parse(values[j++]);
-                bonus.Wis2 = float.Parse(values[j++]);
-                bonus.Luk2 = float.Parse(values[j++]);
-                bonus.Str3 = float.Parse(values[j++]);
-                bonus.Vit3 = float.Parse(values[j++]);
-                bonus.Dex3 = float.Parse(values[j++]);
-                bonus.Agi3 = float.Parse(values[j++]);
-                bonus.Int3 = float.Parse(values[j++]);
-                bonus.Wis3 = float.Parse(values[j++]);
-                bonus.Luk3 = float.Parse(values[j++]);
-            }
-            catch (Exception)
-            {
-                ConsoleUtils.ShowError("Could not parse column '{0}' in '{1}' at line '{2}'. Skipping line.", columns[j - 1], fileName, lineNum);
+                ConsoleUtils.ShowFatalError("Could not find database file '{0}'.", fileName);
                 return;
             }
 
-            // Inserts entry in Database
-            if (Db.ContainsKey(bonus.JobId))
+            // Starts the engine
+            var engine = new FileHelperAsyncEngine<JobLevelBonusRecord>();
+            engine.ErrorMode = ErrorMode.SaveAndContinue;
+            using (engine.BeginReadFile(fileName))
             {
-                if (!allowReplace)
+                // Read entry
+                foreach (JobLevelBonusRecord record in engine)
                 {
-                    ConsoleUtils.ShowError("Duplicated code detected in '{0}' at line '{1}'. Skipping entry.", fileName, lineNum);
-                    return;
+                    JobLevelBonus bonus = RecordToEntry(record);
+
+                    // Inserts entry in Database
+                    if (Db.ContainsKey(bonus.JobId))
+                    {
+                        if (!allowReplace)
+                        {
+                            ConsoleUtils.ShowError("Duplicated JobId '{0}' detected in '{1}' at line '{2}'. Skipping entry.", bonus.JobId, fileName, engine.LineNumber);
+                            continue;
+                        }
+                        Db[bonus.JobId] = bonus;
+                    }
+                    else
+                    {
+                        Db.Add(bonus.JobId, bonus);
+                    }
+                    i++;
                 }
-                Db[bonus.JobId] = bonus;
+
+                // Show errors
+                foreach (var err in engine.ErrorManager.Errors)
+                {
+                    ConsoleUtils.ShowError("Could not parse entry in '{0}' at line '{1}'. Skipping line.", fileName, err.LineNumber);
+                }
             }
-            else
-            {
-                Db.Add(bonus.JobId, bonus);
-            }
+
+            ConsoleUtils.ShowInfo("'{0}' entries read from '{1}'.", i, fileName);
+        }
+
+        private static JobLevelBonus RecordToEntry(JobLevelBonusRecord record)
+        {
+            JobLevelBonus bonus = new JobLevelBonus();
+
+            // Map
+            bonus.JobId = record.JobId;
+            bonus.Str1 = record.Str1;
+            bonus.Vit1 = record.Vit1;
+            bonus.Dex1 = record.Dex1;
+            bonus.Agi1 = record.Agi1;
+            bonus.Int1 = record.Int1;
+            bonus.Wis1 = record.Wis1;
+            bonus.Luk1 = record.Luk1;
+            bonus.Str2 = record.Str2;
+            bonus.Vit2 = record.Vit2;
+            bonus.Dex2 = record.Dex2;
+            bonus.Agi2 = record.Agi2;
+            bonus.Int2 = record.Int2;
+            bonus.Wis2 = record.Wis2;
+            bonus.Luk2 = record.Luk2;
+            bonus.Str3 = record.Str3;
+            bonus.Vit3 = record.Vit3;
+            bonus.Dex3 = record.Dex3;
+            bonus.Agi3 = record.Agi3;
+            bonus.Int3 = record.Int3;
+            bonus.Wis3 = record.Wis3;
+            bonus.Luk3 = record.Luk3;
+
+            return bonus;
         }
         #endregion
 
