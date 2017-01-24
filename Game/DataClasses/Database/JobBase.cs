@@ -15,8 +15,10 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Common.Utils;
-using System;
+using FileHelpers;
+using Game.DataClasses.Database.Records;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Game.DataClasses.Database
 {
@@ -34,57 +36,77 @@ namespace Game.DataClasses.Database
             }
 
             Db = new Dictionary<int, JobBase>();
-            StringUtils.ReadDatabase("Database/JobDatabase.csv", 10, ReadEntry, false, true);
+            ReadDatabase("Database/JobDatabase.csv", true, false);
         }
 
-        private static void ReadEntry(string fileName, int lineNum, string[] columns, string[] values, bool allowReplace)
+        private static void ReadDatabase(string fileName, bool required, bool allowReplace)
         {
-            // Read Entry
-            JobBase job = new JobBase();
-            short statId;
-            int j = 0;
-            try
+            int i = 0;
+
+            // File exists check
+            if (!File.Exists(fileName) && required)
             {
-                job.Id = int.Parse(values[j++]);
-                j++; // Dummy name
-                statId = short.Parse(values[j++]);
-                job.Class = byte.Parse(values[j++]);
-                job.Depth = byte.Parse(values[j++]);
-                job.MaxLevel = short.Parse(values[j++]);
-                job.MaxJLevel = short.Parse(values[j++]);
-                job.NextJobs = new int[3];
-                job.NextJobs[0] = int.Parse(values[j++]);
-                job.NextJobs[1] = int.Parse(values[j++]);
-                job.NextJobs[2] = int.Parse(values[j++]);
-            }
-            catch (Exception)
-            {
-                ConsoleUtils.ShowError("Could not parse column '{0}' in '{1}' at line '{2}'. Skipping line.", columns[j - 1], fileName, lineNum);
+                ConsoleUtils.ShowFatalError("Could not find database file '{0}'.", fileName);
                 return;
             }
 
-            // Ensure stat exists
-            job.Stat = StatBase.Get(statId);
-            if (job.Stat == null)
+            // Starts the engine
+            var engine = new FileHelperAsyncEngine<JobBaseRecord>();
+            engine.ErrorMode = ErrorMode.SaveAndContinue;
+            using (engine.BeginReadFile(fileName))
             {
-                ConsoleUtils.ShowError("Job '{0}' StatId '{1}' not found on Stat Database in '{2}' line '{3}'. Skipping line.", job.Id, statId, fileName, lineNum);
-                return;
-            }
-
-            // Inserts entry in Database
-            if (Db.ContainsKey(job.Id))
-            {
-                if (!allowReplace)
+                // Read entry
+                foreach (JobBaseRecord record in engine)
                 {
-                    ConsoleUtils.ShowError("Duplicated code detected in '{0}' at line '{1}'. Skipping entry.", fileName, lineNum);
-                    return;
+                    JobBase job = RecordToEntry(record);
+
+                    // Ensure stat exists
+                    if (job.Stat == null)
+                    {
+                        ConsoleUtils.ShowError("Job '{0}' StatId '{1}' not found on Stat Database in '{2}' line '{3}'. Skipping line.", job.Id, record.StatId, fileName, engine.LineNumber);
+                        continue;
+                    }
+
+                    // Inserts entry in Database
+                    if (Db.ContainsKey(job.Id))
+                    {
+                        if (!allowReplace)
+                        {
+                            ConsoleUtils.ShowError("Duplicated JobId '{0}' detected in '{1}' at line '{2}'. Skipping entry.", job.Id, fileName, engine.LineNumber);
+                            continue;
+                        }
+                        Db[job.Id] = job;
+                    }
+                    else
+                    {
+                        Db.Add(job.Id, job);
+                    }
+                    i++;
                 }
-                Db[job.Id] = job;
+
+                // Show errors
+                foreach (var err in engine.ErrorManager.Errors)
+                {
+                    ConsoleUtils.ShowError("Could not parse entry in '{0}' at line '{1}'. Skipping line.", fileName, err.LineNumber);
+                }
             }
-            else
-            {
-                Db.Add(job.Id, job);
-            }
+
+            ConsoleUtils.ShowInfo("'{0}' entries read from '{1}'.", i, fileName);
+        }
+
+        private static JobBase RecordToEntry(JobBaseRecord record) {
+            JobBase job = new JobBase();
+
+            // Map
+            job.Id = record.Id;
+            job.Stat = StatBase.Get(record.StatId);
+            job.Class = record.Class;
+            job.Depth = record.Depth;
+            job.MaxLevel = record.MaxLevel;
+            job.MaxJLevel = record.MaxJLevel;
+            job.NextJobs = record.NextJobs;
+
+            return job;
         }
         #endregion
 
