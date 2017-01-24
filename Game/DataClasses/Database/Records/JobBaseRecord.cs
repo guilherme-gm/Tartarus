@@ -19,7 +19,7 @@ using FileHelpers;
 namespace Game.DataClasses.Database.Records
 {
     /// <summary>
-    /// This class represents a record of JobLevelBonus on CSV files.
+    /// This class represents a record of JobBase on CSV files.
     /// </summary>
     [DelimitedRecord(","), IgnoreFirst(1)]
     public class JobBaseRecord

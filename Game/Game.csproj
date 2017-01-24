@@ -80,6 +80,7 @@
     <Compile Include="Business\ICommand.cs" />
     <Compile Include="Business\Server\ClientLogin.cs" />
     <Compile Include="Business\Server\LoginResult.cs" />
+    <Compile Include="DataClasses\Database\Records\ItemBaseRecord.cs" />
     <Compile Include="DataClasses\Database\Records\JobBaseRecord.cs" />
     <Compile Include="DataClasses\Database\Records\JobLevelBonusRecord.cs" />
     <Compile Include="DataClasses\Objects\Creature.cs" />

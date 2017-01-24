@@ -15,6 +15,8 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Common.Utils;
+using FileHelpers;
+using Game.DataClasses.Database.Records;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -40,107 +42,127 @@ namespace Game.DataClasses.Database
             }
 
             Db = new Dictionary<int, ItemBase>();
-            StringUtils.ReadDatabase("Database/ItemDatabase.csv", 76, ReadEntry, false, true);
+            ReadDatabase("Database/ItemDatabase.csv", true, false);
         }
 
-        private static void ReadEntry(string fileName, int lineNum, string[] columns, string[] values, bool allowReplace)
+        private static void ReadDatabase(string fileName, bool required, bool allowReplace)
         {
-            // Read Entry
-            ItemBase item = new ItemBase();
-            int j = 0;
-            try
+            int i = 0;
+
+            // File exists check
+            if (!File.Exists(fileName) && required)
             {
-                item.ID = int.Parse(values[j++]);
-                j++; // DummyName
-                item.NameId = int.Parse(values[j++]);
-                item.Type = int.Parse(values[j++]);
-                item.Group = int.Parse(values[j++]);
-                item.Class = int.Parse(values[j++]);
-                item.WearType = int.Parse(values[j++]);
-                item.SetId = int.Parse(values[j++]);
-                item.SetPart = int.Parse(values[j++]);
-                item.Grade = byte.Parse(values[j++]);
-                item.Rank = int.Parse(values[j++]);
-                item.Level = int.Parse(values[j++]);
-                item.Enhance = int.Parse(values[j++]);
-                item.Sockets = int.Parse(values[j++]);
-                item.StatusFlag = int.Parse(values[j++]);
-                item.UseRace = int.Parse(values[j++]);
-                item.UseClass = int.Parse(values[j++]);
-                item.MinLevel = int.Parse(values[j++]);
-                item.MaxLevel = int.Parse(values[j++]);
-                item.TargetMinLevel = int.Parse(values[j++]);
-                item.TargetMaxLevel = int.Parse(values[j++]);
-                item.Range = float.Parse(values[j++]);
-                item.Weight = float.Parse(values[j++]);
-                item.Price = int.Parse(values[j++]);
-                item.HuntaholicPoint = int.Parse(values[j++]);
-                item.Durability = int.Parse(values[j++]);
-                item.Endurance = int.Parse(values[j++]);
-                item.Material = int.Parse(values[j++]);
-                item.SummonId = int.Parse(values[j++]);
-                item.ItemUseFlag = int.Parse(values[j++]);
-                item.AvailablePeriod = int.Parse(values[j++]);
-                item.DecreaseType = int.Parse(values[j++]);
-                item.ThrowRange = float.Parse(values[j++]);
-                item.BaseType = new short[MaxBaseType];
-                item.BaseVar1 = new double[MaxBaseType];
-                item.BaseVar2 = new double[MaxBaseType];
-                for (int k = 0; k < MaxBaseType; ++k) {
-                    item.BaseType[k] = short.Parse(values[j++]);
-                    item.BaseVar1[k] = double.Parse(values[j++]);
-                    item.BaseVar2[k] = double.Parse(values[j++]);
-                }
-                item.OptType = new short[MaxOptType];
-                item.OptVar1 = new double[MaxOptType];
-                item.OptVar2 = new double[MaxOptType];
-                for (int k = 0; k < MaxOptType; ++k) {
-                    item.OptType[k] = short.Parse(values[j++]);
-                    item.OptVar1[k] = double.Parse(values[j++]);
-                    item.OptVar2[k] = double.Parse(values[j++]);
-                }
-                item.EffectId = int.Parse(values[j++]);
-                item.EnhanceId = new short[MaxEnhanceType];
-                item.EnhanceVal1 = new float[MaxEnhanceType];
-                item.EnhanceVal2 = new float[MaxEnhanceType];
-                item.EnhanceVal3 = new float[MaxEnhanceType];
-                item.EnhanceVal4 = new float[MaxEnhanceType];
-                for (int k = 0; k < MaxEnhanceType; ++k) {
-                    item.EnhanceId[k] = short.Parse(values[j++]);
-                    item.EnhanceVal1[k] = float.Parse(values[j++]);
-                    item.EnhanceVal2[k] = float.Parse(values[j++]);
-                    item.EnhanceVal3[k] = float.Parse(values[j++]);
-                    item.EnhanceVal4[k] = float.Parse(values[j++]);
-                }
-                item.SkillId = int.Parse(values[j++]);
-                item.StateId = int.Parse(values[j++]);
-                item.StateLevel = int.Parse(values[j++]);
-                item.StateTime = int.Parse(values[j++]);
-                item.StateType = byte.Parse(values[j++]);
-                item.CoolTime = int.Parse(values[j++]);
-                item.CoolTimeGroup = short.Parse(values[j++]);
-                item.Script = values[j++];
-            }
-            catch (Exception)
-            {
-                ConsoleUtils.ShowError("Could not parse column '{0}' in '{1}' at line '{2}'. Skipping line.", columns[j - 1], fileName, lineNum);
+                ConsoleUtils.ShowFatalError("Could not find database file '{0}'.", fileName);
                 return;
             }
 
-            // Inserts entry in Database
-            if (Db.ContainsKey(item.ID))
+            // Starts the engine
+            var engine = new FileHelperAsyncEngine<ItemBaseRecord>();
+            engine.ErrorMode = ErrorMode.SaveAndContinue;
+            using (engine.BeginReadFile(fileName))
             {
-                if (!allowReplace)
+                // Read entry
+                foreach (ItemBaseRecord record in engine)
                 {
-                    ConsoleUtils.ShowError("Duplicated code detected in '{0}' at line '{1}'. Skipping entry.", fileName, lineNum);
-                    return;
+                    ItemBase item = RecordToEntry(record);
+
+                    // Inserts entry in Database
+                    if (Db.ContainsKey(item.Id))
+                    {
+                        if (!allowReplace)
+                        {
+                            ConsoleUtils.ShowError("Duplicated Id '{0}' detected in '{1}' at line '{2}'. Skipping entry.", item.Id, fileName, engine.LineNumber);
+                            continue;
+                        }
+                        Db[item.Id] = item;
+                    }
+                    else
+                    {
+                        Db.Add(item.Id, item);
+                    }
+                    i++;
                 }
-                Db[item.ID] = item;
+
+                // Show errors
+                foreach (var err in engine.ErrorManager.Errors)
+                {
+                    ConsoleUtils.ShowError("Could not parse entry in '{0}' at line '{1}'. Skipping line. {2}", fileName, err.LineNumber, err.ExceptionInfo.ToString());
+                }
             }
-            else
-            {
-                Db.Add(item.ID, item);
-            }
+
+            ConsoleUtils.ShowInfo("'{0}' entries read from '{1}'.", i, fileName);
+        }
+        
+        private static ItemBase RecordToEntry(ItemBaseRecord record)
+        {
+            ItemBase item = new ItemBase();
+
+            // Map
+            item.Id = record.ID;
+            item.NameId = record.NameId;
+            item.Type = record.Type;
+            item.Group = record.Group;
+            item.Class = record.Class;
+            item.WearType = record.WearType;
+            item.SetId = record.SetId;
+            item.SetPart = record.SetPart;
+            item.Grade = record.Grade;
+            item.Rank = record.Rank;
+            item.Level = record.Level;
+            item.Enhance = record.Enhance;
+            item.Sockets = record.Sockets;
+            item.StatusFlag = record.StatusFlag;
+            item.UseRace = record.UseRace;
+            item.UseClass = record.UseClass;
+            item.MinLevel = record.MinLevel;
+            item.MaxLevel = record.MaxLevel;
+            item.TargetMinLevel = record.TargetMinLevel;
+            item.TargetMaxLevel = record.TargetMaxLevel;
+            item.Range = record.Range;
+            item.Weight = record.Weight;
+            item.Price = record.Price;
+            item.HuntaholicPoint = record.HuntaholicPoint;
+            item.Durability = record.Durability;
+            item.Endurance = record.Endurance;
+            item.Material = record.Material;
+            item.SummonId = record.SummonId;
+            item.ItemUseFlag = record.ItemUseFlag;
+            item.AvailablePeriod = record.AvailablePeriod;
+            item.DecreaseType = record.DecreaseType;
+            item.ThrowRange = record.ThrowRange;
+            item.BaseType = new short[MaxBaseType]
+                { record.Base1Type, record.Base2Type, record.Base3Type, record.Base4Type };
+            item.BaseVar1 = new double[MaxBaseType]
+                { record.Base1Var1, record.Base2Var1, record.Base3Var1, record.Base4Var1 };
+            item.BaseVar2 = new double[MaxBaseType]
+                { record.Base1Var2, record.Base2Var2, record.Base3Var2, record.Base4Var2 };
+            item.OptType = new short[MaxOptType]
+                { record.Opt1Type, record.Opt2Type, record.Opt3Type, record.Opt4Type };
+            item.OptVar1 = new double[MaxOptType]
+                { record.Opt1Var1, record.Opt2Var1, record.Opt3Var1, record.Opt4Var1 };
+            item.OptVar2 = new double[MaxOptType]
+                { record.Opt1Var2, record.Opt2Var2, record.Opt3Var2, record.Opt4Var2 };
+            item.EffectId = record.EffectId;
+            item.EnhanceId = new short[MaxEnhanceType]
+                { record.Enhance1Id, record.Enhance2Id };
+            item.EnhanceVal1 = new float[MaxEnhanceType]
+                { record.Enhance1Val1, record.Enhance2Val1 };
+            item.EnhanceVal2 = new float[MaxEnhanceType]
+                { record.Enhance1Val2, record.Enhance2Val2 };
+            item.EnhanceVal3 = new float[MaxEnhanceType]
+                { record.Enhance1Val3, record.Enhance2Val3 };
+            item.EnhanceVal4 = new float[MaxEnhanceType]
+                { record.Enhance1Val4, record.Enhance2Val4 };
+            item.SkillId = record.SkillId;
+            item.StateId = record.StateId;
+            item.StateLevel = record.StateLevel;
+            item.StateTime = record.StateTime;
+            item.StateType = record.StateType;
+            item.CoolTime = record.CoolTime;
+            item.CoolTimeGroup = record.CoolTimeGroup;
+            item.Script = record.Script;
+
+            return item;
         }
         #endregion
 
@@ -157,7 +179,7 @@ namespace Game.DataClasses.Database
         #endregion
 
         #region Properties
-        public int ID { get; private set; }
+        public int Id { get; private set; }
         public int NameId { get; private set; }
         public int Type { get; private set; }
         public int Group { get; private set; }
