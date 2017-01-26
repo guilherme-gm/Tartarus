@@ -65,7 +65,6 @@ namespace Game.DataClasses.Objects
         public ItemBase Base { get; set; }
         public ulong Id { get; set; }
         public int Idx { get; set; }
-        public int Code { get; set; }
         public ulong Amount { get; set; }
         public byte Level { get; set; }
         public byte Enhance { get; set; }
