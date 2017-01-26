@@ -35,17 +35,6 @@ namespace Game.DataClasses
 
         private static Server _Instance;
 
-        internal PendingUserInfo RetrievePendingUser(string account)
-        {
-            PendingUserInfo info;
-            if (!this.PendingUsers.TryGetValue(account, out info))
-            {
-                return null;
-            }
-
-            return info;
-        }
-
         public static Server Instance
         {
             get
@@ -168,7 +157,13 @@ namespace Game.DataClasses
         }
         #endregion
 
-        public void AddPendingUser(string userId, PendingUserInfo info)
+        #region Pending User
+        /// <summary>
+        /// Adds a PendingUserInfo to a given account name
+        /// </summary>
+        /// <param name="userId">account name</param>
+        /// <param name="info">PendingUserInfo</param>
+        internal void AddPendingUser(string userId, PendingUserInfo info)
         {
             if (this.PendingUsers.ContainsKey(userId))
             {
@@ -179,6 +174,32 @@ namespace Game.DataClasses
                 this.PendingUsers.Add(userId, info);
             }
         }
+
+        /// <summary>
+        /// Retrieves PendingUserInfo for a given account name
+        /// </summary>
+        /// <param name="account">account name</param>
+        /// <returns>PendingUserInfo for that account or null if not found</returns>
+        internal PendingUserInfo RetrievePendingUser(string account)
+        {
+            PendingUserInfo info;
+            if (!this.PendingUsers.TryGetValue(account, out info))
+            {
+                return null;
+            }
+
+            return info;
+        }
+
+        /// <summary>
+        /// Removes PendingUserInfo of a given account name
+        /// </summary>
+        /// <param name="account">Accout name</param>
+        internal void RemovePendingUser(string account)
+        {
+            this.PendingUsers.Remove(account);
+        }
+        #endregion
     }
 }
 

@@ -20,10 +20,20 @@ using System.IO;
 
 namespace Game.DataClasses.Network.ClientGame
 {
+    /// <summary>
+    /// Player Login to GameServer from AuthServer
+    /// </summary>
     public class AccountWithAuth : Packet
     {
         public string Account { get; set; }
         public long OneTimeKey { get; set; }
+
+        public enum ResultCode : ushort
+        {
+            Success = 0x0,
+            // TODO : Find correct code
+            Invalid = 0x1
+        }
 
         public override void Read(byte[] data)
         {

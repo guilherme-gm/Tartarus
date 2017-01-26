@@ -17,31 +17,42 @@
 using Common.DataClasses;
 using Common.DataClasses.Network;
 using Game.DataClasses;
-using Game.DataClasses.Network;
 
 using CG = Game.DataClasses.Network.ClientGame;
 using GC = Game.DataClasses.Network.GameClient;
 
 namespace Game.Business.Client
 {
+    /// <summary>
+    /// Player Login to GameServer from AuthServer
+    /// </summary>
     public class AccountWithAuth : ICommand
     {
+        #region Account With Auth
         public void Execute(Session session, Packet message)
         {
             CG.AccountWithAuth packet = (CG.AccountWithAuth)message;
-
-            // TODO : Validate login
+            GC.Result result = new GC.Result();
+            result.RequestMessageId = packet.Id;
+            
             PendingUserInfo info = DataClasses.Server.Instance.RetrievePendingUser(packet.Account);
             if (info == null)
+            {
                 return;
-            session._Client = new User(info.AccountId, session);
-
-            GC.Result result = new GC.Result();
-            result.RequestMessageId = (ushort)ClientGamePackets.AccountWithAuth;
-            result.ResultCode = 0;
-            result.Value = 0;
+            }
+            else if (info.OneTimeKey != packet.OneTimeKey)
+            {
+                result.ResultCode = (ushort)CG.AccountWithAuth.ResultCode.Invalid;
+            }
+            else
+            {
+                session._Client = new User(info.AccountId, session);
+                result.ResultCode = (ushort)CG.AccountWithAuth.ResultCode.Success;
+                DataClasses.Server.Instance.RemovePendingUser(packet.Account);
+            }
 
             DataClasses.Server.ClientSockets.SendPacket(session, result);
         }
+        #endregion
     }
 }
