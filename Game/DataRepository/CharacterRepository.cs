@@ -139,7 +139,7 @@ namespace Game.DataRepository
                             item.Durability = itemReader.GetInt32(i++);
                             item.Endurance = (uint)itemReader.GetValue(i++);
                             item.Flag = itemReader.GetInt32(i++);
-                            item.EquipPosition = itemReader.GetInt16(i++);
+                            item.EquipPosition = (ItemBase.EquipPosition)itemReader.GetInt16(i++);
 
                             for (int j = 0; j < Item.MaxSockets; ++j)
                                 item.Socket[j] = itemReader.GetInt32(i++);
@@ -154,9 +154,9 @@ namespace Game.DataRepository
                             #endregion
 
                             player.inventory.Add(item);
-                            if (item.EquipPosition != -1)
+                            if (item.EquipPosition != ItemBase.EquipPosition.None)
                             {
-                                player.EquippedItems[item.EquipPosition] = item;
+                                player.EquippedItems[(int)item.EquipPosition] = item;
                             }
                         }
                     }

@@ -32,8 +32,8 @@ namespace Game.DataClasses.Database.Records
         public int NameId;
         public int Type;
         public int Group;
-        public int Class;
-        public int WearType;
+        public ItemBase.ItemClass Class;
+        public ItemBase.EquipPosition WearType;
         public int SetId;
         public int SetPart;
         public byte Grade;

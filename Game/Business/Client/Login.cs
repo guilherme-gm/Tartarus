@@ -147,9 +147,7 @@ namespace Game.Business.Client
                 ItemList = player.inventory
             };
             DataClasses.Server.ClientSockets.SendPacket(session, result);
-            #endregion
-            // ====================
-
+            
             // TODO : 0x012F
 
             result = new GC.WearInfo()
@@ -159,6 +157,8 @@ namespace Game.Business.Client
             };
             DataClasses.Server.ClientSockets.SendPacket(session, result);
 
+            // ====================
+            #endregion
             result = new GC.GoldUpdate()
             {
                 Gold = player.Gold,

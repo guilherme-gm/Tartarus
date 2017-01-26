@@ -178,13 +178,120 @@ namespace Game.DataClasses.Database
         }
         #endregion
 
+        #region Enums
+        public enum EquipPosition : short
+        {
+            None = -1,
+            RightHand = 0,
+            LeftHand,
+            Armor,
+            Helm,
+            Glove,
+            Boots,
+            Belt,
+            Mantle,
+            Armulet,
+            Ring,
+            // 10 - (Second Ring - skipped)
+            Ear = 11,
+            Face,
+            Hair,
+            DecoRightHand,
+            DecoLeftHand,
+            DecoArmor,
+            DecoHelm,
+            DecoGlove,
+            DecoBoots,
+            DecoMantle,
+            DecoShoulder,
+            Ride,
+            Bag,
+            TwoFingerRing = 94,
+            TwoHand = 99,
+            Skill
+        }
+
+        public enum ItemClass : int
+        {
+            Etc = 0,
+            DoubleAxe = 95,
+            DoubleSword,
+            // 97 - Empty
+            DoubleDagger = 98,
+            EveryWeapon,
+            EtcWeapon,
+            OneHandSword,
+            TwoHandSword,
+            Dagger,
+            TwoHandSpear,
+            TwoHandAxe,
+            OneHandMace,
+            TwoHandMace,
+            HeavyBow,
+            LightBow,
+            CrossBow,
+            OneHandStaff,
+            TwoHandStaff,
+            OneHandAxe,
+            // 114~199 - Empty
+            Armor = 200,
+            FighterArmor,
+            HunterArmor,
+            MagicianArmor,
+            SummonerArmor,
+            // 205~209 - Empty
+            Shield = 210,
+            // 211~219 - Empty
+            Helm = 220,
+            // 221~229 - Empty
+            Boots = 230,
+            // 231~239 - Empty
+            Glove = 240,
+            // 241~249 - Empty
+            Belt = 250,
+            // 251~259 - Empty
+            Mantle = 260,
+            // 261~299 - Empty
+            EtcAccessory = 300,
+            Mask,
+            Cube,
+            // 303~399 - Empty
+            BoostChip = 400,
+            SoulStone,
+            // 402~450 - Empty
+            EtherealStone = 451,
+            // 452~600 - Empty
+            DecoShield = 601,
+            DecoArmor,
+            DecoHelm,
+            DecoGlove,
+            DecoBoots,
+            DecoMantle,
+            DecoShoulder,
+            DecoHair,
+            DecoOneHandSword,
+            DecoTwoHandSword,
+            DecoDagger,
+            DecoTwoHandSpear,
+            DecoTwoHandAxe,
+            DecoOneHandMace,
+            DecoTwoHandMace,
+            DecoHeavyBow,
+            DecoLightBow,
+            DecoCrossbow,
+            DecoOneHandStaff,
+            DecoTwoHandStaff,
+            DecoOneHandAxe
+        }
+        #endregion
+
         #region Properties
         public int Id { get; private set; }
         public int NameId { get; private set; }
         public int Type { get; private set; }
         public int Group { get; private set; }
-        public int Class { get; private set; }
-        public int WearType { get; private set; }
+        public ItemClass Class { get; private set; }
+        public EquipPosition WearType { get; private set; }
         public int SetId { get; private set; }
         public int SetPart { get; private set; }
         public byte Grade { get; private set; }

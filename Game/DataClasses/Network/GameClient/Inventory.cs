@@ -72,7 +72,7 @@ namespace Game.DataClasses.Network.GameClient
                 writer.Write((int)0);// TODO :writer.Write(item.ElementalEffectRemainTime);
                 writer.Write(item.ElementalEffectAttackPoint);
                 writer.Write(item.ElementalMagicPoint);
-                writer.Write(item.EquipPosition);
+                writer.Write((short)item.EquipPosition);
                 writer.Write(item.OwnSummonHandle);
                 writer.Write(item.Idx);
             }

@@ -71,7 +71,7 @@ namespace Game.DataClasses.Objects
         public int Durability { get; set; }
         public uint Endurance { get; set; }
         public int Flag { get; set; }
-        public short EquipPosition { get; set; }
+        public ItemBase.EquipPosition EquipPosition { get; set; }
         public int[] Socket { get; set; }
         public int RemainTime { get; set; }
         public byte ElementalEffectType { get; set; }
