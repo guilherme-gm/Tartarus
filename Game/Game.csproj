@@ -92,13 +92,10 @@
     <Compile Include="DataClasses\GameWorld\CreatureStat.cs" />
     <Compile Include="DataClasses\FieldProp.cs" />
     <Compile Include="DataClasses\Objects\GameObject.cs" />
-    <Compile Include="DataClasses\GameWorld\ItemBaseInfo.cs" />
-    <Compile Include="DataClasses\GameWorld\ItemInfo.cs" />
     <Compile Include="DataClasses\GameWorld\PendingQuestInfo.cs" />
     <Compile Include="DataClasses\GameWorld\QuestInfo.cs" />
     <Compile Include="DataClasses\Inventory.cs" />
-    <Compile Include="DataClasses\Item.cs" />
-    <Compile Include="DataClasses\ItemBase.cs" />
+    <Compile Include="DataClasses\Objects\Item.cs" />
     <Compile Include="DataClasses\Job.cs" />
     <Compile Include="DataClasses\Lobby\LobbyCharacterInfo.cs" />
     <Compile Include="DataClasses\Lobby\ModelInfo.cs" />

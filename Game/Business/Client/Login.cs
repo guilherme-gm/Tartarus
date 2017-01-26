@@ -136,15 +136,14 @@ namespace Game.Business.Client
             };
             DataClasses.Server.ClientSockets.SendPacket(session, result);
 
-            // ====================
-
-
             result = new GC.Inventory()
             {
-                Count = 0,
-                Items = new DataClasses.GameWorld.ItemInfo[0]
+                Count = (ushort)player.inventory.Count,
+                ItemList = player.inventory
             };
             DataClasses.Server.ClientSockets.SendPacket(session, result);
+
+            // ====================
 
             // TODO : 0x012F
 

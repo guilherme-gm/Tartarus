@@ -17,6 +17,7 @@
 using Common.Utils;
 using Game.DataClasses;
 using Game.DataClasses.Database;
+using Game.DataClasses.Objects;
 using Game.Utils;
 using MySql.Data.MySqlClient;
 using System;
@@ -39,6 +40,7 @@ namespace Game.DataRepository
 
             try
             {
+                #region Loads Character Info
                 using (MySqlCommand cmd = con.CreateCommand())
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -51,7 +53,7 @@ namespace Game.DataRepository
                         if (charReader.Read())
                         {
                             int i = 0;
-                            #region Character Info
+                            #region Map Character Info
                             player.CharacterId = charReader.GetInt64(i++);
                             player.Name = charReader.GetString(i++);
                             player.PartyId = charReader.GetInt32(i++);
@@ -112,10 +114,54 @@ namespace Game.DataRepository
                         }
                     }
                 }
+                #endregion
+
+                #region Loads Inventory
+                using (MySqlCommand cmd = con.CreateCommand())
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.CommandText = "usp_Character_ItemList";
+                    cmd.Parameters.AddWithValue("characterId", player.CharacterId);
+
+                    using (DbDataReader itemReader = cmd.ExecuteReader())
+                    {
+                        while (itemReader.Read())
+                        {
+                            int i = 0;
+                            Item item = Item.Create(itemReader.GetInt32(i++));
+
+                            #region Map Item Info
+                            item.Id = itemReader.GetInt32(i++);
+                            item.Idx = itemReader.GetInt32(i++);
+                            item.Amount = itemReader.GetInt32(i++);
+                            item.Level = itemReader.GetInt32(i++);
+                            item.Enhance = itemReader.GetInt32(i++);
+                            item.Durability = itemReader.GetInt32(i++);
+                            item.Endurance = itemReader.GetInt32(i++);
+                            item.Flag = itemReader.GetInt32(i++);
+                            item.EquipPosition = itemReader.GetInt32(i++);
+                            
+                            for (int j = 0; j < Item.MaxSockets; ++j)
+                                item.Socket[j] = itemReader.GetInt32(i++);
+
+                            item.RemainTime = itemReader.GetInt32(i++);
+                            item.ElementalEffectType = itemReader.GetByte(i++);
+                            item.ElementalEffectExpireTime = itemReader.GetDateTime(i++);
+                            item.ElementalEffectAttackPoint = itemReader.GetInt32(i++);
+                            item.ElementalMagicPoint = itemReader.GetInt32(i++);
+                            item.CreateTime = itemReader.GetDateTime(i++);
+                            item.UpdateTime = itemReader.GetDateTime(i++);
+                            #endregion
+
+                            player.inventory.Add(item);
+                        }
+                    }
+                }
+                #endregion
             }
             catch (Exception ex)
             {
-                ConsoleUtils.ShowSQL("{0} (At: {1})", ex.Message, "SecurityRepository.GetCode()");
+                ConsoleUtils.ShowSQL("{0} (At: {1})", ex.Message, "CharacterRepository.LoadCharacter()");
                 return false;
             }
             finally

@@ -15,7 +15,7 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Common.Utils;
-using Game.DataClasses;
+using Game.DataClasses.Database;
 using Game.DataClasses.Lobby;
 using Game.Utils;
 using MySql.Data.MySqlClient;
@@ -140,7 +140,7 @@ namespace Game.DataRepository
         #endregion
         
         #region Create Character(Account ID, Character Info)
-        public bool CreateCharacter(int accountId, LobbyCharacterInfo character, Item[] startItems, int startX, int startY)
+        public bool CreateCharacter(int accountId, LobbyCharacterInfo character, ItemBase[] startItems, int startX, int startY)
         {
             IConnectionFactory conFactory = ConnectionFactory.Instance;
             MySqlConnection con = (MySqlConnection)conFactory.GetConnection();
@@ -184,11 +184,11 @@ namespace Game.DataRepository
                         command.Parameters.AddWithValue("amount", 0);
                         command.Parameters.AddWithValue("iLevel", 0);
 
-                        foreach (Item item in startItems)
+                        foreach (ItemBase item in startItems)
                         {
-                            command.Parameters["iCode"].Value = item.Code;
-                            command.Parameters["position"].Value = item.Position;
-                            command.Parameters["amount"].Value = item.Amount;
+                            command.Parameters["iCode"].Value = item.Id;
+                            command.Parameters["position"].Value = item.WearType;
+                            command.Parameters["amount"].Value = 1;
                             command.Parameters["iLevel"].Value = item.Level;
                             command.ExecuteNonQuery();
                         }

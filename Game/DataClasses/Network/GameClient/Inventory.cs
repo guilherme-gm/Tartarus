@@ -15,8 +15,9 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Common.DataClasses.Network;
-using Game.DataClasses.GameWorld;
+using Game.DataClasses.Objects;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Game.DataClasses.Network.GameClient
@@ -26,7 +27,7 @@ namespace Game.DataClasses.Network.GameClient
     {
         #region Get/Set
         public ushort Count { get; set; }
-        public ItemInfo[] Items { get; set; }
+        public DataClasses.Inventory ItemList { get; set; }
         #endregion
 
         #region Constructor/Reader/Write
@@ -50,27 +51,30 @@ namespace Game.DataClasses.Network.GameClient
 
             // Write packet body
             writer.Write(this.Count);
-            foreach (ItemInfo item in this.Items)
+            IEnumerator<Item> enumerator = this.ItemList.GetEnumerator();
+            while(enumerator.MoveNext())
             {
-                writer.Write(item.Base.Handle);
-                writer.Write(item.Base.Code);
-                writer.Write(item.Base.Uid);
-                writer.Write(item.Base.Count);
-                writer.Write(item.Base.EtherealDurability);
-                writer.Write(item.Base.Endurance);
-                writer.Write(item.Base.Enhance);
-                writer.Write(item.Base.Level);
-                writer.Write(item.Base.Flag);
-                for (int i = 0; i < 4; i++)
-                    writer.Write(item.Base.Socket[i]);
-                writer.Write(item.Base.RemainTime);
-                writer.Write(item.Base.ElementalEffectType);
-                writer.Write(item.Base.ElementalEffectRemainTime);
-                writer.Write(item.Base.ElementalEffectAttackPoint);
-                writer.Write(item.Base.ElementalEffectMagicPoint);
-                writer.Write(item.WearPosition);
+                Item item = enumerator.Current;
+
+                writer.Write(item.GID);
+                writer.Write(item.Base.Id);
+                writer.Write(item.Id);
+                writer.Write(item.Amount);
+                writer.Write(item.Durability);
+                writer.Write(item.Endurance);
+                writer.Write(item.Enhance);
+                writer.Write(item.Level);
+                writer.Write(item.Flag);
+                for (int i = 0; i < Item.MaxSockets; i++)
+                    writer.Write(item.Socket[i]);
+                writer.Write(item.RemainTime);
+                writer.Write(item.ElementalEffectType);
+                writer.Write((int)0);// TODO :writer.Write(item.ElementalEffectRemainTime);
+                writer.Write(item.ElementalEffectAttackPoint);
+                writer.Write(item.ElementalMagicPoint);
+                writer.Write(item.EquipPosition);
                 writer.Write(item.OwnSummonHandle);
-                writer.Write(item.Index);
+                writer.Write(item.Idx);
             }
 
             // finishes packet

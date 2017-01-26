@@ -15,14 +15,28 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Game.DataClasses;
+using System.Collections.ObjectModel;
+using System;
+using Game.DataClasses.Objects;
 
 namespace Game.DataClasses
 {
-	public class Inventory
-	{
-		private Item[] item;
+    public class Inventory : KeyedCollection<uint, Item>
+    {
+        public float Weight { get; set; }
 
-	}
+        protected override void InsertItem(int index, Item item)
+        {
+            // TODO : Should we have a weight check there?
+            base.InsertItem(index, item);
+            this.Weight += item.Base.Weight;
+        }
+
+        protected override uint GetKeyForItem(Item item)
+        {
+            return item.GID;
+        }
+    }
 
 }
 

@@ -17,6 +17,8 @@
 using Common.DataClasses;
 using Common.DataClasses.Network;
 using Game.DataClasses;
+using Game.DataClasses.Database;
+using Game.DataClasses.Objects;
 using Game.DataRepository;
 using System.Collections.Generic;
 using CG = Game.DataClasses.Network.ClientGame;
@@ -33,7 +35,7 @@ namespace Game.Business.Client
             CG.CreateCharacter packet = (CG.CreateCharacter)message;
 
             // Add Start Items
-            List<Item> startItems = new List<Item>();
+            List<ItemBase> startItems = new List<ItemBase>();
             int startX, startY;
 
             // TODO : This probably should be configurable out of source
@@ -45,11 +47,11 @@ namespace Game.Business.Client
                     startX = 164474;
                     startY = 52932;
 
-                    startItems.Add(new Item() { Code = 106100, Amount = 1, Position = 0 }); // Beginner's Mace
+                    startItems.Add(ItemBase.Get(106100)); // Beginner's Mace
                     if (packet.Character.ModelInfo.WearInfo[2] == 601)
-                        startItems.Add(new Item() { Code = 240100, Amount = 1, Position = 2 });
+                        startItems.Add(ItemBase.Get(240100));
                     else
-                        startItems.Add(new Item() { Code = 240109, Amount = 1, Position = 2 });
+                        startItems.Add(ItemBase.Get(240109));
                     break;
 
                 case 4: // Deva
@@ -58,11 +60,11 @@ namespace Game.Business.Client
                     startX = 164335;
                     startY = 49510;
                     
-                    startItems.Add(new Item() { Code = 112100, Amount = 1, Position = 0 }); // Trainee's Small Axe
+                    startItems.Add(ItemBase.Get(112100)); // Trainee's Small Axe
                     if (packet.Character.ModelInfo.WearInfo[2] == 601)
-                        startItems.Add(new Item() { Code = 220100, Amount = 1, Position = 2 });
+                        startItems.Add(ItemBase.Get(220100));
                     else
-                        startItems.Add(new Item() { Code = 220109, Amount = 1, Position = 2 });
+                        startItems.Add(ItemBase.Get(220109));
                     break;
 
                 case 5: // Asura
@@ -71,11 +73,11 @@ namespace Game.Business.Client
                     startX = 168356;
                     startY = 55399;
 
-                    startItems.Add(new Item() { Code = 103100, Amount = 1, Position = 0 }); // Beginner's Dirk
+                    startItems.Add(ItemBase.Get(103100)); // Beginner's Dirk
                     if (packet.Character.ModelInfo.WearInfo[2] == 601)
-                        startItems.Add(new Item() { Code = 230100, Amount = 1, Position = 2 });
+                        startItems.Add(ItemBase.Get(230100));
                     else
-                        startItems.Add(new Item() { Code = 230109, Amount = 1, Position = 2 });
+                        startItems.Add(ItemBase.Get(230109));
                     break;
 
                 default:
