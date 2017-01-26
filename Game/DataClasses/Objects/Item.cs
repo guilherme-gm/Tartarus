@@ -63,16 +63,16 @@ namespace Game.DataClasses.Objects
         #endregion
 
         public ItemBase Base { get; set; }
-        public int Id { get; set; }
+        public ulong Id { get; set; }
         public int Idx { get; set; }
         public int Code { get; set; }
-        public int Amount { get; set; }
-        public int Level { get; set; }
-        public int Enhance { get; set; }
+        public ulong Amount { get; set; }
+        public byte Level { get; set; }
+        public byte Enhance { get; set; }
         public int Durability { get; set; }
-        public int Endurance { get; set; }
+        public uint Endurance { get; set; }
         public int Flag { get; set; }
-        public int EquipPosition { get; set; }
+        public short EquipPosition { get; set; }
         public int[] Socket { get; set; }
         public int RemainTime { get; set; }
         public byte ElementalEffectType { get; set; }

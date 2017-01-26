@@ -20,7 +20,7 @@ namespace Game.DataClasses
 {
 	public class State
 	{
-		private Player player;
+		//private Player player;
 
 		private StateBase stateBase;
 

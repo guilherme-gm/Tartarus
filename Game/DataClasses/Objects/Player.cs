@@ -14,19 +14,18 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
-using Game.DataClasses;
 using Game.DataClasses.GameWorld;
-using Game.DataClasses.Lobby;
 using Game.DataRepository;
 using System.Collections.Generic;
 using GC = Game.DataClasses.Network.GameClient;
-using System;
 using Game.DataClasses.Database;
 
-namespace Game.DataClasses
+namespace Game.DataClasses.Objects
 {
 	public class Player : Creature
 	{
+        public const int MaxEquipPos = 24;
+
         #region Object Creation
         private static uint LastUsedHandle = 0x0806;
         private static Stack<uint> HandlePool = new Stack<uint>();
@@ -58,6 +57,8 @@ namespace Game.DataClasses
         
         public Inventory inventory { get; set; }
         
+        public Item[] EquippedItems { get; set; }
+
 		public State[] state { get; set; }
         
         public long CharacterId { get; set; }
@@ -93,6 +94,7 @@ namespace Game.DataClasses
         {
             this.User = user;
             this.Name = name;
+            this.EquippedItems = new Item[MaxEquipPos];
             this.inventory = new Inventory();
             this.Position = new Position();
         }

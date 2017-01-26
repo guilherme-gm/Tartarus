@@ -131,16 +131,16 @@ namespace Game.DataRepository
                             Item item = Item.Create(itemReader.GetInt32(i++));
 
                             #region Map Item Info
-                            item.Id = itemReader.GetInt32(i++);
+                            item.Id = (ulong)itemReader.GetValue(i++);
                             item.Idx = itemReader.GetInt32(i++);
-                            item.Amount = itemReader.GetInt32(i++);
-                            item.Level = itemReader.GetInt32(i++);
-                            item.Enhance = itemReader.GetInt32(i++);
+                            item.Amount = (ulong)itemReader.GetValue(i++);
+                            item.Level = itemReader.GetByte(i++);
+                            item.Enhance = itemReader.GetByte(i++);
                             item.Durability = itemReader.GetInt32(i++);
-                            item.Endurance = itemReader.GetInt32(i++);
+                            item.Endurance = (uint)itemReader.GetValue(i++);
                             item.Flag = itemReader.GetInt32(i++);
-                            item.EquipPosition = itemReader.GetInt32(i++);
-                            
+                            item.EquipPosition = itemReader.GetInt16(i++);
+
                             for (int j = 0; j < Item.MaxSockets; ++j)
                                 item.Socket[j] = itemReader.GetInt32(i++);
 
@@ -154,6 +154,10 @@ namespace Game.DataRepository
                             #endregion
 
                             player.inventory.Add(item);
+                            if (item.EquipPosition != -1)
+                            {
+                                player.EquippedItems[item.EquipPosition] = item;
+                            }
                         }
                     }
                 }

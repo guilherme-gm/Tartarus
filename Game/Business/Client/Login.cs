@@ -17,8 +17,7 @@
 using Common.DataClasses;
 using Common.DataClasses.Network;
 using Game.DataClasses;
-using Game.DataClasses.Network;
-
+using Game.DataClasses.Objects;
 using CG = Game.DataClasses.Network.ClientGame;
 using GC = Game.DataClasses.Network.GameClient;
 
@@ -48,6 +47,7 @@ namespace Game.Business.Client
             };
             DataClasses.Server.ClientSockets.SendPacket(session, result);
 
+            #region Login Result
             result = new GC.LoginResult()
             {
                 IsAccepted = true,
@@ -74,8 +74,11 @@ namespace Game.Business.Client
                 GuildId = player.GuildId
             };
             DataClasses.Server.ClientSockets.SendPacket(session, result);
+            #endregion
 
-            // Stat Info
+            // This full stat send is required because status are calculated before login result,
+            // thus avoiding client from setting it
+            #region Stat Info
             result = new GC.StatInfo()
             {
                 Handle = player.GID,
@@ -135,14 +138,16 @@ namespace Game.Business.Client
                 Value = 0
             };
             DataClasses.Server.ClientSockets.SendPacket(session, result);
+            #endregion
 
+            #region Inventory
             result = new GC.Inventory()
             {
                 Count = (ushort)player.inventory.Count,
                 ItemList = player.inventory
             };
             DataClasses.Server.ClientSockets.SendPacket(session, result);
-
+            #endregion
             // ====================
 
             // TODO : 0x012F
@@ -150,10 +155,7 @@ namespace Game.Business.Client
             result = new GC.WearInfo()
             {
                 Handle = player.GID,
-                ElementalEffectType = new byte[24],
-                ItemCode = new int[24],
-                ItemEnhance = new int[24],
-                ItemLevel = new int[24]
+                EquippedItems = player.EquippedItems
             };
             DataClasses.Server.ClientSockets.SendPacket(session, result);
 

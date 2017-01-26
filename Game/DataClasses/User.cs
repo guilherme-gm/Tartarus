@@ -15,6 +15,7 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Common.DataClasses;
+using Game.DataClasses.Objects;
 
 namespace Game.DataClasses
 {

@@ -15,6 +15,7 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Common.DataClasses.Network;
+using Game.DataClasses.Objects;
 using System;
 using System.IO;
 
@@ -25,10 +26,8 @@ namespace Game.DataClasses.Network.GameClient
     {
         #region Get/Set
         public uint Handle { get; set; }
-        public int[] ItemCode { get; set; }
-        public int[] ItemEnhance { get; set; }
-        public int[] ItemLevel { get; set; }
-        public byte[] ElementalEffectType { get; set; }
+        
+        public Item[] EquippedItems { get; set; }
         #endregion
 
         #region Constructor/Reader/Write
@@ -50,16 +49,33 @@ namespace Game.DataClasses.Network.GameClient
             // Writes a fake header
             writer.Write(new byte[HeaderSize]);
 
+            int[] itemCode = new int[Player.MaxEquipPos];
+            int[] itemEnhance = new int[Player.MaxEquipPos];
+            int[] itemLevel = new int[Player.MaxEquipPos];
+            byte[] elementalType = new byte[Player.MaxEquipPos];
+
+            for (int i = 0; i < 24; ++i)
+            {
+                if (this.EquippedItems[i] != null)
+                {
+                    itemCode[i] = this.EquippedItems[i].Base.Id;
+                    itemEnhance[i] = this.EquippedItems[i].Enhance;
+                    itemLevel[i] = this.EquippedItems[i].Level;
+                    elementalType[i] = this.EquippedItems[i].ElementalEffectType;
+                }
+            }
+
+
             // Write packet body
             writer.Write(this.Handle);
             for (int i = 0; i < 24; i++)
-                writer.Write(this.ItemCode[i]);
+                writer.Write(itemCode[i]);
             for (int i = 0; i < 24; i++)
-                writer.Write(this.ItemEnhance[i]);
+                writer.Write(itemEnhance[i]);
             for (int i = 0; i < 24; i++)
-                writer.Write(this.ItemLevel[i]);
+                writer.Write(itemLevel[i]);
             for (int i = 0; i < 24; i++)
-                writer.Write(this.ElementalEffectType[i]);
+                writer.Write(elementalType[i]);
 
             // finishes packet
             base.Write(writer);
