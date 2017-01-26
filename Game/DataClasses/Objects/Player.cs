@@ -19,6 +19,8 @@ using Game.DataRepository;
 using System.Collections.Generic;
 using GC = Game.DataClasses.Network.GameClient;
 using Game.DataClasses.Database;
+using System;
+using Common.Utils;
 
 namespace Game.DataClasses.Objects
 {
@@ -106,8 +108,6 @@ namespace Game.DataClasses.Objects
             if (!repo.LoadCharacter(this))
                 return false;
 
-            // TODO : Loads character inventory
-
             CalculateStats();
             CalculateStatsByState();
 
@@ -128,7 +128,15 @@ namespace Game.DataClasses.Objects
                     CalcuteJobStats(PrevJobs[i], PrevJobLevel[i]);
             }
 
-            // TODO : Get equipped item stats
+            // Get equipped item stats
+            foreach (Item item in this.EquippedItems)
+            {
+                // If slot is empty, continue
+                if (item == null)
+                    continue;
+
+                CalculateItemStats(item);
+            }
 
             // Calculate Attributes
             // TODO : Does equipment stats really affects attributes calc?
@@ -142,6 +150,74 @@ namespace Game.DataClasses.Objects
                 Type = 0
             };
             Server.ClientSockets.SendPacket(this.User._Session, statInfo);
+        }
+
+        private void CalculateItemStats(Item item)
+        {
+            CreatureAttribute attr = this.Attributes;
+
+            for (int i = 0; i < ItemBase.MaxBaseType; i++)
+            {
+                switch (item.Base.BaseType[i])
+                {
+                    case ItemBase.BaseEffect.AttackPoint:
+                        attr.AttackPointRight += (short)(item.Base.BaseVar1[i] + item.Base.BaseVar2[i] * item.Level);
+                        // TODO : What about left hand?
+                        break;
+                    case ItemBase.BaseEffect.MagicPoint:
+                        attr.MagicPoint += (short)(item.Base.BaseVar1[i] + item.Base.BaseVar2[i] * item.Level);
+                        break;
+                    case ItemBase.BaseEffect.Accuracy:
+                        attr.AccuracyRight += (short)(item.Base.BaseVar1[i] + item.Base.BaseVar2[i] * item.Level);
+                        // TODO : What about left hand?
+                        break;
+                    case ItemBase.BaseEffect.AttackSpeed:
+                        attr.AttackSpeed += (short)(item.Base.BaseVar1[i] + item.Base.BaseVar2[i] * item.Level);
+                        break;
+                    case ItemBase.BaseEffect.Defence:
+                        attr.Defence += (short)(item.Base.BaseVar1[i] + item.Base.BaseVar2[i] * item.Level);
+                        break;
+                    case ItemBase.BaseEffect.MagicDefence:
+                        attr.MagicDefence += (short)(item.Base.BaseVar1[i] + item.Base.BaseVar2[i] * item.Level);
+                        break;
+                    case ItemBase.BaseEffect.Avoid:
+                        attr.Avoid += (short)(item.Base.BaseVar1[i] + item.Base.BaseVar2[i] * item.Level);
+                        break;
+                    case ItemBase.BaseEffect.MoveSpeed:
+                        attr.MoveSpeed += (short)(item.Base.BaseVar1[i] + item.Base.BaseVar2[i] * item.Level);
+                        break;
+                    case ItemBase.BaseEffect.BlockChance:
+                        attr.BlockChance += (short)(item.Base.BaseVar1[i] + item.Base.BaseVar2[i] * item.Level);
+                        break;
+                    case ItemBase.BaseEffect.MaxWeight:
+                        attr.MaxWeight += (short)(item.Base.BaseVar1[i] + item.Base.BaseVar2[i] * item.Level);
+                        break;
+                    case ItemBase.BaseEffect.BlockDefence:
+                         attr.BlockDefence += (short)(item.Base.BaseVar1[i] + item.Base.BaseVar2[i] * item.Level);
+                        break;
+                    case ItemBase.BaseEffect.CastingSpeed:
+                        attr.CastingSpeed += (short)(item.Base.BaseVar1[i] + item.Base.BaseVar2[i] * item.Level);
+                        break;
+                    case ItemBase.BaseEffect.MagicAccuracy:
+                        attr.MagicAccuracy += (short)(item.Base.BaseVar1[i] + item.Base.BaseVar2[i] * item.Level);
+                        break;
+                    case ItemBase.BaseEffect.MagicAvoid:
+                        attr.MagicAvoid += (short)(item.Base.BaseVar1[i] + item.Base.BaseVar2[i] * item.Level);
+                        break;
+                    case ItemBase.BaseEffect.CoolTimeSpeed:
+                        attr.CoolTimeSpeed += (short)(item.Base.BaseVar1[i] + item.Base.BaseVar2[i] * item.Level);
+                        break;
+                    case ItemBase.BaseEffect.MPRegenPoint:
+                        attr.MPRegenPoint += (short)(item.Base.BaseVar1[i] + item.Base.BaseVar2[i] * item.Level);
+                        break;
+                    case ItemBase.BaseEffect.AttackRange:
+                        attr.AttackRange += (short)(item.Base.BaseVar1[i] + item.Base.BaseVar2[i] * item.Level);
+                        break;
+                    default:
+                        ConsoleUtils.ShowError("Unknown BaseType '{0}' on Item ID '{1}'.", (int)item.Base.BaseType[i], item.Base.Id);
+                        break;
+                }
+            }
         }
 
         private void CalculateAttributes()

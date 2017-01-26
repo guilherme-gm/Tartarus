@@ -130,7 +130,7 @@ namespace Game.DataClasses.Database
             item.AvailablePeriod = record.AvailablePeriod;
             item.DecreaseType = record.DecreaseType;
             item.ThrowRange = record.ThrowRange;
-            item.BaseType = new short[MaxBaseType]
+            item.BaseType = new BaseEffect[MaxBaseType]
                 { record.Base1Type, record.Base2Type, record.Base3Type, record.Base4Type };
             item.BaseVar1 = new double[MaxBaseType]
                 { record.Base1Var1, record.Base2Var1, record.Base3Var1, record.Base4Var1 };
@@ -283,6 +283,28 @@ namespace Game.DataClasses.Database
             DecoTwoHandStaff,
             DecoOneHandAxe
         }
+        
+        public enum BaseEffect : short
+        {
+            AttackPoint = 11,
+            MagicPoint,
+            Accuracy,
+            AttackSpeed,
+            Defence,
+            MagicDefence,
+            Avoid,
+            MoveSpeed,
+            BlockChance,
+            MaxWeight,
+            BlockDefence,
+            CastingSpeed, // TODO : Needs confirmation
+            MagicAccuracy,
+            MagicAvoid,
+            CoolTimeSpeed,
+            // 26~32 - Empty // TODO : Are these values really empty?
+            MPRegenPoint = 33, // TODO : Needs confirmation
+            AttackRange // TODO : Needs confirmation
+        }
         #endregion
 
         #region Properties
@@ -318,7 +340,7 @@ namespace Game.DataClasses.Database
         public int AvailablePeriod { get; private set; }
         public int DecreaseType { get; private set; }
         public float ThrowRange { get; private set; }
-        public short[] BaseType { get; private set; }
+        public BaseEffect[] BaseType { get; private set; }
         public double[] BaseVar1 { get; private set; }
         public double[] BaseVar2 { get; private set; }
         public short[] OptType { get; private set; }
