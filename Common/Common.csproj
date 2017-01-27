@@ -71,7 +71,6 @@
     <Compile Include="Utils\RC4\XRC4Cipher.cs" />
     <Compile Include="Utils\RSAUtils.cs" />
     <Compile Include="Utils\SettingsReader.cs" />
-    <Compile Include="Utils\StringUtils.cs" />
     <Compile Include="Utils\XDes.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
