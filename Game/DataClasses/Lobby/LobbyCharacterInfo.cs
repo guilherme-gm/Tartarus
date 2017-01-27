@@ -1,4 +1,7 @@
-﻿/**
+﻿
+
+using System;
+/**
 * This file is part of Tartarus Emulator.
 * 
 * Tartarus is free software: you can redistribute it and/or modify
@@ -14,7 +17,6 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
-
 namespace Game.DataClasses.Lobby
 {
     public class LobbyCharacterInfo
@@ -35,6 +37,7 @@ namespace Game.DataClasses.Lobby
         public int[] WearItemEnhanceInfo { get; set; } // 24
         public int[] WearItemLevelInfo { get; set; } // 24
         public byte[] WearItemElementalType { get; set; } //24
+        public DateTime LoginTime { get; set; }
 
         public LobbyCharacterInfo()
         {

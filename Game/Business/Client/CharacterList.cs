@@ -19,13 +19,16 @@ using Common.DataClasses.Network;
 using Game.DataClasses;
 using Game.DataClasses.Lobby;
 using Game.DataRepository;
+using System;
 using CG = Game.DataClasses.Network.ClientGame;
 using GC = Game.DataClasses.Network.GameClient;
 
 namespace Game.Business.Client
 {
+    #region Character List Packet
     public class CharacterList : ICommand
     {
+        #region Packet Execute
         public void Execute(Session session, Packet message)
         {
             CG.CharacterList packet = (CG.CharacterList)message;
@@ -38,13 +41,32 @@ namespace Game.Business.Client
             LobbyRepository repo = new LobbyRepository();
             LobbyCharacterInfo[] characters = repo.GetCharacterList(((User)session._Client).AccountId);
 
+            // Find last logged character
+            ushort lastSlot = 0;
+            if (characters.Length > 0)
+            {
+                DateTime newestLogin = characters[0].LoginTime;
+                lastSlot = 0;
+                for (ushort i = 1; i < characters.Length; ++i)
+                {
+                    if (newestLogin < characters[i].LoginTime)
+                    {
+                        lastSlot = i;
+                        newestLogin = characters[i].LoginTime;
+                    }
+                }
+            }
+
+            // Finish packet info
             characterList.Count = (ushort)characters.Length;
             characterList.Characters = characters;
-            // TODO : Missing values
-            characterList.CurrentServerTime = 0;
-            characterList.LastLoginIndex = 0;
+            characterList.CurrentServerTime = 0; // Seems like this value is always 0 on 6.2
+            characterList.LastLoginIndex = lastSlot;
 
+            // Send Packet
             DataClasses.Server.ClientSockets.SendPacket(session, characterList);
         }
+        #endregion
     }
+    #endregion
 }

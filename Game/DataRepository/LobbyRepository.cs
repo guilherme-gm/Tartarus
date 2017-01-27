@@ -78,6 +78,7 @@ namespace Game.DataRepository
                             character.ModelInfo.ModelId[4] = charReader.GetInt32(15);
                             character.ModelInfo.TextureId = charReader.GetInt32(16);
                             character.CreateTime = charReader.GetDateTime(17).ToString();
+                            character.LoginTime = charReader.GetDateTime(18);
                             #endregion
 
                             #region Equip Info
