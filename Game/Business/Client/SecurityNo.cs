@@ -62,7 +62,7 @@ namespace Game.Business.Client
                             }
                             else
                             {
-                                // TODO : Is there an else for this?
+                                // CHECK : Is there an else for this?
                             }
                         }
                         else

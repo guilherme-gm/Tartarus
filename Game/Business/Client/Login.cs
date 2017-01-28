@@ -59,9 +59,9 @@ namespace Game.Business.Client
                 FaceDirection = 0, // TODO: Face Direction
                 RegionSize = 180,
                 HP = player.HP,
-                MP = (short) player.MP, // TODO : 6.2 Client uses short, but newer clients int
+                MP = (short) player.MP, // NOTE : 6.2 Client uses short, but newer clients int
                 MaxHP = player.MaxHp,
-                MaxMP = (short)player.MaxMP,// TODO : 6.2 Client uses short, but newer clients int
+                MaxMP = (short)player.MaxMP,// NOTE : 6.2 Client uses short, but newer clients int
                 Havoc = player.Havoc,
                 MaxHavoc = player.MaxHavoc,
                 Sex = player.Sex,

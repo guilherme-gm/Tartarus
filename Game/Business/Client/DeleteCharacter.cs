@@ -45,7 +45,7 @@ namespace Game.Business.Client
                 if (repo.DeleteCharacter(user.AccountId, packet.CharacterName))
                     result.ResultCode = (ushort)CG.DeleteCharacter.ResultCodes.Success;
 
-                // TODO : Is there an else for this?
+                // CHECK : Is there an else for this?
 
                 DataClasses.Server.ClientSockets.SendPacket(session, result);
             }

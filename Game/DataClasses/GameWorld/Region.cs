@@ -23,7 +23,7 @@ namespace Game.DataClasses.GameWorld
     public class Region
     {
         public const int RegionSize = 180;
-        public const int MapSize = 16128; // TODO : Maybe this const should be moved to another file?
+        public const int MapSize = 16128; // IMPROVE : Maybe this const should be moved to another file?
         
         public static Region[][][] Regions;
 
@@ -47,7 +47,7 @@ namespace Game.DataClasses.GameWorld
                     Regions[i][j] = new Region[channels];
                     for (uint k = 0; k < channels; k++)
                     {
-                        // TODO : We might be able to improve that by not initializing a
+                        // IMPROVE : We might be able to improve that by not initializing a
                         //          region for invalid places.
                         Regions[i][j][k] = new Region(i, j);
                     }
@@ -65,7 +65,7 @@ namespace Game.DataClasses.GameWorld
         {
             uint rx = (uint)(x / RegionSize);
             uint ry = (uint)(y / RegionSize);
-            layer = 0; // NOTE : Change this whne channels are supported.
+            layer = 0; // TODO : Change this whne channels are supported.
 
             // Ensure that given region exists.
             if (Regions.Length < rx)

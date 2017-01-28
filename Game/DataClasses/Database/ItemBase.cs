@@ -297,13 +297,13 @@ namespace Game.DataClasses.Database
             BlockChance,
             MaxWeight,
             BlockDefence,
-            CastingSpeed, // TODO : Needs confirmation
+            CastingSpeed, // CHECK : Needs confirmation
             MagicAccuracy,
             MagicAvoid,
             CoolTimeSpeed,
-            // 26~32 - Empty // TODO : Are these values really empty?
-            MPRegenPoint = 33, // TODO : Needs confirmation
-            AttackRange // TODO : Needs confirmation
+            // 26~32 - Empty // CHECK : Are these values really empty?
+            MPRegenPoint = 33, // CHECK : Needs confirmation
+            AttackRange // CHECK : Needs confirmation
         }
         #endregion
 

@@ -139,7 +139,7 @@ namespace Game.DataClasses.Objects
             }
 
             // Calculate Attributes
-            // TODO : Does equipment stats really affects attributes calc?
+            // CHECK : Does equipment stats really affects attributes calc?
             CalculateAttributes();
 
             GC.StatInfo statInfo = new GC.StatInfo()

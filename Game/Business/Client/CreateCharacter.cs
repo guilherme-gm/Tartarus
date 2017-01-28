@@ -38,11 +38,11 @@ namespace Game.Business.Client
             List<ItemBase> startItems = new List<ItemBase>();
             int startX, startY;
 
-            // TODO : This probably should be configurable out of source
+            // IMPROVE : This probably should be configurable out of source
             switch (packet.Character.ModelInfo.Race)
             {
                 case 3: // Gaia
-                    // TODO: Officially this is set by script on first login
+                    // NOTE : Officially this is set by script on first login
                     packet.Character.Job = 100;
                     startX = 164474;
                     startY = 52932;
@@ -55,7 +55,7 @@ namespace Game.Business.Client
                     break;
 
                 case 4: // Deva
-                    // TODO: Officially this is set by script on first login
+                    // NOTE : Officially this is set by script on first login
                     packet.Character.Job = 200;
                     startX = 164335;
                     startY = 49510;
@@ -68,7 +68,7 @@ namespace Game.Business.Client
                     break;
 
                 case 5: // Asura
-                    // TODO: Officially this is set by script on first login
+                    // NOTE : Officially this is set by script on first login
                     packet.Character.Job = 300;
                     startX = 168356;
                     startY = 55399;
@@ -81,7 +81,7 @@ namespace Game.Business.Client
                     break;
 
                 default:
-                    // TODO : Invalid Race, is there an error for that?
+                    // CHECK : Invalid Race, is there an error for that?
                     return;
             }
 

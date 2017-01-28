@@ -1,0 +1,12 @@
+While developing Tartarus, parts of the code may need to be marked to be revisited later.
+
+These are the Comment Tokens used in Tartarus:
+
+- TODO (Normal Priority)
+Means that something should be coded there
+
+- CHECK (Normal Priority)
+Means that this part needs official confirmation.
+
+- IMPROVE (Low Priority)
+Means that it might be possible to improve this part in the future

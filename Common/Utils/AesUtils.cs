@@ -33,7 +33,7 @@ namespace Common.Utils
         /// <returns></returns>
         public static byte[] Encrypt(string value, byte[] key, byte[] iv)
         {
-            // Check arguments.
+            // Ensure parameters are valid.
             if (value == null || value.Length <= 0)
                 throw new ArgumentNullException("value");
             if (key == null || key.Length <= 0)
@@ -80,7 +80,7 @@ namespace Common.Utils
         /// <returns></returns>
         public static string Decrypt(byte[] cipherText, byte[] key, byte[] iv)
         {
-            // Check arguments.
+            // Ensure parameters are valid
             if (cipherText == null || cipherText.Length <= 0)
                 throw new ArgumentNullException("cipherText");
             if (key == null || key.Length <= 0)
