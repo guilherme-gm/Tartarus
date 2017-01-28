@@ -85,6 +85,10 @@ namespace Game.DataClasses
             Database.JobLevelBonus.Load();
             #endregion
 
+            #region Initialize World Components
+            GameWorld.Region.Init();
+            #endregion
+
             #region Start Connection
             AuthSocket =
                 new SocketService(

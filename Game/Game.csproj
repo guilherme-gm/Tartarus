@@ -139,7 +139,7 @@
     <Compile Include="DataClasses\PetBase.cs" />
     <Compile Include="DataClasses\Objects\Player.cs" />
     <Compile Include="DataClasses\Position.cs" />
-    <Compile Include="DataClasses\Region.cs" />
+    <Compile Include="DataClasses\GameWorld\Region.cs" />
     <Compile Include="DataClasses\Server.cs" />
     <Compile Include="DataClasses\Skill.cs" />
     <Compile Include="DataClasses\SkillBase.cs" />

@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
-using Game.DataClasses;
+using Game.DataClasses.GameWorld;
 
 namespace Game.DataClasses
 {

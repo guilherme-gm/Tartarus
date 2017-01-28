@@ -17,6 +17,7 @@
 using Common.Utils;
 using Game.DataClasses;
 using Game.DataClasses.Database;
+using Game.DataClasses.GameWorld;
 using Game.DataClasses.Objects;
 using Game.Utils;
 using MySql.Data.MySqlClient;
@@ -66,6 +67,7 @@ namespace Game.DataRepository
                                 Z = 0,
                                 Layer = (byte)charReader.GetByte(i++),
                             };
+                            player.Region = Region.FromPosition(player.Position);
                             player.RespawnPoint = new Position()
                             {
                                 X = (float)charReader.GetInt32(i++),
