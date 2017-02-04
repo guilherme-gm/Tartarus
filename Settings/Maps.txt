@@ -1,0 +1,94 @@
+// Tartarus World Map Settings
+// This file sets up the game maps and their position in the World,
+// it's used when generating the MapCache and on server start to setup
+// Regions and WorldLocations properly.
+//
+// Each line must contain only ONE map entry in the following format:
+// WorldX, WorldY, FileName
+// Where:
+// - WorldX and WorldY means the position in the world with
+//   - X being the horizontal axis (starting at left) and
+//   - Y being the vertical axis (starting at the bottom).
+// - FileName the name of the files in the client that is equivalent
+//   to that map. It'll be used during the caching process.
+//
+// Empty lines and lines that starts with // are skipped.
+
+// Folder is a special keyword that should be used only once in this file.
+// it specifies where the maps should be loaded from when caching (used by mapcache)
+// Example:
+// Folder: C:/Games/Maps/
+Folder:
+
+0,0,m000_000
+1,1,m001_001
+1,3,m001_003
+3,1,m003_001
+5,0,m005_000
+5,1,m005_001
+5,5,m005_005
+5,6,m005_006
+5,7,m005_007
+5,8,m005_008
+6,1,m006_001
+6,3,m006_003
+6,4,m006_004
+6,5,m006_005
+6,6,m006_006
+6,7,m006_007
+6,8,m006_008
+7,0,m007_000
+7,1,m007_001
+7,3,m007_003
+7,4,m007_004
+7,5,m007_005
+7,6,m007_006
+7,7,m007_007
+7,8,m007_008
+7,9,m007_009
+8,1,m008_001
+8,3,m008_003
+8,4,m008_004
+8,5,m008_005
+8,6,m008_006
+8,7,m008_007
+8,8,m008_008
+8,9,m008_009
+9,0,m009_000
+9,1,m009_001
+9,4,m009_004
+9,5,m009_005
+9,6,m009_006
+9,7,m009_007
+9,8,m009_008
+9,9,m009_009
+10,0,m010_000
+10,1,m010_001
+10,2,m010_002
+10,3,m010_003
+10,7,m010_007
+10,8,m010_008
+11,0,m011_000
+11,1,m011_001
+11,2,m011_002
+11,4,m011_004
+11,9,m011_009
+12,0,m012_000
+12,1,m012_001
+12,2,m012_002
+12,4,m012_004
+12,5,m012_005
+12,6,m012_006
+12,7,m012_007
+12,8,m012_008
+12,9,m012_009
+12,10,m012_010
+13,0,m013_000
+13,1,m013_001
+13,2,m013_002
+13,3,m013_003
+13,5,m013_005
+13,6,m013_006
+13,7,m013_007
+13,8,m013_008
+13,9,m013_009
