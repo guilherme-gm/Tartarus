@@ -44,6 +44,9 @@ namespace Game.Helpers
                 case ClientGamePackets.Version:
                     message = new CG.Version();
                     return new Business.Client.Version();
+                case ClientGamePackets.ChangeLocation:
+                    message = new CG.ChangeLocation();
+                    return new Business.Client.ChangeLocation();
                 case ClientGamePackets.CharacterList:
                     message = new CG.CharacterList();
                     return new Business.Client.CharacterList();

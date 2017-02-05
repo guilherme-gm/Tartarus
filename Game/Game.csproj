@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Business\Client\AccountWithAuth.cs" />
+    <Compile Include="Business\Client\ChangeLocation.cs" />
     <Compile Include="Business\Client\CharacterList.cs" />
     <Compile Include="Business\Client\CheckCharacterName.cs" />
     <Compile Include="Business\Client\CreateCharacter.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="DataClasses\GameWorld\WorldLocation.cs" />
     <Compile Include="DataClasses\GameWorld\WorldLocationPoint.cs" />
     <Compile Include="DataClasses\GameWorld\WorldLocationPolygon.cs" />
+    <Compile Include="DataClasses\Network\ClientGame\ChangeLocation.cs" />
     <Compile Include="DataClasses\Objects\Creature.cs" />
     <Compile Include="DataClasses\Database\JobLevelBonus.cs" />
     <Compile Include="DataClasses\Database\StatBase.cs" />

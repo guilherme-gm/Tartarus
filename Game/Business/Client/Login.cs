@@ -30,7 +30,12 @@ namespace Game.Business.Client
             CG.Login packet = (CG.Login)message;
 
             Packet result;
-            
+
+            // Invalid request (client not logged)
+            if (session._Client == null)
+                return;
+
+
             // TODO : Code this
             result = new GC.UrlList()
             {
@@ -40,6 +45,9 @@ namespace Game.Business.Client
 
             Player player = Player.Create((User)session._Client, packet.Name);
             bool load = player.Load();
+
+            if (load)
+                ((User)session._Client).Character = player;
             
             result = new DataClasses.Network.Both.TimeSync()
             {
