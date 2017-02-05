@@ -91,6 +91,8 @@ namespace Game.DataClasses.Objects
         public int FaceTextureId { get; set; }
         
         public string ClientInfo { get; set; }
+
+        public WorldLocation Location { get; set; }
         
         private Player(uint gid, User user, string name) : base(gid)
         {

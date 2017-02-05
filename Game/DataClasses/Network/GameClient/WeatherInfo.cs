@@ -24,7 +24,7 @@ namespace Game.DataClasses.Network.GameClient
     public class WeatherInfo : Packet
     {
         #region Get/Set
-        public uint RegionId { get; set; }
+        public int RegionId { get; set; }
         public ushort WeatherId { get; set; }
 
         #endregion

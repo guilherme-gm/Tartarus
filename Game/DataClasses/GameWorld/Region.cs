@@ -1,6 +1,3 @@
-
-using Game.DataClasses.Objects;
-using System.Collections.Generic;
 /**
 * This file is part of Tartarus Emulator.
 * 
@@ -17,13 +14,17 @@ using System.Collections.Generic;
 * You should have received a copy of the GNU General Public License
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
+using Game.DataClasses.Database;
+using Game.DataClasses.Objects;
+using System.Collections.Generic;
+
+
 namespace Game.DataClasses.GameWorld
 {
     #region Region Class
     public class Region
     {
         public const int RegionSize = 180;
-        public const int MapSize = 16128; // IMPROVE : Maybe this const should be moved to another file?
         
         public static Region[][][] Regions;
 
@@ -35,8 +36,8 @@ namespace Game.DataClasses.GameWorld
             int mapHeight = 10;
             int channels = 1;
             
-            int regionsX = (mapWidth * MapSize) / RegionSize;
-            int regionsY = (mapHeight * MapSize) / RegionSize;
+            int regionsX = (mapWidth * MapBase.MapSize) / RegionSize;
+            int regionsY = (mapHeight * MapBase.MapSize) / RegionSize;
             
             Regions = new Region[regionsX][][];
             for (uint i = 0; i < regionsX; i++)

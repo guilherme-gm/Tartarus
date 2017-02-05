@@ -83,11 +83,10 @@ namespace Game.DataClasses
             Database.StatBase.Load(); // Must always load before Job
             Database.JobBase.Load();
             Database.JobLevelBonus.Load();
+            Database.LocationBase.Load();
             #endregion
 
-            #region Initialize World Components
-            GameWorld.Region.Init();
-            #endregion
+            InitGameWorld();
 
             #region Start Connection
             AuthSocket =
@@ -116,6 +115,16 @@ namespace Game.DataClasses
             {
                 input = Console.ReadLine();
             } while (input != "quit");
+        }
+
+        private void InitGameWorld()
+        {
+            Database.MapBase mapBase = new Database.MapBase();
+            if (!mapBase.Load())
+                return;
+
+            GameWorld.Region.Init();
+            GameWorld.WorldLocation.Init(mapBase);
         }
 
         #region Inter-Server Connection Events

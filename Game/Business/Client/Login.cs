@@ -402,19 +402,18 @@ namespace Game.Business.Client
             DataClasses.Server.ClientSockets.SendPacket(session, result);
             #endregion
 
-            // TODO : Region Info
             #region Region Info
             result = new GC.ChangeLocation()
             {
                 PrevLocationId = 0,
-                CurLocationId = 100301
+                CurLocationId = player.Location.Location.Id
             };
             DataClasses.Server.ClientSockets.SendPacket(session, result);
 
             result = new GC.WeatherInfo()
             {
-                RegionId = 100301,
-                WeatherId = 0
+                RegionId = player.Location.Location.Id,
+                WeatherId = player.Location.CurrenWeather
             };
             DataClasses.Server.ClientSockets.SendPacket(session, result);
             #endregion
