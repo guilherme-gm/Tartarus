@@ -67,8 +67,6 @@ namespace Game.DataRepository
                                 Z = 0,
                                 Layer = (byte)charReader.GetByte(i++),
                             };
-                            player.Region = Region.FromPosition(player.Position);
-                            player.Location = WorldLocation.FromPosition(player.Position);
                             player.RespawnPoint = new Position()
                             {
                                 X = (float)charReader.GetInt32(i++),

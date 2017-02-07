@@ -101,6 +101,9 @@ namespace Game.DataClasses.Objects
             this.EquippedItems = new Item[MaxEquipPos];
             this.inventory = new Inventory();
             this.Position = new Position();
+
+            this.Type = ObjectType.Client; // Check this
+            this.SubType = ObjectSubType.Player;
         }
 
         public bool Load()
@@ -114,6 +117,29 @@ namespace Game.DataClasses.Objects
             CalculateStatsByState();
 
             return true;
+        }
+
+        public void LoadArea()
+        {
+            this.Region = Region.FromPosition(this.Position);
+            this.Location = WorldLocation.FromPosition(this.Position);
+
+            if (this.Region == null)
+            {
+                ConsoleUtils.ShowDebug("Player '{0}' at invalid Region. (X: {1}; Y: {2}).", this.Name, this.Position.X, this.Position.Y);
+                // TODO : handle this
+                return;
+            }
+            if (this.Location == null)
+            {
+                ConsoleUtils.ShowDebug("Player '{0}' at invalid Location. (X: {1}; Y: {2}).", this.Name, this.Position.X, this.Position.Y);
+                // TODO : handle this
+                return;
+            }
+
+            // Adds player to region
+            this.Region.Enter(this);
+            this.Region.ReceiveObjects(this, true);
         }
 
         public void CalculateStats()

@@ -18,7 +18,26 @@ using Game.DataClasses.GameWorld;
 
 namespace Game.DataClasses
 {
-	public abstract class GameObject
+    public enum ObjectType
+    {
+        Static = 0x0,
+        Movable = 0x1,
+        Client = 0x2
+    }
+
+    public enum ObjectSubType
+    {
+        Player = 0x0,
+        Npc = 0x1,
+        Item = 0x2,
+        Monster = 0x3,
+        Summon = 0x4,
+        SkillProp = 0x5,
+        FieldProp = 0x6,
+        Pet = 0x7
+    }
+
+    public abstract class GameObject
 	{
 		public bool InWorld { get; set; }
 
@@ -27,6 +46,11 @@ namespace Game.DataClasses
 		public Position Position { get; set; }
 
 		public uint GID { get; set; }
+
+        public ObjectType Type { get; set; }
+
+        public ObjectSubType SubType { get; set; }
+
 
         public GameObject(uint gid)
         {

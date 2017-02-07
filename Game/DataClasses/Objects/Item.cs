@@ -90,6 +90,9 @@ namespace Game.DataClasses.Objects
             this.ElementalEffectExpireTime = new DateTime();
             this.CreateTime = new DateTime();
             this.UpdateTime = new DateTime();
+
+            this.Type = ObjectType.Static; // Check this
+            this.SubType = ObjectSubType.Item;
         }
 
 	}

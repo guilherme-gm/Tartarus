@@ -17,7 +17,8 @@
 using Game.DataClasses.Database;
 using Game.DataClasses.Objects;
 using System.Collections.Generic;
-
+using GC = Game.DataClasses.Network.GameClient;
+using System;
 
 namespace Game.DataClasses.GameWorld
 {
@@ -78,6 +79,43 @@ namespace Game.DataClasses.GameWorld
 
             return Regions[rx][ry][layer];
         }
+        
+        public static Region FromRegionXY(uint rx, uint ry, byte layer)
+        {
+            // Ensure that given region exists.
+            if (Regions.Length < rx)
+                return null;
+            if (Regions[rx].Length < ry)
+                return null;
+            if (Regions[rx][ry].Length < layer)
+                return null;
+
+            return Regions[rx][ry][layer];
+        }
+
+        public static List<Region> GetNearbyRegions(Region region)
+        {
+            List<Region> nearbyRegions = new List<Region>();
+            int x = 3, y = 3;
+
+            // Ensure that we will not get negative X or Y
+            if (region.X < 3)
+                x = (int)(-1 * region.X);
+            if (region.Y < 3)
+                y = (int)(-1 * region.Y);
+            
+            // Loops through a box around view area and get the nearby regions
+            for (; x <= 3; ++x)
+            {
+                for (; y <= 3; ++y)
+                {
+                    if ((x * x + y * y) <= 10)
+                        Region.FromRegionXY((uint)(region.X - x), (uint)(region.Y - y), region.Layer);
+                }
+            }
+
+            return nearbyRegions;
+        }
         #endregion
 
         public uint X { get; set; }
@@ -92,7 +130,43 @@ namespace Game.DataClasses.GameWorld
             this.Y = ry;
             this.Players = new List<Player>();
         }
-	}
+
+        /// <summary>
+        /// Enters in the region
+        /// </summary>
+        /// <param name="gobject"></param>
+        public void Enter(GameObject gobject)
+        {
+            switch(gobject.SubType)
+            {
+                case ObjectSubType.Player:
+                    this.Players.Add((Player)gobject);
+                    break;
+            }
+            this.NotifyEnter(gobject);
+        }
+
+        #region Observing Methods
+        private void NotifyEnter(GameObject gobject)
+        {
+            // Informs all listeners that this game object entered the area
+            //SC_ENTER
+            //SC_WEARINFO
+        }
+
+        internal void ReceiveObjects(Player player, bool isLogin)
+        {
+            List<Region> nearbyRegions = GetNearbyRegions(this);
+
+            foreach(Region region in nearbyRegions)
+            {
+                // Send all nearby objects
+                //SC_ENTER
+                //SC_WEARINFO
+            }
+        }
+        #endregion
+    }
     #endregion
 }
 

@@ -335,6 +335,7 @@ namespace Game.Business.Client
             };
             DataClasses.Server.ClientSockets.SendPacket(session, result);
 
+            player.LoadArea();
             // TODO : Channel
             result = new GC.Property()
             {
