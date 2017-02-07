@@ -39,6 +39,7 @@ namespace Game.DataClasses.Network
     {
         Result = 0x0000,            // 0
         TimeSync = 0x0002,          // 2
+        Enter = 0x0003,             // 3
         LoginResult = 0x0004,       // 4
         Chat = 0x0016,              // 22
         WearInfo = 0x00CA,          // 202

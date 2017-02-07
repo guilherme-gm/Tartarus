@@ -84,7 +84,7 @@ namespace Game.DataClasses.Network.GameClient
             }
 
             // finishes packet
-            base.Write(writer);
+            base.Complete(writer);
 
             return stream.ToArray();
         }

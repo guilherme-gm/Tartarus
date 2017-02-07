@@ -53,7 +53,7 @@ namespace Game.DataClasses.Network.GameClient
             writer.Write(this.WeatherId);
 
             // finishes packet
-            base.Write(writer);
+            base.Complete(writer);
 
             return stream.ToArray();
         }

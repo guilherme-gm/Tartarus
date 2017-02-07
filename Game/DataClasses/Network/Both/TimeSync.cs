@@ -53,7 +53,7 @@ namespace Game.DataClasses.Network.Both
             writer.Write(this.Time);
 
             // finishes packet
-            base.Write(writer);
+            base.Complete(writer);
 
             return stream.ToArray();
         }

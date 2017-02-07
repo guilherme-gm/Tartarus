@@ -80,7 +80,7 @@ namespace Auth.DataClasses.Network.AuthClient
             }
 
             // finishes packet
-            base.Write(writer);
+            base.Complete(writer);
 
             return stream.ToArray();
         }

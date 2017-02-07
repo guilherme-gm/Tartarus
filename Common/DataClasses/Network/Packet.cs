@@ -34,7 +34,7 @@ namespace Common.DataClasses.Network
 
         public abstract byte[] Write();
 
-		protected void Write(BinaryWriter writer)
+		protected void Complete(BinaryWriter writer)
 		{
             this.Size = (int)writer.BaseStream.Position;
             writer.Seek(0, SeekOrigin.Begin);

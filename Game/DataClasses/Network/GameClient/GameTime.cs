@@ -55,7 +55,7 @@ namespace Game.DataClasses.Network.GameClient
             writer.Write((int)0);
 
             // finishes packet
-            base.Write(writer);
+            base.Complete(writer);
 
             return stream.ToArray();
         }

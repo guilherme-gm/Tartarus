@@ -69,7 +69,7 @@ namespace Game.DataClasses.Network.GameClient
                 writer.Write(quest.StartID);
             }
                 // finishes packet
-                base.Write(writer);
+                base.Complete(writer);
 
             return stream.ToArray();
         }

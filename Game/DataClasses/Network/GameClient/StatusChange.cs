@@ -52,7 +52,7 @@ namespace Game.DataClasses.Network.GameClient
             writer.Write(this.Status);
 
             // finishes packet
-            base.Write(writer);
+            base.Complete(writer);
 
             return stream.ToArray();
         }

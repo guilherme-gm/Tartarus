@@ -58,7 +58,7 @@ namespace Common.DataClasses.Network.AuthGame
             writer.Write(this.Permission);
 
             // finishes packet
-            base.Write(writer);
+            base.Complete(writer);
 
             return stream.ToArray();
         }

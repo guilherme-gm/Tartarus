@@ -57,7 +57,7 @@ namespace Auth.DataClasses.Network.AuthClient
             writer.Write(Value);
 
             // finishes packet
-            base.Write(writer);
+            base.Complete(writer);
 
             return stream.ToArray();
         }

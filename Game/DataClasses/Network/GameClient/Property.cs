@@ -59,7 +59,7 @@ namespace Game.DataClasses.Network.GameClient
                 this.WriteString(writer, this.StringValue, this.StringValue.Length);
 
             // finishes packet
-            base.Write(writer);
+            base.Complete(writer);
 
             return stream.ToArray();
         }
