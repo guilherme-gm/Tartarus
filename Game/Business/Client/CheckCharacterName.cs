@@ -42,7 +42,7 @@ namespace Game.Business.Client
             else
                 result.ResultCode = (ushort)CG.CheckCharacterName.ResultCode.Success;
 
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
         }
         #endregion
     }

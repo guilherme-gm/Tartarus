@@ -177,7 +177,7 @@ namespace Game.DataClasses.Objects
                 Attribute = this.Attributes,
                 Type = 0
             };
-            Server.ClientSockets.SendPacket(this.User._Session, statInfo);
+            Server.ClientSockets.SendSelf(this.User._Session, statInfo);
         }
 
         private void CalculateItemStats(Item item)
@@ -340,7 +340,7 @@ namespace Game.DataClasses.Objects
                 Attribute = this.AttributesByState,
                 Type = 0
             };
-            Server.ClientSockets.SendPacket(this.User._Session, statInfo);
+            Server.ClientSockets.SendSelf(this.User._Session, statInfo);
         }
 	}
 

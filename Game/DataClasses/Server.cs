@@ -15,7 +15,6 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Common.DataClasses;
-using Common.Service;
 using Common.Utils;
 using Game.Services;
 using System;
@@ -29,7 +28,7 @@ namespace Game.DataClasses
         private const string RC4Key = "}h79q~B%al;k'y $E";
 
         public static SocketService ClientSockets { get; private set; }
-        public static SocketService AuthSocket { get; private set; }
+        public static Common.Service.SocketService AuthSocket { get; private set; }
 
         public static ServerInfo ServerInfo { get; private set; }
 

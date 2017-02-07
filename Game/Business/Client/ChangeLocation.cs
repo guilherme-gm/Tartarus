@@ -50,7 +50,7 @@ namespace Game.Business.Client
             locationInfo.CurLocationId = newLocal.Location.Id;
 
             // Send Packet
-            DataClasses.Server.ClientSockets.SendPacket(session, locationInfo);
+            DataClasses.Server.ClientSockets.SendSelf(session, locationInfo);
         }
         #endregion
     }

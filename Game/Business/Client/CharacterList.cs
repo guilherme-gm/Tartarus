@@ -64,7 +64,7 @@ namespace Game.Business.Client
             characterList.LastLoginIndex = lastSlot;
 
             // Send Packet
-            DataClasses.Server.ClientSockets.SendPacket(session, characterList);
+            DataClasses.Server.ClientSockets.SendSelf(session, characterList);
         }
         #endregion
     }

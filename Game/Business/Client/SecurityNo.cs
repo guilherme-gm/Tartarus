@@ -70,7 +70,7 @@ namespace Game.Business.Client
                             result.ResultCode = (ushort)CG.SecurityNo.ResultCodes.PasswordMismatch;
                         }
 
-                        DataClasses.Server.ClientSockets.SendPacket(session, result);
+                        DataClasses.Server.ClientSockets.SendSelf(session, result);
                     }
                     break;
                 default:

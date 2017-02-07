@@ -87,8 +87,6 @@
     <Compile Include="DataClasses\Database\Records\JobBaseRecord.cs" />
     <Compile Include="DataClasses\Database\Records\JobLevelBonusRecord.cs" />
     <Compile Include="DataClasses\Database\Records\LocationRecord.cs" />
-    <Compile Include="DataClasses\GameWorld\ObjectNotification.cs" />
-    <Compile Include="DataClasses\GameWorld\Unsubscriber.cs" />
     <Compile Include="DataClasses\GameWorld\WorldLocation.cs" />
     <Compile Include="DataClasses\GameWorld\WorldLocationPoint.cs" />
     <Compile Include="DataClasses\GameWorld\WorldLocationPolygon.cs" />
@@ -168,6 +166,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ClientController.cs" />
     <Compile Include="Services\ServerController.cs" />
+    <Compile Include="Services\SocketService.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Utils\ConnectionFactory.cs" />
     <Compile Include="Utils\IConnectionFactory.cs" />

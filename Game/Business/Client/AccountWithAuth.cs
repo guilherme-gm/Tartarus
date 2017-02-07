@@ -51,7 +51,7 @@ namespace Game.Business.Client
                 DataClasses.Server.Instance.RemovePendingUser(packet.Account);
             }
 
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
         }
         #endregion
     }

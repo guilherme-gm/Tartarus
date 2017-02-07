@@ -41,7 +41,7 @@ namespace Game.Business.Client
             {
                 _UrlList = "guild.url|http://127.0.0.1/guild/login.aspx|guild_test_download.url|upload/|web_download|127.0.0.1|web_download_port|0|shop.url|http://127.0.0.1/khroos|ghelp_url|http://127.0.0.1|guild_icon_upload.ip|127.0.0.1|guild_icon_upload.port|4617"
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             Player player = Player.Create((User)session._Client, packet.Name);
             bool load = player.Load();
@@ -53,7 +53,7 @@ namespace Game.Business.Client
             {
                 Time = 16174
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             #region Login Result
             result = new GC.LoginResult()
@@ -81,7 +81,7 @@ namespace Game.Business.Client
                 CellSize = 6,
                 GuildId = player.GuildId
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
             #endregion
 
             // This full stat send is required because status are calculated before login result,
@@ -94,7 +94,7 @@ namespace Game.Business.Client
                 Attribute = player.Attributes,
                 Type = 0
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             result = new GC.StatInfo()
             {
@@ -103,7 +103,7 @@ namespace Game.Business.Client
                 Attribute = player.AttributesByState,
                 Type = 1
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             result = new GC.Property()
             {
@@ -112,7 +112,7 @@ namespace Game.Business.Client
                 Name = "max_havoc",
                 Value = 0
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             result = new GC.Property()
             {
@@ -121,7 +121,7 @@ namespace Game.Business.Client
                 Name = "max_chaos",
                 Value = 0
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             result = new GC.Property()
             {
@@ -130,13 +130,13 @@ namespace Game.Business.Client
                 Name = "max_stamina",
                 Value = 50000
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             result = new DataClasses.Network.Both.TimeSync()
             {
                 Time = 16174
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             result = new GC.Property()
             {
@@ -145,7 +145,7 @@ namespace Game.Business.Client
                 Name = "max_havoc",
                 Value = 0
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
             #endregion
 
             #region Inventory
@@ -154,7 +154,7 @@ namespace Game.Business.Client
                 Count = (ushort)player.inventory.Count,
                 ItemList = player.inventory
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
             
             // TODO : 0x012F
 
@@ -163,14 +163,14 @@ namespace Game.Business.Client
                 Handle = player.GID,
                 EquippedItems = player.EquippedItems
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
             
             result = new GC.GoldUpdate()
             {
                 Gold = player.Gold,
                 Chaos = player.Chaos
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             result = new GC.Property()
             {
@@ -179,7 +179,7 @@ namespace Game.Business.Client
                 Name = "chaos",
                 Value = player.Chaos
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
             #endregion
 
             #region Exp and Job Information
@@ -189,7 +189,7 @@ namespace Game.Business.Client
                 JobLevel = player.JobLevel,
                 Level = player.Level
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             result = new GC.ExpUpdate()
             {
@@ -197,7 +197,7 @@ namespace Game.Business.Client
                 Exp = player.Exp,
                 JP = player.JP
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             result = new GC.Property()
             {
@@ -206,7 +206,7 @@ namespace Game.Business.Client
                 Name = "job",
                 Value = player.Job.Id
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             result = new GC.Property()
             {
@@ -215,7 +215,7 @@ namespace Game.Business.Client
                 Name = "job_level",
                 Value = player.JobLevel
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             result = new GC.Property()
             {
@@ -224,7 +224,7 @@ namespace Game.Business.Client
                 Name = "job_0",
                 Value = (player.PrevJobs[0] == null ? 0 : player.PrevJobs[0].Id)
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             result = new GC.Property()
             {
@@ -233,7 +233,7 @@ namespace Game.Business.Client
                 Name = "jlv_0",
                 Value = player.PrevJobLevel[0]
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             result = new GC.Property()
             {
@@ -242,7 +242,7 @@ namespace Game.Business.Client
                 Name = "job_1",
                 Value = (player.PrevJobs[1] == null ? 0 : player.PrevJobs[1].Id)
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             result = new GC.Property()
             {
@@ -251,7 +251,7 @@ namespace Game.Business.Client
                 Name = "jlv_1",
                 Value = player.PrevJobLevel[1]
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             result = new GC.Property()
             {
@@ -260,7 +260,7 @@ namespace Game.Business.Client
                 Name = "job_2",
                 Value = (player.PrevJobs[2] == null ? 0 : player.PrevJobs[2].Id)
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             result = new GC.Property()
             {
@@ -269,21 +269,21 @@ namespace Game.Business.Client
                 Name = "jlv_2",
                 Value = player.PrevJobLevel[2]
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
             #endregion
 
             result = new GC.BeltSlotInfo()
             {
                 Handle = new uint[6]
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             result = new GC.GameTime()
             {
                 T = 16220,
                 _GameTime = 1484355440
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             #region ETC Info
             result = new GC.Property()
@@ -293,7 +293,7 @@ namespace Game.Business.Client
                 Name = "huntaholic_ent",
                 Value = player.HuntaholicEnterCount
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             // TODO : Dirt Killing Count
             result = new GC.Property()
@@ -303,7 +303,7 @@ namespace Game.Business.Client
                 Name = "dk_count",
                 Value = 0
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             // TODO : PK count
             result = new GC.Property()
@@ -313,7 +313,7 @@ namespace Game.Business.Client
                 Name = "pk_count",
                 Value = 0
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             // TODO : Immoral Points
             result = new GC.Property()
@@ -323,7 +323,7 @@ namespace Game.Business.Client
                 Name = "immoral",
                 Value = 0
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
             #endregion
 
             result = new GC.Property()
@@ -333,7 +333,7 @@ namespace Game.Business.Client
                 Name = "stamina",
                 Value = player.Stamina
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             player.LoadArea();
             // TODO : Channel
@@ -344,7 +344,7 @@ namespace Game.Business.Client
                 Name = "channel",
                 Value = 1
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             // TODO : Status
             result = new GC.StatusChange()
@@ -352,7 +352,7 @@ namespace Game.Business.Client
                 Handle = player.GID,
                 Status = 0
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             // TODO : Quest List
             result = new GC.QuestList()
@@ -360,7 +360,7 @@ namespace Game.Business.Client
                 ActiveQuests = new DataClasses.GameWorld.QuestInfo[0],
                 PendingQuests = new DataClasses.GameWorld.PendingQuestInfo[0]
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             // TODO : Friend List
             #region Friend List
@@ -370,7 +370,7 @@ namespace Game.Business.Client
                 Type = 140,
                 Message = "FLIST|"
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             result = new GC.Chat()
             {
@@ -378,7 +378,7 @@ namespace Game.Business.Client
                 Type = 140,
                 Message = "DLIST|"
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
             #endregion
 
             // TODO : Playtime
@@ -390,7 +390,7 @@ namespace Game.Business.Client
                 Name = "playtime",
                 Value = 0
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             result = new GC.Property()
             {
@@ -399,7 +399,7 @@ namespace Game.Business.Client
                 Name = "playtime_limit",
                 Value = 1080000
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             result = new GC.Property()
             {
@@ -408,7 +408,7 @@ namespace Game.Business.Client
                 Name = "playtime_limit2",
                 Value = 1800000
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
             #endregion
 
             #region Region Info
@@ -417,14 +417,14 @@ namespace Game.Business.Client
                 PrevLocationId = 0,
                 CurLocationId = player.Location.Location.Id
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             result = new GC.WeatherInfo()
             {
                 RegionId = player.Location.Location.Id,
                 WeatherId = player.Location.CurrenWeather
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
             #endregion
 
             result = new GC.Property()
@@ -435,7 +435,7 @@ namespace Game.Business.Client
                 Value = 0,
                 StringValue = ""
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
 
             result = new GC.Property()
             {
@@ -444,7 +444,7 @@ namespace Game.Business.Client
                 Name = "stamina_regen",
                 Value = 30
             };
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
         }
     }
 }

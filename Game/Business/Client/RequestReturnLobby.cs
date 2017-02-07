@@ -35,7 +35,7 @@ namespace Game.Business.Client
 
             result.ResultCode = (ushort) CG.RequestReturnLobby.ResultCodes.Success;
             
-            DataClasses.Server.ClientSockets.SendPacket(session, result);
+            DataClasses.Server.ClientSockets.SendSelf(session, result);
         }
         #endregion
     }

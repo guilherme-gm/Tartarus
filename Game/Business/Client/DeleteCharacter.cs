@@ -47,7 +47,7 @@ namespace Game.Business.Client
 
                 // CHECK : Is there an else for this?
 
-                DataClasses.Server.ClientSockets.SendPacket(session, result);
+                DataClasses.Server.ClientSockets.SendSelf(session, result);
             }
             else
             {
@@ -55,7 +55,7 @@ namespace Game.Business.Client
 
                 GC.RequestSecurityNo reqSecurity = new GC.RequestSecurityNo();
                 reqSecurity.Mode = (int)GC.RequestSecurityNo.SecurityMode.DeleteCharacter;
-                DataClasses.Server.ClientSockets.SendPacket(session, reqSecurity);
+                DataClasses.Server.ClientSockets.SendSelf(session, reqSecurity);
             }
         }
         #endregion
