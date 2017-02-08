@@ -91,6 +91,9 @@
     <Compile Include="DataClasses\GameWorld\WorldLocationPoint.cs" />
     <Compile Include="DataClasses\GameWorld\WorldLocationPolygon.cs" />
     <Compile Include="DataClasses\Network\ClientGame\ChangeLocation.cs" />
+    <Compile Include="DataClasses\Network\GameClient\CreatureEnter.cs" />
+    <Compile Include="DataClasses\Network\GameClient\Enter.cs" />
+    <Compile Include="DataClasses\Network\GameClient\PlayerEnter.cs" />
     <Compile Include="DataClasses\Objects\Creature.cs" />
     <Compile Include="DataClasses\Database\JobLevelBonus.cs" />
     <Compile Include="DataClasses\Database\StatBase.cs" />

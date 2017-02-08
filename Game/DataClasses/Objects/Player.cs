@@ -67,7 +67,7 @@ namespace Game.DataClasses.Objects
 
         public string Name { get; set; }
 
-        // TODO : Maybe this should be changed by a Party structure?
+        // TODO : Maybe this should be changed to a Party structure?
         public int PartyId { get; set; }
         
         public int GuildId { get; set; }
@@ -102,7 +102,7 @@ namespace Game.DataClasses.Objects
             this.inventory = new Inventory();
             this.Position = new Position();
 
-            this.Type = ObjectType.Client; // Check this
+            this.Type = ObjectType.Static;
             this.SubType = ObjectSubType.Player;
         }
 

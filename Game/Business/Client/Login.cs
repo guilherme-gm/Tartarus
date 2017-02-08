@@ -342,7 +342,7 @@ namespace Game.Business.Client
                 Handle = player.GID,
                 IsNumber = true,
                 Name = "channel",
-                Value = 1
+                Value = player.Position.Layer
             };
             DataClasses.Server.ClientSockets.SendSelf(session, result);
 
@@ -352,7 +352,7 @@ namespace Game.Business.Client
                 Handle = player.GID,
                 Status = 0
             };
-            DataClasses.Server.ClientSockets.SendSelf(session, result);
+            DataClasses.Server.ClientSockets.SendRegion(player.Region, result);
 
             // TODO : Quest List
             result = new GC.QuestList()

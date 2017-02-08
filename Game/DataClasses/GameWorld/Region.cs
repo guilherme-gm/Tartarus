@@ -26,7 +26,7 @@ namespace Game.DataClasses.GameWorld
     public class Region
     {
         public const int RegionSize = 180;
-        
+
         public static Region[][][] Regions;
 
         #region Initializing Methods
@@ -36,10 +36,10 @@ namespace Game.DataClasses.GameWorld
             int mapWidth = 13;
             int mapHeight = 10;
             int channels = 1;
-            
+
             int regionsX = (mapWidth * MapBase.MapSize) / RegionSize;
             int regionsY = (mapHeight * MapBase.MapSize) / RegionSize;
-            
+
             Regions = new Region[regionsX][][];
             for (uint i = 0; i < regionsX; i++)
             {
@@ -79,7 +79,7 @@ namespace Game.DataClasses.GameWorld
 
             return Regions[rx][ry][layer];
         }
-        
+
         public static Region FromRegionXY(uint rx, uint ry, byte layer)
         {
             // Ensure that given region exists.
@@ -96,21 +96,21 @@ namespace Game.DataClasses.GameWorld
         public static List<Region> GetNearbyRegions(Region region)
         {
             List<Region> nearbyRegions = new List<Region>();
-            int x = 3, y = 3;
+            int x = -3, startY = -3;
 
             // Ensure that we will not get negative X or Y
             if (region.X < 3)
                 x = (int)(-1 * region.X);
             if (region.Y < 3)
-                y = (int)(-1 * region.Y);
-            
+                startY = (int)(-1 * region.Y);
+
             // Loops through a box around view area and get the nearby regions
             for (; x <= 3; ++x)
             {
-                for (; y <= 3; ++y)
+                for (int y = startY; y <= 3; ++y)
                 {
                     if ((x * x + y * y) <= 10)
-                        Region.FromRegionXY((uint)(region.X - x), (uint)(region.Y - y), region.Layer);
+                        nearbyRegions.Add(Region.FromRegionXY((uint)(region.X + x), (uint)(region.Y + y), region.Layer));
                 }
             }
 
@@ -137,7 +137,7 @@ namespace Game.DataClasses.GameWorld
         /// <param name="gobject"></param>
         public void Enter(GameObject gobject)
         {
-            switch(gobject.SubType)
+            switch (gobject.SubType)
             {
                 case ObjectSubType.Player:
                     this.Players.Add((Player)gobject);
@@ -146,26 +146,123 @@ namespace Game.DataClasses.GameWorld
             this.NotifyEnter(gobject);
         }
 
-        #region Observing Methods
         private void NotifyEnter(GameObject gobject)
         {
             // Informs all listeners that this game object entered the area
-            //SC_ENTER
-            //SC_WEARINFO
+            // IMPROVE : Maybe we can use type to merge some writings
+            switch (gobject.SubType)
+            {
+                case ObjectSubType.Player:
+                    {
+                        GC.PlayerEnter enter = new GC.PlayerEnter();
+                        Player player = (Player)gobject;
+                        enter.Type = player.Type;
+                        enter.GID = player.GID;
+                        enter.X = player.Position.X;
+                        enter.Y = player.Position.Y;
+                        enter.Z = player.Position.Z;
+                        enter.Layer = player.Position.Layer;
+                        enter.SubType = player.SubType;
+                        enter.Status = 0; // TODO : Status
+                        enter.FaceDirection = 0; // TODO : FaceDirection
+                        enter.Hp = player.HP;
+                        enter.MaxHp = player.MaxHp;
+                        enter.Mp = player.MP;
+                        enter.MaxMp = player.MaxMP;
+                        enter.Level = player.Level;
+                        enter.Race = (byte)player.Race; // TODO : Different types
+                        enter.SkinColor = player.SkinColor;
+                        enter.IsFirstEnter = true;
+                        enter.Energy = 0; // TODO : What is energy?
+                        enter.Sex = (byte)player.Sex; // TODO :Different types
+                        enter.FaceId = player.BaseModel[0];
+                        enter.FaceTextureId = player.FaceTextureId;
+                        enter.HairId = player.BaseModel[1];
+                        enter.Name = player.Name;
+                        enter.JobId = (ushort)player.Job.Id; // TODO :Different types
+                        enter.RideGID = 0; // TODO : Ride GID
+                        enter.GuildId = player.GuildId;
+
+                        Server.ClientSockets.SendRegionWithoutSelf(player.User._Session, this, enter);
+
+                        GC.WearInfo wearInfo = new GC.WearInfo();
+                        wearInfo.Handle = player.GID;
+                        wearInfo.EquippedItems = player.EquippedItems;
+
+                        Server.ClientSockets.SendRegionWithoutSelf(player.User._Session, this, wearInfo);
+                    }
+                    break;
+                case ObjectSubType.Npc:
+                    break;
+                case ObjectSubType.Item:
+                    break;
+                case ObjectSubType.Monster:
+                    break;
+                case ObjectSubType.Summon:
+                    break;
+                case ObjectSubType.SkillProp:
+                    break;
+                case ObjectSubType.FieldProp:
+                    break;
+                case ObjectSubType.Pet:
+                    break;
+                default:
+                    break;
+            }
         }
 
-        internal void ReceiveObjects(Player player, bool isLogin)
+        internal void ReceiveObjects(Player src, bool isLogin)
         {
             List<Region> nearbyRegions = GetNearbyRegions(this);
 
-            foreach(Region region in nearbyRegions)
+            // TODO : This needs to send other kinds of objects and use isLogin
+
+            foreach (Region region in nearbyRegions)
             {
-                // Send all nearby objects
-                //SC_ENTER
-                //SC_WEARINFO
+                foreach (Player player in region.Players)
+                {
+                    if (player == src)
+                        continue;
+
+                    // Send all nearby objects
+                    GC.PlayerEnter enter = new GC.PlayerEnter();
+                    enter.Type = player.Type;
+                    enter.GID = player.GID;
+                    enter.X = player.Position.X;
+                    enter.Y = player.Position.Y;
+                    enter.Z = player.Position.Z;
+                    enter.Layer = player.Position.Layer;
+                    enter.SubType = player.SubType;
+                    enter.Status = 0; // TODO : Status
+                    enter.FaceDirection = 0; // TODO : FaceDirection
+                    enter.Hp = player.HP;
+                    enter.MaxHp = player.MaxHp;
+                    enter.Mp = player.MP;
+                    enter.MaxMp = player.MaxMP;
+                    enter.Level = player.Level;
+                    enter.Race = (byte)player.Race; // TODO : Different types
+                    enter.SkinColor = player.SkinColor;
+                    enter.IsFirstEnter = true;
+                    enter.Energy = 0; // TODO : What is energy?
+                    enter.Sex = (byte)player.Sex; // TODO :Different types
+                    enter.FaceId = player.BaseModel[0];
+                    enter.FaceTextureId = player.FaceTextureId;
+                    enter.HairId = player.BaseModel[1];
+                    enter.Name = player.Name;
+                    enter.JobId = (ushort)player.Job.Id; // TODO :Different types
+                    enter.RideGID = 0; // TODO : Ride GID
+                    enter.GuildId = player.GuildId;
+
+                    Server.ClientSockets.SendSelf(src.User._Session, enter);
+
+                    GC.WearInfo wearInfo = new GC.WearInfo();
+                    wearInfo.Handle = player.GID;
+                    wearInfo.EquippedItems = player.EquippedItems;
+
+                    Server.ClientSockets.SendSelf(src.User._Session, wearInfo);
+                }
             }
         }
-        #endregion
     }
     #endregion
 }
