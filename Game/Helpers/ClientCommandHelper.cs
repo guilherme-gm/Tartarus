@@ -35,6 +35,12 @@ namespace Game.Helpers
                 case ClientGamePackets.Login:
                     message = new CG.Login();
                     return new Business.Client.Login();
+                case ClientGamePackets.MoveRequest:
+                    message = new CG.MoveRequest();
+                    return new Business.Client.MoveRequest();
+                case ClientGamePackets.RegionUpdate:
+                    message = new CG.RegionUpdate();
+                    return new Business.Client.RegionUpdate();
                 case ClientGamePackets.ReturnLobby:
                     message = new CG.ReturnLobby();
                     return new Business.Client.ReturnLobby();

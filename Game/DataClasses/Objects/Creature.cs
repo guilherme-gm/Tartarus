@@ -17,6 +17,7 @@
 using Game.DataClasses;
 using Game.DataClasses.Database;
 using Game.DataClasses.GameWorld;
+using System.Collections.Generic;
 
 namespace Game.DataClasses
 {
@@ -66,6 +67,8 @@ namespace Game.DataClasses
         public CreatureAttribute Attributes { get; set; }
         public CreatureAttribute AttributesByState { get; set; }
 
+        public List<Position> PendingMovePositions { get; set; }
+
         public Creature(uint gid) : base(gid)
         {
             this.Stats = new CreatureStat();
@@ -74,6 +77,7 @@ namespace Game.DataClasses
             this.AttributesByState = new CreatureAttribute();
             this.PrevJobs = new JobBase[MaxPrevJobs];
             this.PrevJobLevel = new int[MaxPrevJobs];
+            this.PendingMovePositions = new List<Position>();
         }
     }
 

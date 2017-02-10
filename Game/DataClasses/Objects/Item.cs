@@ -58,6 +58,7 @@ namespace Game.DataClasses.Objects
             }
             
             Item item = new Item(itemBase, gid);
+            GameObject.AddGameObject(item);
             return item;
         }
         #endregion

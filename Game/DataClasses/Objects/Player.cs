@@ -51,6 +51,7 @@ namespace Game.DataClasses.Objects
             }
 
             Player player = new Player(gid, user, name);
+            GameObject.AddGameObject(player);
             return player;
         }
         #endregion

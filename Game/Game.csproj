@@ -74,6 +74,8 @@
     <Compile Include="Business\Client\CreateCharacter.cs" />
     <Compile Include="Business\Client\DeleteCharacter.cs" />
     <Compile Include="Business\Client\Login.cs" />
+    <Compile Include="Business\Client\MoveRequest.cs" />
+    <Compile Include="Business\Client\RegionUpdate.cs" />
     <Compile Include="Business\Client\RequestReturnLobby.cs" />
     <Compile Include="Business\Client\ReturnLobby.cs" />
     <Compile Include="Business\Client\SecurityNo.cs" />
@@ -91,9 +93,13 @@
     <Compile Include="DataClasses\GameWorld\WorldLocationPoint.cs" />
     <Compile Include="DataClasses\GameWorld\WorldLocationPolygon.cs" />
     <Compile Include="DataClasses\Network\ClientGame\ChangeLocation.cs" />
+    <Compile Include="DataClasses\Network\ClientGame\MoveRequest.cs" />
+    <Compile Include="DataClasses\Network\ClientGame\RegionUpdate.cs" />
     <Compile Include="DataClasses\Network\GameClient\CreatureEnter.cs" />
     <Compile Include="DataClasses\Network\GameClient\Enter.cs" />
+    <Compile Include="DataClasses\Network\GameClient\Move.cs" />
     <Compile Include="DataClasses\Network\GameClient\PlayerEnter.cs" />
+    <Compile Include="DataClasses\Network\GameClient\RegionAck.cs" />
     <Compile Include="DataClasses\Objects\Creature.cs" />
     <Compile Include="DataClasses\Database\JobLevelBonus.cs" />
     <Compile Include="DataClasses\Database\StatBase.cs" />

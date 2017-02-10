@@ -21,6 +21,8 @@ namespace Game.DataClasses.Network
     {
         Login = 0x0001,             // 1
         TimeSync = 0x0002,          // 2
+        MoveRequest = 0x0005,       // 5
+        RegionUpdate = 0x0007,      // 7
         ReturnLobby = 0x0017,       // 23
         RequestReturnLobby = 0x0019,// 25
         Version = 0x0032,           // 50
@@ -41,6 +43,8 @@ namespace Game.DataClasses.Network
         TimeSync = 0x0002,          // 2
         Enter = 0x0003,             // 3
         LoginResult = 0x0004,       // 4
+        Move = 0x0008,              // 8
+        RegionAck = 0x000B,         // 11
         Chat = 0x0016,              // 22
         WearInfo = 0x00CA,          // 202
         Inventory = 0x00CF,         // 207

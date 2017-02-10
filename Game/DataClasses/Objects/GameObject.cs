@@ -15,6 +15,7 @@
 * along with Tartarus.  If not, see<http://www.gnu.org/licenses/>.
 */
 using Game.DataClasses.GameWorld;
+using System.Collections.Generic;
 
 namespace Game.DataClasses
 {
@@ -39,7 +40,61 @@ namespace Game.DataClasses
 
     public abstract class GameObject
 	{
-		public bool InWorld { get; set; }
+        #region Object List Methods
+        private static Dictionary<uint, GameObject> GameObjects;
+
+        static GameObject()
+        {
+            GameObjects = new Dictionary<uint, GameObject>();
+        }
+
+        /// <summary>
+        /// Gets a GameObject from its GID or null if it doesn't exists
+        /// </summary>
+        /// <param name="gid"></param>
+        /// <returns></returns>
+        public static GameObject GIDToObject(uint gid)
+        {
+            GameObject go;
+            if (GameObjects.TryGetValue(gid, out go))
+                return go;
+            return null;
+        }
+
+        /// <summary>
+        /// Adds a GameObject to the list
+        /// </summary>
+        /// <param name="go"></param>
+        /// <returns></returns>
+        public static bool AddGameObject(GameObject go)
+        {
+            if (GameObjects.ContainsKey(go.GID))
+                return false;
+            GameObjects.Add(go.GID, go);
+            return true;
+        }
+        
+        /// <summary>
+        /// Removes a GameObject from the list
+        /// </summary>
+        /// <param name="go"></param>
+        public static void RemoveGameObject(GameObject go)
+        {
+            RemoveGameObject(go.GID);
+        }
+
+        /// <summary>
+        /// Removes a GameObject from the list using its gid
+        /// </summary>
+        /// <param name="gid"></param>
+        public static void RemoveGameObject(uint gid)
+        {
+            if (GameObjects.ContainsKey(gid))
+                GameObjects.Remove(gid);
+        }
+        #endregion
+
+        public bool InWorld { get; set; }
 
 		public Region Region { get; set; }
 
@@ -50,7 +105,6 @@ namespace Game.DataClasses
         public ObjectType Type { get; set; }
 
         public ObjectSubType SubType { get; set; }
-
 
         public GameObject(uint gid)
         {

@@ -19,6 +19,7 @@ using Game.DataClasses.Objects;
 using System.Collections.Generic;
 using GC = Game.DataClasses.Network.GameClient;
 using System;
+using Game.DataClasses.Network.ClientGame;
 
 namespace Game.DataClasses.GameWorld
 {
@@ -144,6 +145,59 @@ namespace Game.DataClasses.GameWorld
                     break;
             }
             this.NotifyEnter(gobject);
+        }
+
+        /// <summary>
+        /// Request to Move an Creature through points
+        /// </summary>
+        /// <param name="creature"></param>
+        /// <param name="points"></param>
+        internal void MoveRequest(Creature creature, MoveRequest.MoveInfo[] points)
+        {
+            List<Position> movePoints = creature.PendingMovePositions;
+            bool isWalking = movePoints.Count != 0;
+
+            if (isWalking)
+            {
+                // TODO : Stop current move
+            }
+
+            movePoints.Clear();
+            foreach(MoveRequest.MoveInfo info in points)
+            {
+                movePoints.Add(new Position() { X = info.ToX, Y = info.ToY });
+            }
+
+            Move(creature);
+        }
+
+        /// <summary>
+        /// Move creature
+        /// </summary>
+        /// <param name="creature"></param>
+        internal void Move(Creature creature)
+        {
+            // TODO : Server Side move update
+
+            GC.Move move = new GC.Move();
+            move.GID = creature.GID;
+            move.Speed = (byte) (creature.Attributes.MoveSpeed + creature.AttributesByState.MoveSpeed);
+            //move.StartTime =
+            move.ToLayer = creature.Position.Layer;
+            move.Points = new GC.Move.MoveInfo[creature.PendingMovePositions.Count];
+
+            int i = 0;
+            foreach (Position pos in creature.PendingMovePositions)
+            {
+                move.Points[i] = new GC.Move.MoveInfo()
+                {
+                    ToX = pos.X,
+                    ToY = pos.Y
+                };
+                ++i;
+            }
+
+            Server.ClientSockets.SendRegion(this, move);
         }
 
         private void NotifyEnter(GameObject gobject)
