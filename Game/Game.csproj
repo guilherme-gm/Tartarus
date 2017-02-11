@@ -70,6 +70,7 @@
     <Compile Include="Business\Client\AccountWithAuth.cs" />
     <Compile Include="Business\Client\ChangeLocation.cs" />
     <Compile Include="Business\Client\CharacterList.cs" />
+    <Compile Include="Business\Client\ChatRequest.cs" />
     <Compile Include="Business\Client\CheckCharacterName.cs" />
     <Compile Include="Business\Client\CreateCharacter.cs" />
     <Compile Include="Business\Client\DeleteCharacter.cs" />
@@ -89,12 +90,15 @@
     <Compile Include="DataClasses\Database\Records\JobBaseRecord.cs" />
     <Compile Include="DataClasses\Database\Records\JobLevelBonusRecord.cs" />
     <Compile Include="DataClasses\Database\Records\LocationRecord.cs" />
+    <Compile Include="DataClasses\GameWorld\ChatType.cs" />
     <Compile Include="DataClasses\GameWorld\WorldLocation.cs" />
     <Compile Include="DataClasses\GameWorld\WorldLocationPoint.cs" />
     <Compile Include="DataClasses\GameWorld\WorldLocationPolygon.cs" />
     <Compile Include="DataClasses\Network\ClientGame\ChangeLocation.cs" />
+    <Compile Include="DataClasses\Network\ClientGame\ChatRequest.cs" />
     <Compile Include="DataClasses\Network\ClientGame\MoveRequest.cs" />
     <Compile Include="DataClasses\Network\ClientGame\RegionUpdate.cs" />
+    <Compile Include="DataClasses\Network\GameClient\ChatLocal.cs" />
     <Compile Include="DataClasses\Network\GameClient\CreatureEnter.cs" />
     <Compile Include="DataClasses\Network\GameClient\Enter.cs" />
     <Compile Include="DataClasses\Network\GameClient\Move.cs" />

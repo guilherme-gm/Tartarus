@@ -367,7 +367,7 @@ namespace Game.Business.Client
             result = new GC.Chat()
             {
                 Sender = "@FRIEND",
-                Type = 140,
+                Type = DataClasses.GameWorld.ChatType.FriendSystem,
                 Message = "FLIST|"
             };
             DataClasses.Server.ClientSockets.SendSelf(session, result);
@@ -375,7 +375,7 @@ namespace Game.Business.Client
             result = new GC.Chat()
             {
                 Sender = "@FRIEND",
-                Type = 140,
+                Type = DataClasses.GameWorld.ChatType.FriendSystem,
                 Message = "DLIST|"
             };
             DataClasses.Server.ClientSockets.SendSelf(session, result);

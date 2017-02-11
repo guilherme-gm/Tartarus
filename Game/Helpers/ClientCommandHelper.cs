@@ -41,6 +41,9 @@ namespace Game.Helpers
                 case ClientGamePackets.RegionUpdate:
                     message = new CG.RegionUpdate();
                     return new Business.Client.RegionUpdate();
+                case ClientGamePackets.ChatRequest:
+                    message = new CG.ChatRequest();
+                    return new Business.Client.ChatRequest();
                 case ClientGamePackets.ReturnLobby:
                     message = new CG.ReturnLobby();
                     return new Business.Client.ReturnLobby();

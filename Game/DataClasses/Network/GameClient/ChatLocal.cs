@@ -22,18 +22,18 @@ using System.IO;
 namespace Game.DataClasses.Network.GameClient
 {
     #region Chat
-    public class Chat : Packet
+    public class ChatLocal : Packet
     {
         #region Get/Set
-        public string Sender { get; set; }
+        public uint GID { get; set; }
         public ChatType Type { get; set; }
         public string Message { get; set; }
         #endregion
 
         #region Constructor/Reader/Write
-        public Chat()
+        public ChatLocal()
         {
-            this.Id = (ushort)GameClientPackets.Chat;
+            this.Id = (ushort)GameClientPackets.ChatLocal;
         }
 
         public override void Read(byte[] data)
@@ -50,10 +50,10 @@ namespace Game.DataClasses.Network.GameClient
             writer.Write(new byte[HeaderSize]);
 
             // Write packet body
-            this.WriteString(writer, this.Sender, 21);
-            writer.Write((ushort)this.Message.Length + 1);
+            writer.Write(this.GID);
+            writer.Write((byte)(this.Message.Length + 1));
             writer.Write((byte)this.Type);
-            this.WriteString(writer, this.Message, this.Message.Length);
+            this.WriteString(writer, this.Message, this.Message.Length + 1);
 
             // finishes packet
             base.Complete(writer);

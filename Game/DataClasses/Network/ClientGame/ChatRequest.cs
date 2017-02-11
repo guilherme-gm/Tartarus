@@ -1,4 +1,6 @@
-﻿/**
+﻿
+using System;
+/**
 * This file is part of Tartarus Emulator.
 * 
 * Tartarus is free software: you can redistribute it and/or modify
@@ -16,49 +18,44 @@
 */
 using Common.DataClasses.Network;
 using Game.DataClasses.GameWorld;
-using System;
 using System.IO;
 
-namespace Game.DataClasses.Network.GameClient
+namespace Game.DataClasses.Network.ClientGame
 {
-    #region Chat
-    public class Chat : Packet
+    #region Chat Request
+    public class ChatRequest : Packet
     {
         #region Get/Set
-        public string Sender { get; set; }
+        public string Target { get; set; }
+        public byte RequestId { get; set; }
+        public byte MessageLength { get; set; }
         public ChatType Type { get; set; }
         public string Message { get; set; }
         #endregion
 
-        #region Constructor/Reader/Write
-        public Chat()
+        #region Result Enum
+        public enum Result : ushort
         {
-            this.Id = (ushort)GameClientPackets.Chat;
+            Success = 0x0
         }
+        #endregion
 
+        #region Constructor/Read/Write
         public override void Read(byte[] data)
         {
-            throw new NotImplementedException();
+            BinaryReader br = new BinaryReader(new MemoryStream(data));
+            base.Read(br);
+
+            this.Target = this.ReadString(br, 21);
+            this.RequestId = br.ReadByte();
+            this.MessageLength = br.ReadByte();
+            this.Type = (ChatType) br.ReadByte();
+            this.Message = this.ReadString(br, this.MessageLength);
         }
 
         public override byte[] Write()
         {
-            MemoryStream stream = new MemoryStream();
-            BinaryWriter writer = new BinaryWriter(stream);
-
-            // Writes a fake header
-            writer.Write(new byte[HeaderSize]);
-
-            // Write packet body
-            this.WriteString(writer, this.Sender, 21);
-            writer.Write((ushort)this.Message.Length + 1);
-            writer.Write((byte)this.Type);
-            this.WriteString(writer, this.Message, this.Message.Length);
-
-            // finishes packet
-            base.Complete(writer);
-
-            return stream.ToArray();
+            throw new NotImplementedException();
         }
         #endregion
     }

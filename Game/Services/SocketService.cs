@@ -68,6 +68,16 @@ namespace Game.Services
             }
         }
 
+        public void SendAll(Packet packet)
+        {
+            // TODO : Send all users
+        }
+
+        public void SendAllWithoutSelf(Session self, Packet packet)
+        {
+            // TODO : Send all users except self
+        }
+
         //public void SendParty();
         //public void SendPartyWithoutSelf,
         //public void SendGuild,
