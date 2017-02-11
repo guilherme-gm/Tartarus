@@ -29,6 +29,7 @@ namespace Game.DataClasses.Objects
         public const int MaxEquipPos = 24;
 
         #region Object Creation
+        public static List<Player> Players = new List<Player>();
         private static uint LastUsedHandle = 0x0806;
         private static Stack<uint> HandlePool = new Stack<uint>();
         
@@ -52,6 +53,7 @@ namespace Game.DataClasses.Objects
 
             Player player = new Player(gid, user, name);
             GameObject.AddGameObject(player);
+            Players.Add(player);
             return player;
         }
         #endregion

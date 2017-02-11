@@ -70,12 +70,20 @@ namespace Game.Services
 
         public void SendAll(Packet packet)
         {
-            // TODO : Send all users
+            foreach(Player player in Player.Players)
+            {
+                this.SendPacket(player.User._Session, packet);
+            }
         }
 
         public void SendAllWithoutSelf(Session self, Packet packet)
         {
-            // TODO : Send all users except self
+            foreach (Player player in Player.Players)
+            {
+                Session session = player.User._Session;
+                if (session != self)
+                    this.SendPacket(session, packet);
+            }
         }
 
         //public void SendParty();
