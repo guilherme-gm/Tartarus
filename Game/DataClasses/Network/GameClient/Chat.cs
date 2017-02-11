@@ -51,9 +51,9 @@ namespace Game.DataClasses.Network.GameClient
 
             // Write packet body
             this.WriteString(writer, this.Sender, 21);
-            writer.Write((ushort)this.Message.Length + 1);
+            writer.Write((ushort)(this.Message.Length + 1));
             writer.Write((byte)this.Type);
-            this.WriteString(writer, this.Message, this.Message.Length);
+            this.WriteString(writer, this.Message, this.Message.Length + 1);
 
             // finishes packet
             base.Complete(writer);
