@@ -317,6 +317,12 @@ namespace Game.DataClasses.GameWorld
                 }
             }
         }
+
+        internal void Leave(Player player, bool isLogout)
+        {
+            // TODO : Notify surroundings
+            this.Players.Remove(player);
+        }
     }
     #endregion
 }

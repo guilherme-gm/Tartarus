@@ -176,6 +176,79 @@ namespace Game.DataRepository
 
             return true;
         }
+
+        internal void UpdateCharacter(Player player)
+        {
+            IConnectionFactory conFactory = ConnectionFactory.Instance;
+            MySqlConnection con = (MySqlConnection)conFactory.GetConnection();
+
+            try
+            {
+                using (MySqlCommand command = con.CreateCommand())
+                {
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.CommandText = "usp_Character_Update";
+
+                    command.Parameters.AddWithValue("charId", player.CharacterId);
+                    command.Parameters.AddWithValue("partyId", player.PartyId);
+                    command.Parameters.AddWithValue("guildId", player.GuildId);
+                    command.Parameters.AddWithValue("x", player.Position.X);
+                    command.Parameters.AddWithValue("y", player.Position.Y);
+                    command.Parameters.AddWithValue("layer", player.Position.Layer);
+                    command.Parameters.AddWithValue("respawnX", player.RespawnPoint.X);
+                    command.Parameters.AddWithValue("respawnY", player.RespawnPoint.Y);
+                    command.Parameters.AddWithValue("lv", player.Level);
+                    command.Parameters.AddWithValue("maxLv", player.MaxReachedLevel);
+                    command.Parameters.AddWithValue("exp", player.Exp);
+                    command.Parameters.AddWithValue("lastDecreasedExp", player.LastDecreasedExp);
+                    command.Parameters.AddWithValue("hp", player.HP);
+                    command.Parameters.AddWithValue("mp", player.MP);
+                    command.Parameters.AddWithValue("stamina", player.Stamina);
+                    command.Parameters.AddWithValue("havoc", player.Havoc);
+                    command.Parameters.AddWithValue("job", player.Job.Id);
+                    command.Parameters.AddWithValue("jobLv", player.JobLevel);
+                    command.Parameters.AddWithValue("jp", player.JP);
+                    command.Parameters.AddWithValue("totalJp", player.TotalJP);
+                    command.Parameters.AddWithValue("job0", player.PrevJobs[0].Id);
+                    command.Parameters.AddWithValue("job1", player.PrevJobs[1].Id);
+                    command.Parameters.AddWithValue("job2", player.PrevJobs[2].Id);
+                    command.Parameters.AddWithValue("jLv0", player.PrevJobLevel[0]);
+                    command.Parameters.AddWithValue("jLv1", player.PrevJobLevel[1]);
+                    command.Parameters.AddWithValue("jLv2", player.PrevJobLevel[2]);
+                    command.Parameters.AddWithValue("huntaholicPoint", player.HuntaholicPoints);
+                    command.Parameters.AddWithValue("huntaholicEnterCount", player.HuntaholicEnterCount);
+                    command.Parameters.AddWithValue("gold", player.Gold);
+                    command.Parameters.AddWithValue("chaos", player.Chaos);
+                    command.Parameters.AddWithValue("skinColor", player.SkinColor);
+                    // TODO: Belt, Summon, Pet, Block time
+                    command.Parameters.AddWithValue("belt0", 0);
+                    command.Parameters.AddWithValue("belt1", 0);
+                    command.Parameters.AddWithValue("belt2", 0);
+                    command.Parameters.AddWithValue("belt3", 0);
+                    command.Parameters.AddWithValue("belt4", 0);
+                    command.Parameters.AddWithValue("belt5", 0);
+                    command.Parameters.AddWithValue("summon0", 0);
+                    command.Parameters.AddWithValue("summon1", 0);
+                    command.Parameters.AddWithValue("summon2", 0);
+                    command.Parameters.AddWithValue("summon3", 0);
+                    command.Parameters.AddWithValue("summon4", 0);
+                    command.Parameters.AddWithValue("summon5", 0);
+                    command.Parameters.AddWithValue("mainSummon", 0);
+                    command.Parameters.AddWithValue("subSummon", 0);
+                    command.Parameters.AddWithValue("remainSummonTime", 0);
+                    command.Parameters.AddWithValue("petId", 0);
+                    command.Parameters.AddWithValue("guildBlockTime", 0);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                ConsoleUtils.ShowSQL("{0} (At: {1})", ex.Message, "CharacterRepository.UpdateCharacter");
+            }
+
+            conFactory.Close(con);
+        }
         #endregion
     }
     #endregion

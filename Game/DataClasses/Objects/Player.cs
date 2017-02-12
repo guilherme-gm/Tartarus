@@ -345,6 +345,17 @@ namespace Game.DataClasses.Objects
             };
             Server.ClientSockets.SendSelf(this.User._Session, statInfo);
         }
+
+        public void Disconnect()
+        {
+            CharacterRepository repo = new CharacterRepository();
+            repo.UpdateCharacter(this);
+
+            Players.Remove(this);
+            this.Region.Leave(this, true);
+            GameObject.RemoveGameObject(this);
+            HandlePool.Push(this.GID);
+        }
 	}
 
 }

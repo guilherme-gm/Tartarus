@@ -16,6 +16,8 @@
 */
 using Common.DataClasses;
 using Common.DataClasses.Network;
+using Game.DataClasses;
+using Game.DataClasses.Objects;
 using CG = Game.DataClasses.Network.ClientGame;
 using GC = Game.DataClasses.Network.GameClient;
 
@@ -31,7 +33,15 @@ namespace Game.Business.Client
             GC.Result result = new GC.Result();
             result.RequestMessageId = packet.Id;
 
-            // TODO : Implement
+            if (session._Client == null)
+                return;
+            Player player = ((User)session._Client).Character;
+            if (player == null)
+                return;
+
+            // TODO : Ensure it's allowed to disconnect
+
+            player.Disconnect();
 
             result.ResultCode = (ushort)CG.ReturnLobby.ResultCodes.Success;
 
