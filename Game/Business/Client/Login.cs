@@ -155,12 +155,13 @@ namespace Game.Business.Client
                 ItemList = player.inventory
             };
             DataClasses.Server.ClientSockets.SendSelf(session, result);
-            
+
             // TODO : 0x012F
 
             result = new GC.WearInfo()
             {
                 Handle = player.GID,
+                BaseModel = player.BaseModel,
                 EquippedItems = player.EquippedItems
             };
             DataClasses.Server.ClientSockets.SendSelf(session, result);

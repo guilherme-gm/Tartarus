@@ -100,11 +100,11 @@ namespace Game.DataRepository
                             player.Chaos = charReader.GetInt32(i++);
                             player.SkinColor = (uint) charReader.GetValue(i++);
                             player.BaseModel = new int[5];
-                            player.BaseModel[0] = charReader.GetInt32(i++);
-                            player.BaseModel[1] = charReader.GetInt32(i++);
-                            player.BaseModel[2] = charReader.GetInt32(i++);
-                            player.BaseModel[3] = charReader.GetInt32(i++);
-                            player.BaseModel[4] = charReader.GetInt32(i++);
+                            player.BaseModel[0] = charReader.GetInt32(i++); // Hair ID
+                            player.BaseModel[1] = charReader.GetInt32(i++); // Face ID
+                            player.BaseModel[2] = charReader.GetInt32(i++); // Body ID
+                            player.BaseModel[3] = charReader.GetInt32(i++); // Hands ID
+                            player.BaseModel[4] = charReader.GetInt32(i++); // Feet ID
                             player.FaceTextureId = charReader.GetInt32(i++);
                             i += 6; // Belt
                             i += 6; // Summon

@@ -229,9 +229,9 @@ namespace Game.DataClasses.GameWorld
                         enter.IsFirstEnter = true;
                         enter.Energy = 0; // TODO : What is energy?
                         enter.Sex = (byte)player.Sex; // TODO :Different types
-                        enter.FaceId = player.BaseModel[0];
+                        enter.FaceId = player.BaseModel[1];
                         enter.FaceTextureId = player.FaceTextureId;
-                        enter.HairId = player.BaseModel[1];
+                        enter.HairId = player.BaseModel[0];
                         enter.Name = player.Name;
                         enter.JobId = (ushort)player.Job.Id; // TODO :Different types
                         enter.RideGID = 0; // TODO : Ride GID
@@ -241,6 +241,7 @@ namespace Game.DataClasses.GameWorld
 
                         GC.WearInfo wearInfo = new GC.WearInfo();
                         wearInfo.Handle = player.GID;
+                        wearInfo.BaseModel = player.BaseModel;
                         wearInfo.EquippedItems = player.EquippedItems;
 
                         Server.ClientSockets.SendRegionWithoutSelf(player.User._Session, this, wearInfo);
@@ -299,9 +300,9 @@ namespace Game.DataClasses.GameWorld
                     enter.IsFirstEnter = true;
                     enter.Energy = 0; // TODO : What is energy?
                     enter.Sex = (byte)player.Sex; // TODO :Different types
-                    enter.FaceId = player.BaseModel[0];
+                    enter.FaceId = player.BaseModel[1];
                     enter.FaceTextureId = player.FaceTextureId;
-                    enter.HairId = player.BaseModel[1];
+                    enter.HairId = player.BaseModel[0];
                     enter.Name = player.Name;
                     enter.JobId = (ushort)player.Job.Id; // TODO :Different types
                     enter.RideGID = 0; // TODO : Ride GID
@@ -311,6 +312,7 @@ namespace Game.DataClasses.GameWorld
 
                     GC.WearInfo wearInfo = new GC.WearInfo();
                     wearInfo.Handle = player.GID;
+                    wearInfo.BaseModel = player.BaseModel;
                     wearInfo.EquippedItems = player.EquippedItems;
 
                     Server.ClientSockets.SendSelf(src.User._Session, wearInfo);

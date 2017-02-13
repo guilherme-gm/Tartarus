@@ -26,7 +26,7 @@ namespace Game.DataClasses.Network.GameClient
     {
         #region Get/Set
         public uint Handle { get; set; }
-        
+        public int[] BaseModel { get; set; }
         public Item[] EquippedItems { get; set; }
         #endregion
 
@@ -65,6 +65,11 @@ namespace Game.DataClasses.Network.GameClient
                 }
             }
 
+            // Hands and feet when without equipment must have its BaseModel ID
+            if (itemCode[4] == 0) // Hands
+                itemCode[4] = this.BaseModel[3];
+            if (itemCode[5] == 0) // Feet
+                itemCode[5] = this.BaseModel[4];
 
             // Write packet body
             writer.Write(this.Handle);
