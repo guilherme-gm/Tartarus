@@ -32,10 +32,16 @@ namespace Game.DataClasses.Network.GameClient
         #endregion
 
         #region Get/Set
+        private byte _Speed;
+
         public uint StartTime { get; set; }
         public uint GID { get; set; }
         public byte ToLayer { get; set; }
-        public byte Speed { get; set; }
+        public byte Speed
+        {
+            get { return _Speed; }
+            set { _Speed = (byte)(value / 7); }
+        }
         public MoveInfo[] Points { get; set; }
         #endregion
 
@@ -54,7 +60,6 @@ namespace Game.DataClasses.Network.GameClient
         {
             MemoryStream stream = new MemoryStream();
             BinaryWriter writer = new BinaryWriter(stream);
-            this.Speed /= 10;
 
             // Writes a fake header
             writer.Write(new byte[HeaderSize]);
@@ -63,7 +68,7 @@ namespace Game.DataClasses.Network.GameClient
             writer.Write(this.StartTime);
             writer.Write(this.GID);
             writer.Write(this.ToLayer);
-            writer.Write(this.Speed);
+            writer.Write(this._Speed);
             writer.Write((ushort)this.Points.Length);
             for (int i = 0; i < this.Points.Length; ++i)
             {

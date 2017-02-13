@@ -38,11 +38,6 @@ namespace Game.Business.Client
             if (player == null)
                 return;
 
-            if (packet.IsStopMessage)
-            {
-                player.PendingMovePositions.Clear();
-            }
-
             Position pos = new Position()
             {
                 X = packet.X,
@@ -54,6 +49,12 @@ namespace Game.Business.Client
             //region.Enter(player);
             //region.ReceiveObjects(player, false);
             player.Region = region;
+
+            if (packet.IsStopMessage)
+            {
+                player.PendingMovePositions.Clear();
+                player.Position = pos;
+            }
 
             GC.RegionAck regionAck = new GC.RegionAck();
             regionAck.RegionX = region.X;
