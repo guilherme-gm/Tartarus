@@ -30,7 +30,7 @@ namespace Game.DataClasses.Objects
 
         #region Object Creation
         public static List<Player> Players = new List<Player>();
-        private static uint LastUsedHandle = 0x0806;
+        private static uint LastUsedHandle = 0x80000600;
         private static Stack<uint> HandlePool = new Stack<uint>();
         
         public static Player Create(User user, string name)

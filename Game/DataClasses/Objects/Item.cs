@@ -26,7 +26,7 @@ namespace Game.DataClasses.Objects
         public const int MaxSockets = 4;
 
         #region Object Creation
-        private static uint LastUsedHandle = 0x0100; // TODO : Get correct Handle begin
+        private static uint LastUsedHandle = 0x64000;
         private static Stack<uint> HandlePool = new Stack<uint>();
 
         public static Item Create(int itemId)
