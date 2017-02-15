@@ -141,8 +141,12 @@ namespace Game.DataClasses.Objects
             }
 
             // Adds player to region
-            this.Region.Enter(this);
-            this.Region.ReceiveObjects(this, true);
+            this.Region.Enter(this, true);
+
+            // Get all objects nearby
+            List<Region> nearbyRegions = Region.GetNearbyRegions(this.Region);
+            foreach(Region r in nearbyRegions)
+                r.ReceiveObjects(this);
         }
 
         public void CalculateStats()
@@ -352,7 +356,7 @@ namespace Game.DataClasses.Objects
             repo.UpdateCharacter(this);
 
             Players.Remove(this);
-            this.Region.Leave(this, true);
+            this.Region.Logout(this);
             GameObject.RemoveGameObject(this);
             HandlePool.Push(this.GID);
         }

@@ -24,6 +24,7 @@ using Common.Service;
 using Common.DataClasses.Network;
 using Game.DataClasses.GameWorld;
 using Game.DataClasses.Objects;
+using Common.DataClasses.Collections;
 
 namespace Game.Services
 {
@@ -41,12 +42,44 @@ namespace Game.Services
             this.SendPacket(session, packet);
         }
 
-        public void SendRegion(Region tRegion, Packet packet)
+        public void SendArea(Region tRegion, Packet packet)
         {
             List<Region> regions = Region.GetNearbyRegions(tRegion);
             foreach (Region region in regions)
             {
-                foreach (Player player in region.Players)
+                lock (region)
+                {
+                    foreach (Player player in region.Players.AsReadOnly())
+                    {
+                        this.SendPacket(player.User._Session, packet);
+                    }
+                }
+            }
+        }
+
+        public void SendAreaWithoutSelf(Session self, Region tRegion, Packet packet)
+        {
+            List<Region> regions = Region.GetNearbyRegions(tRegion);
+
+            foreach (Region region in regions)
+            {
+                lock (region)
+                {
+                    foreach (Player player in region.Players.AsReadOnly())
+                    {
+                        Session session = player.User._Session;
+                        if (self != session)
+                            this.SendPacket(session, packet);
+                    }
+                }
+            }
+        }
+
+        public void SendRegion(Region tRegion, Packet packet)
+        {
+            lock (tRegion)
+            {
+                foreach (Player player in tRegion.Players.AsReadOnly())
                 {
                     this.SendPacket(player.User._Session, packet);
                 }
@@ -55,11 +88,9 @@ namespace Game.Services
 
         public void SendRegionWithoutSelf(Session self, Region tRegion, Packet packet)
         {
-            List<Region> regions = Region.GetNearbyRegions(tRegion);
-
-            foreach (Region region in regions)
+            lock (tRegion)
             {
-                foreach (Player player in region.Players)
+                foreach (Player player in tRegion.Players.AsReadOnly())
                 {
                     Session session = player.User._Session;
                     if (self != session)
@@ -70,7 +101,7 @@ namespace Game.Services
 
         public void SendAll(Packet packet)
         {
-            foreach(Player player in Player.Players)
+            foreach(Player player in Player.Players.AsReadOnly())
             {
                 this.SendPacket(player.User._Session, packet);
             }
@@ -78,7 +109,7 @@ namespace Game.Services
 
         public void SendAllWithoutSelf(Session self, Packet packet)
         {
-            foreach (Player player in Player.Players)
+            foreach (Player player in Player.Players.AsReadOnly())
             {
                 Session session = player.User._Session;
                 if (session != self)

@@ -53,7 +53,7 @@ namespace Game.Business.Client
                         chatLocal.GID = player.GID;
                         chatLocal.Type = ChatType.Normal;
                         chatLocal.Message = packet.Message;
-                        DataClasses.Server.ClientSockets.SendRegion(player.Region, chatLocal);
+                        DataClasses.Server.ClientSockets.SendArea(player.Region, chatLocal);
 
                         GC.Result result = new GC.Result();
                         result.RequestMessageId = packet.Id;

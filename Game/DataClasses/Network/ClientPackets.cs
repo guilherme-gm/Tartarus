@@ -45,6 +45,7 @@ namespace Game.DataClasses.Network
         Enter = 0x0003,             // 3
         LoginResult = 0x0004,       // 4
         Move = 0x0008,              // 8
+        Leave = 0x0009,             // 9
         RegionAck = 0x000B,         // 11
         ChatLocal = 0x0015,         // 21
         Chat = 0x0016,              // 22
