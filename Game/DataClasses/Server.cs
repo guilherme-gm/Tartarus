@@ -164,7 +164,7 @@ namespace Game.DataClasses
         {
             Server.AuthSocket.SendPacket(
                 session,
-                new Common.DataClasses.Network.GameAuth.Login() { ServerInfo = Server.ServerInfo }
+                new Common.DataClasses.Network.GameAuth.Login() { ServerInfo = Server.ServerInfo, Password = Settings.AuthPassword }
             );
         }
         #endregion

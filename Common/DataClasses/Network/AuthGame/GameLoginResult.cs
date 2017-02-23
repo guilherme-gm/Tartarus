@@ -24,8 +24,9 @@ namespace Common.DataClasses.Network.AuthGame
 	{
         public enum ResultCodes : ushort
         {
-            Success = 0,
-            DuplicatedId = 1
+            Success = 0x0,
+            Denied = 0x6,
+            DuplicatedId = 0x9
         }
 
         public ResultCodes Result { get; set; }

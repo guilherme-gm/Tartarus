@@ -25,6 +25,7 @@ namespace Common.DataClasses.Network.GameAuth
 	public class Login : Packet
 	{
         public ServerInfo ServerInfo { get; set; }
+        public string Password { get; set; }
 
         public Login()
         {
@@ -39,13 +40,14 @@ namespace Common.DataClasses.Network.GameAuth
             this.ServerInfo = new ServerInfo()
             {
                 Id = br.ReadUInt16(),
-                Name = Encoding.UTF8.GetString(br.ReadBytes(21)).TrimEnd('\0'),
+                Name = this.ReadString(br, 21),
                 AdultServer = br.ReadBoolean(),
-                ScreenshotUrl = Encoding.UTF8.GetString(br.ReadBytes(256)).TrimEnd('\0'),
-                Ip = Encoding.UTF8.GetString(br.ReadBytes(16)).TrimEnd('\0'),
+                ScreenshotUrl = this.ReadString(br, 256),
+                Ip = this.ReadString(br, 16),
                 Port = br.ReadInt32(),
                 UserRatio = br.ReadUInt16()
             };
+            this.Password = this.ReadString(br, 30);
         }
 
         public override byte[] Write()
@@ -64,6 +66,7 @@ namespace Common.DataClasses.Network.GameAuth
             WriteString(writer, this.ServerInfo.Ip, 16);
             writer.Write(this.ServerInfo.Port);
             writer.Write(this.ServerInfo.UserRatio);
+            WriteString(writer, this.Password, 30);
 
             // finishes packet
             base.Complete(writer);

@@ -32,6 +32,9 @@ namespace Game.Business.Server
                 case AG.GameLoginResult.ResultCodes.Success:
                     ConsoleUtils.ShowInfo("Successfully connected to Auth-Server.");
                     break;
+                case AG.GameLoginResult.ResultCodes.Denied:
+                    ConsoleUtils.ShowError("Could not connect to Auth-Server (Denied). Make sure you're using the correct password.");
+                    break;
                 case AG.GameLoginResult.ResultCodes.DuplicatedId:
                     ConsoleUtils.ShowError("Could not connect to Auth-Server, Server ID is duplicated.");
                     break;

@@ -36,7 +36,11 @@ namespace Auth.Business.Server
             server._Session = session;
             server.ServerInfo = packet.ServerInfo;
 
-            if (DataClasses.Server.Instance.AddServer(server))
+            if (!packet.Password.Equals(Settings.GameServerPassword))
+            {
+                result.Result = AG.GameLoginResult.ResultCodes.Denied;
+            }
+            else if (DataClasses.Server.Instance.AddServer(server))
             {
                 result.Result = AG.GameLoginResult.ResultCodes.Success;
             }

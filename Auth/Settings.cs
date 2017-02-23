@@ -34,6 +34,7 @@ namespace Auth
         public static int ConsoleSilent { get; private set; }
 
         public static ushort GameServerPort { get; private set; }
+        public static string GameServerPassword { get; private set; }
 
         public static bool UseMD5Password { get; private set; }
 
@@ -61,6 +62,8 @@ namespace Auth
             ConsoleSilent = reader.ReadInt32("console_silent", 0, 0, int.MaxValue);
 
             GameServerPort = reader.ReadUInt16("gameserver_port", 4444, ushort.MinValue, ushort.MaxValue);
+            GameServerPassword = reader.ReadString("gameserver_password", "", true);
+
             UseMD5Password = reader.ReadBoolean("use_md5", false);
 
             PersistServerId = reader.ReadBoolean("persist_server_id", false);
