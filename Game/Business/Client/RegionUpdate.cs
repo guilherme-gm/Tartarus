@@ -30,37 +30,38 @@ namespace Game.Business.Client
         #region Execute Packet
         public void Execute(Session session, Packet message)
         {
-            CG.RegionUpdate packet = (CG.RegionUpdate)message;
-
-            if (session._Client == null)
-                return;
-            Player player = ((User)session._Client).Character;
-            if (player == null)
-                return;
-
-            Position pos = new Position()
+            lock (session)
             {
-                X = packet.X,
-                Y = packet.Y,
-                Z = packet.Z
-            };
-            Region region = Region.FromPosition(pos);
-            // TODO : Proper region updates
-            //region.Enter(player);
-            //region.ReceiveObjects(player, false);
-            player.Region = region;
+                CG.RegionUpdate packet = (CG.RegionUpdate)message;
 
-            if (packet.IsStopMessage)
-            {
-                player.PendingMovePositions.Clear();
-                player.Position = pos;
+                if (session._Client == null)
+                    return;
+                Player player = ((User)session._Client).Character;
+                if (player == null)
+                    return;
+
+                Position pos = new Position()
+                {
+                    X = packet.X,
+                    Y = packet.Y,
+                    Z = packet.Z
+                };
+                Region region = Region.FromPosition(pos);
+                player.Position = pos; // TODO : This should be predicted by server
+                region.ChangeRegion(player);
+                player.Region = region;
+
+                if (packet.IsStopMessage)
+                {
+                    player.PendingMovePositions.Clear();
+                }
+
+                GC.RegionAck regionAck = new GC.RegionAck();
+                regionAck.RegionX = region.X;
+                regionAck.RegionY = region.Y;
+
+                DataClasses.Server.ClientSockets.SendSelf(session, regionAck);
             }
-
-            GC.RegionAck regionAck = new GC.RegionAck();
-            regionAck.RegionX = region.X;
-            regionAck.RegionY = region.Y;
-
-            DataClasses.Server.ClientSockets.SendSelf(session, regionAck);
         }
         #endregion
     }

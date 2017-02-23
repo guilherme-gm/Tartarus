@@ -101,6 +101,7 @@
     <Compile Include="DataClasses\Network\GameClient\ChatLocal.cs" />
     <Compile Include="DataClasses\Network\GameClient\CreatureEnter.cs" />
     <Compile Include="DataClasses\Network\GameClient\Enter.cs" />
+    <Compile Include="DataClasses\Network\GameClient\Leave.cs" />
     <Compile Include="DataClasses\Network\GameClient\Move.cs" />
     <Compile Include="DataClasses\Network\GameClient\PlayerEnter.cs" />
     <Compile Include="DataClasses\Network\GameClient\RegionAck.cs" />

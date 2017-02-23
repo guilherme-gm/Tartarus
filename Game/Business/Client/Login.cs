@@ -353,7 +353,7 @@ namespace Game.Business.Client
                 Handle = player.GID,
                 Status = 0
             };
-            DataClasses.Server.ClientSockets.SendRegion(player.Region, result);
+            DataClasses.Server.ClientSockets.SendArea(player.Region, result);
 
             // TODO : Quest List
             result = new GC.QuestList()

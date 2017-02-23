@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataClasses\Client.cs" />
+    <Compile Include="DataClasses\Collections\ReadOnlySet.cs" />
     <Compile Include="DataClasses\ISessionFactory.cs" />
     <Compile Include="DataClasses\Network\ServerPackets.cs" />
     <Compile Include="DataClasses\SessionFactory.cs" />

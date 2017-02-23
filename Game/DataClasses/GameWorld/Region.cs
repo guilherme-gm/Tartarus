@@ -20,6 +20,8 @@ using System.Collections.Generic;
 using GC = Game.DataClasses.Network.GameClient;
 using System;
 using Game.DataClasses.Network.ClientGame;
+using System.Linq;
+using Common.DataClasses.Collections;
 
 namespace Game.DataClasses.GameWorld
 {
@@ -122,29 +124,79 @@ namespace Game.DataClasses.GameWorld
         public uint X { get; set; }
         public uint Y { get; set; }
         public byte Layer { get; set; }
-        //public List<StaticObject> StaticObjects { get; set; }
-        public List<Player> Players { get; set; }
+        public HashSet<Player> Players { get; set; }
+        public HashSet<GameObject> GameObjects { get; set; }
 
         public Region(uint rx, uint ry)
         {
             this.X = rx;
             this.Y = ry;
-            this.Players = new List<Player>();
+            this.Players = new HashSet<Player>();
+            this.GameObjects = new HashSet<GameObject>();
         }
 
         /// <summary>
         /// Enters in the region
         /// </summary>
         /// <param name="gobject"></param>
-        public void Enter(GameObject gobject)
+        public void Enter(GameObject gobject, bool isSpawn = false)
         {
-            switch (gobject.SubType)
+            lock (this)
             {
-                case ObjectSubType.Player:
-                    this.Players.Add((Player)gobject);
-                    break;
+                switch (gobject.SubType)
+                {
+                    case ObjectSubType.Player:
+                        this.Players.Add((Player)gobject);
+                        break;
+                }
+
+                // CHECK : Maybe this is only required if you're spawning?
+                //  (you already know the region otherwise)
+                this.GameObjects.Add(gobject);
+                this.NotifyEnter(gobject, isSpawn);
             }
-            this.NotifyEnter(gobject);
+        }
+
+        /// <summary>
+        /// Change regions
+        /// </summary>
+        /// <param name="player"></param>
+        internal void ChangeRegion(Player player)
+        {
+            Region oldRegion = player.Region;
+            if (oldRegion == null)
+                return;
+
+            if (oldRegion == this)
+                return;
+
+            List<Region> oldNearby = GetNearbyRegions(oldRegion);
+            List<Region> newNearby = GetNearbyRegions(this);
+
+            List<Region> regionLeft = oldNearby.Except(newNearby).ToList();
+            List<Region> regionEnter = newNearby.Except(oldNearby).ToList();
+
+            oldRegion.Leave(player);
+            this.Enter(player);
+
+            foreach (Region r in regionEnter)
+            {
+                r.NotifyEnter(player);
+                r.ReceiveObjects(player);
+            }
+        }
+
+        /// <summary>
+        /// Player has left this region
+        /// </summary>
+        /// <param name="player"></param>
+        private void Leave(Player player)
+        {
+            lock (this)
+            {
+                this.Players.Remove(player);
+                this.GameObjects.Remove(player);
+            }
         }
 
         /// <summary>
@@ -197,10 +249,10 @@ namespace Game.DataClasses.GameWorld
                 ++i;
             }
 
-            Server.ClientSockets.SendRegion(this, move);
+            Server.ClientSockets.SendArea(this, move);
         }
 
-        private void NotifyEnter(GameObject gobject)
+        private void NotifyEnter(GameObject gobject, bool isSpawn = false)
         {
             // Informs all listeners that this game object entered the area
             // IMPROVE : Maybe we can use type to merge some writings
@@ -226,7 +278,7 @@ namespace Game.DataClasses.GameWorld
                         enter.Level = player.Level;
                         enter.Race = (byte)player.Race; // TODO : Different types
                         enter.SkinColor = player.SkinColor;
-                        enter.IsFirstEnter = true;
+                        enter.IsFirstEnter = isSpawn;
                         enter.Energy = 0; // TODO : What is energy?
                         enter.Sex = (byte)player.Sex; // TODO :Different types
                         enter.FaceId = player.BaseModel[1];
@@ -237,14 +289,20 @@ namespace Game.DataClasses.GameWorld
                         enter.RideGID = 0; // TODO : Ride GID
                         enter.GuildId = player.GuildId;
 
-                        Server.ClientSockets.SendRegionWithoutSelf(player.User._Session, this, enter);
+                        if (isSpawn)
+                            Server.ClientSockets.SendAreaWithoutSelf(player.User._Session, this, enter);
+                        else
+                            Server.ClientSockets.SendRegionWithoutSelf(player.User._Session, this, enter);
 
                         GC.WearInfo wearInfo = new GC.WearInfo();
                         wearInfo.Handle = player.GID;
                         wearInfo.BaseModel = player.BaseModel;
                         wearInfo.EquippedItems = player.EquippedItems;
 
-                        Server.ClientSockets.SendRegionWithoutSelf(player.User._Session, this, wearInfo);
+                        if (isSpawn)
+                            Server.ClientSockets.SendAreaWithoutSelf(player.User._Session, this, wearInfo);
+                        else
+                            Server.ClientSockets.SendRegionWithoutSelf(player.User._Session, this, wearInfo);
                     }
                     break;
                 case ObjectSubType.Npc:
@@ -266,64 +324,89 @@ namespace Game.DataClasses.GameWorld
             }
         }
 
-        internal void ReceiveObjects(Player src, bool isLogin)
+        internal void ReceiveObjects(Player src)
         {
-            List<Region> nearbyRegions = GetNearbyRegions(this);
+            // TODO : This needs to send other kinds of objects
 
-            // TODO : This needs to send other kinds of objects and use isLogin
-
-            foreach (Region region in nearbyRegions)
+            foreach (GameObject gobject in this.GameObjects.AsReadOnly())
             {
-                foreach (Player player in region.Players)
+                if (gobject == src)
+                    continue;
+
+                // IMPROVE : Maybe we can use type to merge some writings
+                switch (gobject.SubType)
                 {
-                    if (player == src)
-                        continue;
+                    case ObjectSubType.Player:
+                        {
+                            GC.PlayerEnter enter = new GC.PlayerEnter();
+                            Player player = (Player)gobject;
+                            enter.Type = player.Type;
+                            enter.GID = player.GID;
+                            enter.X = player.Position.X;
+                            enter.Y = player.Position.Y;
+                            enter.Z = player.Position.Z;
+                            enter.Layer = player.Position.Layer;
+                            enter.SubType = player.SubType;
+                            enter.Status = 0; // TODO : Status
+                            enter.FaceDirection = 0; // TODO : FaceDirection
+                            enter.Hp = player.HP;
+                            enter.MaxHp = player.MaxHp;
+                            enter.Mp = player.MP;
+                            enter.MaxMp = player.MaxMP;
+                            enter.Level = player.Level;
+                            enter.Race = (byte)player.Race; // TODO : Different types
+                            enter.SkinColor = player.SkinColor;
+                            enter.IsFirstEnter = true;
+                            enter.Energy = 0; // TODO : What is energy?
+                            enter.Sex = (byte)player.Sex; // TODO :Different types
+                            enter.FaceId = player.BaseModel[1];
+                            enter.FaceTextureId = player.FaceTextureId;
+                            enter.HairId = player.BaseModel[0];
+                            enter.Name = player.Name;
+                            enter.JobId = (ushort)player.Job.Id; // TODO :Different types
+                            enter.RideGID = 0; // TODO : Ride GID
+                            enter.GuildId = player.GuildId;
 
-                    // Send all nearby objects
-                    GC.PlayerEnter enter = new GC.PlayerEnter();
-                    enter.Type = player.Type;
-                    enter.GID = player.GID;
-                    enter.X = player.Position.X;
-                    enter.Y = player.Position.Y;
-                    enter.Z = player.Position.Z;
-                    enter.Layer = player.Position.Layer;
-                    enter.SubType = player.SubType;
-                    enter.Status = 0; // TODO : Status
-                    enter.FaceDirection = 0; // TODO : FaceDirection
-                    enter.Hp = player.HP;
-                    enter.MaxHp = player.MaxHp;
-                    enter.Mp = player.MP;
-                    enter.MaxMp = player.MaxMP;
-                    enter.Level = player.Level;
-                    enter.Race = (byte)player.Race; // TODO : Different types
-                    enter.SkinColor = player.SkinColor;
-                    enter.IsFirstEnter = true;
-                    enter.Energy = 0; // TODO : What is energy?
-                    enter.Sex = (byte)player.Sex; // TODO :Different types
-                    enter.FaceId = player.BaseModel[1];
-                    enter.FaceTextureId = player.FaceTextureId;
-                    enter.HairId = player.BaseModel[0];
-                    enter.Name = player.Name;
-                    enter.JobId = (ushort)player.Job.Id; // TODO :Different types
-                    enter.RideGID = 0; // TODO : Ride GID
-                    enter.GuildId = player.GuildId;
+                            Server.ClientSockets.SendSelf(src.User._Session, enter);
 
-                    Server.ClientSockets.SendSelf(src.User._Session, enter);
+                            GC.WearInfo wearInfo = new GC.WearInfo();
+                            wearInfo.Handle = player.GID;
+                            wearInfo.BaseModel = player.BaseModel;
+                            wearInfo.EquippedItems = player.EquippedItems;
 
-                    GC.WearInfo wearInfo = new GC.WearInfo();
-                    wearInfo.Handle = player.GID;
-                    wearInfo.BaseModel = player.BaseModel;
-                    wearInfo.EquippedItems = player.EquippedItems;
-
-                    Server.ClientSockets.SendSelf(src.User._Session, wearInfo);
+                            Server.ClientSockets.SendSelf(src.User._Session, wearInfo);
+                        }
+                        break;
+                    case ObjectSubType.Npc:
+                        break;
+                    case ObjectSubType.Item:
+                        break;
+                    case ObjectSubType.Monster:
+                        break;
+                    case ObjectSubType.Summon:
+                        break;
+                    case ObjectSubType.SkillProp:
+                        break;
+                    case ObjectSubType.FieldProp:
+                        break;
+                    case ObjectSubType.Pet:
+                        break;
+                    default:
+                        break;
                 }
             }
         }
 
-        internal void Leave(Player player, bool isLogout)
+        internal void Logout(Player player)
         {
-            // TODO : Notify surroundings
-            this.Players.Remove(player);
+            lock (this)
+            {
+                this.GameObjects.Remove(player);
+                this.Players.Remove(player);
+
+                GC.Leave leave = new GC.Leave();
+                Server.ClientSockets.SendAreaWithoutSelf(player.User._Session, this, leave);
+            }
         }
     }
     #endregion

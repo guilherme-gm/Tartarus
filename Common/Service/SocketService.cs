@@ -378,6 +378,9 @@ namespace Common.Service
         {
             byte[] data = packet.Write();
 
+            if (session == null)
+                return;
+
             ConsoleUtils.HexDump(data, "Sending Packet");
 
             if (this.Encrypted)
